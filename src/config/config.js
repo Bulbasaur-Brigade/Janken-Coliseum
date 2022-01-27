@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import BattleScene from "../scene/BattleScene";
 import StartScene from "../scene/StartScene";
 
 export default {
@@ -11,9 +12,9 @@ export default {
   },
   physics: {
     default: "arcade",
-    // arcade: {
-    //   debug: true,
-    // },
+    arcade: {
+      debug: true,
+    },
   },
-  scene: [StartScene],
+  scene: [StartScene, BattleScene],
 };
