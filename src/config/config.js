@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import OverworldScene from "../scene/OverworldScene";
 import StartScene from "../scene/StartScene";
 
 export default {
@@ -15,5 +16,5 @@ export default {
     //   debug: true,
     // },
   },
-  scene: [StartScene],
+  scene: [StartScene, OverworldScene],
 };

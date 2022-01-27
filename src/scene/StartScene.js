@@ -15,6 +15,12 @@ export default class StartScene extends Phaser.Scene {
   create() {
     // this.add.text(100, 100, "Hello world");
     this.add.image(0, 0, "startSceneBackground").setOrigin(0);
+
+    //Placeholder Scene Changer
+    this.input.keyboard.on('keydown-SPACE', function (event) {
+      this.scene.start("OverworldScene");
+    }, this);
+
     // this.player = new Player(this, 0, 100, "player");
     // this.opponent = new Player(this, 200, 200, "player");
   }
