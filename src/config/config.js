@@ -16,5 +16,5 @@ export default {
       debug: true,
     },
   },
-  scene: [BattleScene],
+  scene: [StartScene, BattleScene, OverworldScene],
 };
