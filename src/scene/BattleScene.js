@@ -3,12 +3,12 @@ import Phaser from "phaser";
 /**
  * Means the player has not anything
  */
-const NOTHING_SELECTION_MODE = "NOTHING_SELECTTED";
+const NOTHING_SELECTION_MODE = "NOTHING_SELECTED";
 
 /**
  * Means player needs click shoot to finalize selection
  */
-const BEFORE_SHOT_MODE = "BEOFRE_SHOOT";
+const BEFORE_SHOT_MODE = "BEFORE_SHOOT";
 
 /**
  * Means that shooting is in progress
@@ -114,8 +114,92 @@ export default class BattleScene extends Phaser.Scene {
       this.shoot();
     });
   }
-  // selectMove(sprite){
-  //   if()
-  // }
+  selectMove(sprite) {
+    if (this.mode === SHOOTING_MODE) return;
+    this.resetAlphasOnPlayerSprites();
+    // alpha is for opacity
+    sprite.alpha = 0.5;
+    this.gameStateText.setText("Saishowaguu!(Shoot!)");
+    this.mode = BEFORE_SHOT_MODE;
+    this.selectedSprite = sprite;
+  }
+  shoot() {
+    if (this.mode !== BEFORE_SHOT_MODE) return;
+    this.mode = SHOOTING_MODE;
+    this.selectedSprite.alpha = 1;
+    let computerSelectedSprite = this.aiSprites[Phaser.Math.Between(0, 2)];
+
+    this.winner = this.whoWon(
+      this.selectedSprite.texture.key,
+      computerSelectedSprite.texture.key
+    );
+
+    if (this.winner == OUTCOME_PLAYER_WON) {
+      this.gameStateText.setText("You Win");
+      this.time.delayedCall(1500, () => {
+        this.reset();
+      });
+      this.playerWins += 1;
+      this.updateScore();
+    }
+
+    if (this.winner == OUTCOME_COMPUTER_WON) {
+      this.gameStateText.setText("You Lose");
+      this.time.delayedCall(1500, () => {
+        this.reset();
+      });
+      this.computerWins += 1;
+      this.updateScore();
+    }
+
+    if (this.winner == OUTCOME_TIE) {
+      this.gameStateText.setText("Tie Game");
+      this.time.delayedCall(1500, () => {
+        this.reset();
+      });
+    }
+  }
+  reset() {
+    this.mode = NOTHING_SELECTION_MODE;
+    this.selectedSprite = null;
+    this.gameStateText.setText("Select Move");
+
+    this.aiSprites.forEach((sprite, index) => {
+      sprite.x = 540;
+      sprite.y = 100 * (index + 1);
+      // alpha controls the opacity
+      sprite.alpha = 1;
+    });
+
+    this.playerSprites.forEach((sprite, index) => {
+      sprite.x = 100;
+      sprite.y = 100 * (index + 1);
+      sprite.alpha = 1;
+    });
+  }
+  whoWon(playerKey, computerKey) {
+    // this.rules = {
+    //   rock: SCISSORS,
+    //   paper: ROCK,
+    //   scissors: PAPER,
+    // };
+    if (this.rules[playerKey] == computerKey) {
+      return OUTCOME_PLAYER_WON;
+    }
+
+    if (this.rules[computerKey] == playerKey) {
+      return OUTCOME_COMPUTER_WON;
+    }
+
+    return OUTCOME_TIE;
+  }
+  updateScore() {
+    this.scoreText.setText(this.playerWins + " / " + this.computerWins);
+  }
+  resetAlphasOnPlayerSprites() {
+    this.playerSprites.forEach((sprite) => {
+      sprite.alpha = 1;
+    });
+  }
   // update() {}
 }
