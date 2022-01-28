@@ -1,6 +1,6 @@
-import Phaser from 'phaser';
-import OverworldScene from '../scene/OverworldScene';
-import StartScene from '../scene/StartScene';
+import Phaser from "phaser";
+import BattleScene from "../scene/BattleScene";
+import StartScene from "../scene/StartScene";
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
@@ -11,10 +11,10 @@ export default {
     pixelArt: true,
   },
   physics: {
-    default: 'arcade',
+    default: "arcade",
     arcade: {
       debug: true,
     },
   },
-  scene: [StartScene, OverworldScene],
+  scene: [StartScene, BattleScene, OverworldScene],
 };
