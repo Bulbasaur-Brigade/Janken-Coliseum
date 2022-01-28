@@ -21,11 +21,17 @@ export default class OverworldScene extends Phaser.Scene {
     // Layers
     const waterLayer = map.createLayer('Water', tileset, 0, 0);
     const groundLayer = map.createLayer('Ground', tileset, 0, 0);
+    const npcLayer = map.createLayer('NPC', tileset, 0, 0);
     const interactiveLayer = map.createLayer('Interactive', tileset, 0, 0);
     const overheadLayer = map.createLayer('Overhead', tileset, 0, 0);
 
     //Player
-    this.player = new Player(this, 200, 200, 'player').setScale(0.75);
+    this.player = new Player(
+      this,
+      this.data.get('playercordX') || 200,
+      this.data.get('playercordY') || 200,
+      'player'
+    ).setScale(0.75);
     this.cursors = this.input.keyboard.createCursorKeys();
 
     //Collisions
@@ -34,6 +40,19 @@ export default class OverworldScene extends Phaser.Scene {
 
     groundLayer.setCollisionFromCollisionGroup({ collide: true });
     this.physics.add.collider(this.player, groundLayer);
+
+    npcLayer.setCollisionByProperty({ collide: true });
+    this.physics.add.collider(
+      this.player,
+      npcLayer,
+      () => {
+        this.data.set('playercordX', this.player.x);
+        this.data.set('playercordY', this.player.y);
+        this.scene.start('BattleScene');
+      },
+      null,
+      this
+    );
 
     interactiveLayer.setCollisionByProperty({ collide: true });
     this.physics.add.collider(this.player, interactiveLayer);

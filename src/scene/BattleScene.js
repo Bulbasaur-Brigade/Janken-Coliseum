@@ -1,52 +1,52 @@
-import Phaser from "phaser";
+import Phaser from 'phaser';
 // import Player from "../entity/player";
 /**
  * Means the player has not anything
  */
-const NOTHING_SELECTION_MODE = "NOTHING_SELECTED";
+const NOTHING_SELECTION_MODE = 'NOTHING_SELECTED';
 
 /**
  * Means player needs click shoot to finalize selection
  */
-const BEFORE_SHOT_MODE = "BEFORE_SHOOT";
+const BEFORE_SHOT_MODE = 'BEFORE_SHOOT';
 
 /**
  * Means that shooting is in progress
  */
-const SHOOTING_MODE = "SHOOTING";
+const SHOOTING_MODE = 'SHOOTING';
 
 /**
  * This means the player one
  */
-const OUTCOME_PLAYER_WON = "player_won";
+const OUTCOME_PLAYER_WON = 'player_won';
 
 /**
  * This means computer won
  */
-const OUTCOME_COMPUTER_WON = "computer_won";
+const OUTCOME_COMPUTER_WON = 'computer_won';
 
 /**
  * This means that the tie
  */
-const OUTCOME_TIE = "tie";
+const OUTCOME_TIE = 'tie';
 /**
  * This is the key for rock
  */
-const ROCK = "rock";
+const ROCK = 'rock';
 
 /**
  * This is the key for paper
  */
-const PAPER = "paper";
+const PAPER = 'paper';
 
 /**
  * This is the key for scissors
  */
-const SCISSORS = "scissors";
+const SCISSORS = 'scissors';
 
 export default class BattleScene extends Phaser.Scene {
   constructor() {
-    super("BattleScene");
+    super('BattleScene');
   }
   init() {
     this.rules = {
@@ -60,14 +60,14 @@ export default class BattleScene extends Phaser.Scene {
     this.computerWins = 0;
   }
   preload() {
-    this.load.image("battleScene", "assets/backgrounds/battleScene.jpg");
-    this.load.image(ROCK, "assets/sprites/rock.jpg");
-    this.load.image(PAPER, "assets/sprites/paper.jpg");
-    this.load.image(SCISSORS, "assets/sprites/scissors.jpg");
+    this.load.image('battleScene', 'assets/backgrounds/battleScene.jpg');
+    this.load.image(ROCK, 'assets/sprites/rock.jpg');
+    this.load.image(PAPER, 'assets/sprites/paper.jpg');
+    this.load.image(SCISSORS, 'assets/sprites/scissors.jpg');
   }
   create() {
     // this.add.text(100, 100, "Hello world");
-    this.add.image(0, 0, "battleScene").setOrigin(0, 0);
+    this.add.image(0, 0, 'battleScene').setOrigin(0, 0);
 
     this.playerRock = this.add.sprite(100, 160, ROCK).setScale(0.1);
     this.playerPaper = this.add.sprite(100, 250, PAPER).setScale(0.1);
@@ -81,7 +81,7 @@ export default class BattleScene extends Phaser.Scene {
 
     this.playerSprites.forEach((sprite) => {
       sprite.setInteractive();
-      sprite.on("pointerdown", (pointer, localX, localY) => {
+      sprite.on('pointerdown', (pointer, localX, localY) => {
         this.selectMove(sprite);
       });
     });
@@ -102,24 +102,32 @@ export default class BattleScene extends Phaser.Scene {
       this.aiScissors,
     ];
 
-    this.add.text(50, 20, "Player").setScale(2);
-    this.add.text(550, 20, "Computer").setScale(2);
+    this.add.text(50, 20, 'Player').setScale(2);
+    this.add.text(550, 20, 'Computer').setScale(2);
 
-    this.gameStateText = this.add.text(300, 550, "Select Move").setScale(2);
+    this.gameStateText = this.add.text(300, 550, 'Select Move').setScale(2);
     this.gameStateText.setInteractive();
 
-    this.scoreText = this.add.text(320, 20, "0 / 0").setScale(2);
+    this.scoreText = this.add.text(320, 20, '0 / 0').setScale(2);
 
-    this.gameStateText.on("pointerdown", (pointer, localX, localY) => {
+    this.gameStateText.on('pointerdown', (pointer, localX, localY) => {
       this.shoot();
     });
+
+    this.input.keyboard.on(
+      'keydown-SPACE',
+      function (event) {
+        this.scene.start('OverworldScene');
+      },
+      this
+    );
   }
   selectMove(sprite) {
     if (this.mode === SHOOTING_MODE) return;
     this.resetAlphasOnPlayerSprites();
     // alpha is for opacity
     sprite.alpha = 0.5;
-    this.gameStateText.setText("Saishowaguu!(Shoot!)");
+    this.gameStateText.setText('Saishowaguu!(Shoot!)');
     this.mode = BEFORE_SHOT_MODE;
     this.selectedSprite = sprite;
   }
@@ -135,7 +143,7 @@ export default class BattleScene extends Phaser.Scene {
     );
 
     if (this.winner == OUTCOME_PLAYER_WON) {
-      this.gameStateText.setText("You Win");
+      this.gameStateText.setText('You Win');
       this.time.delayedCall(1500, () => {
         this.reset();
       });
@@ -144,7 +152,7 @@ export default class BattleScene extends Phaser.Scene {
     }
 
     if (this.winner == OUTCOME_COMPUTER_WON) {
-      this.gameStateText.setText("You Lose");
+      this.gameStateText.setText('You Lose');
       this.time.delayedCall(1500, () => {
         this.reset();
       });
@@ -153,7 +161,7 @@ export default class BattleScene extends Phaser.Scene {
     }
 
     if (this.winner == OUTCOME_TIE) {
-      this.gameStateText.setText("Tie Game");
+      this.gameStateText.setText('Tie Game');
       this.time.delayedCall(1500, () => {
         this.reset();
       });
@@ -162,7 +170,7 @@ export default class BattleScene extends Phaser.Scene {
   reset() {
     this.mode = NOTHING_SELECTION_MODE;
     this.selectedSprite = null;
-    this.gameStateText.setText("Select Move");
+    this.gameStateText.setText('Select Move');
 
     this.aiSprites.forEach((sprite, index) => {
       sprite.x = 540;
@@ -194,12 +202,14 @@ export default class BattleScene extends Phaser.Scene {
     return OUTCOME_TIE;
   }
   updateScore() {
-    this.scoreText.setText(this.playerWins + " / " + this.computerWins);
+    this.scoreText.setText(this.playerWins + ' / ' + this.computerWins);
   }
   resetAlphasOnPlayerSprites() {
     this.playerSprites.forEach((sprite) => {
       sprite.alpha = 1;
     });
   }
-  // update() {}
+  // update() {
+
+  // }
 }
