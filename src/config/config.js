@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import BattleScene from "../scene/BattleScene";
-import StartScene from "../scene/StartScene";
+
+import OverworldScene from "../scene/OverworldScene";
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
@@ -16,5 +17,5 @@ export default {
       debug: true,
     },
   },
-  scene: [StartScene, BattleScene, OverworldScene],
+  scene: [OverworldScene, BattleScene],
 };
