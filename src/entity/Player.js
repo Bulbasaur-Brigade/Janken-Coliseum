@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import Phaser from "phaser";
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, spriteKey) {
@@ -15,15 +15,20 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     if (cursors.up.isDown) {
       this.setVelocityY(-100);
+      this.play("runUp", true);
     } else if (cursors.left.isDown) {
       this.setVelocityX(-100);
+      this.play("runLeft", true);
     } else if (cursors.down.isDown) {
       this.setVelocityY(100);
+      this.play("runDown", true);
     } else if (cursors.right.isDown) {
       this.setVelocityX(100);
+      this.play("runRight", true);
     } else {
       this.setVelocityY(0);
       this.setVelocityX(0);
+      this.play("idle");
     }
   }
 

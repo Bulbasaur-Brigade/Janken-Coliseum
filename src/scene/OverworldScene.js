@@ -1,37 +1,87 @@
-import Phaser from 'phaser';
-import Player from '../entity/Player';
+import Phaser from "phaser";
+import Player from "../entity/Player";
 
 export default class OverworldScene extends Phaser.Scene {
   constructor() {
-    super('OverworldScene');
+    super("OverworldScene");
   }
 
   preload() {
-    this.load.image('tiles', 'assets/maps/tilemap.png');
-    this.load.tilemapTiledJSON('tilemap', 'assets/maps/overworldMap.json');
+    this.load.image("tiles", "assets/maps/tilemap.png");
+    this.load.tilemapTiledJSON("tilemap", "assets/maps/overworldMap.json");
+    this.load.spritesheet("character", "assets/spriteSheets/characters.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
     //player
-    this.load.image('player', 'assets/sprites/sensei.png');
+    this.load.image("player", "assets/sprites/sensei.png");
+  }
+  createAnimations() {
+    this.anims.create({
+      key: "runLeft",
+      frames: this.anims.generateFrameNumbers("character", {
+        start: 0,
+        end: 2,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "runRight",
+      frames: this.anims.generateFrameNumbers("character", {
+        start: 9,
+        end: 11,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "runDown",
+      frames: this.anims.generateFrameNumbers("character", {
+        start: 3,
+        end: 5,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "runUp",
+      frames: this.anims.generateFrameNumbers("character", {
+        start: 6,
+        end: 8,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "idle",
+      frames: [{ key: "character", frame: 3 }],
+      frameRate: 10,
+    });
   }
   create() {
+    // Start animations
+    this.createAnimations();
     // Creating Map using Tile Set
-    const map = this.make.tilemap({ key: 'tilemap' });
+    const map = this.make.tilemap({ key: "tilemap" });
     // "characters" comes from name in Tiled software
-    const tileset = map.addTilesetImage('characters', 'tiles', 16, 16);
+    const tileset = map.addTilesetImage("characters", "tiles", 16, 16);
 
     // Layers
-    const waterLayer = map.createLayer('Water', tileset, 0, 0);
-    const groundLayer = map.createLayer('Ground', tileset, 0, 0);
-    const npcLayer = map.createLayer('NPC', tileset, 0, 0);
-    const interactiveLayer = map.createLayer('Interactive', tileset, 0, 0);
-    const overheadLayer = map.createLayer('Overhead', tileset, 0, 0);
+    const waterLayer = map.createLayer("Water", tileset, 0, 0);
+    const groundLayer = map.createLayer("Ground", tileset, 0, 0);
+    const npcLayer = map.createLayer("NPC", tileset, 0, 0);
+    const interactiveLayer = map.createLayer("Interactive", tileset, 0, 0);
+    const overheadLayer = map.createLayer("Overhead", tileset, 0, 0);
 
     //Player
     this.player = new Player(
       this,
-      this.data.get('playercordX') || 200,
-      this.data.get('playercordY') || 200,
-      'player'
-    ).setScale(0.75);
+      this.data.get("playercordX") || 200,
+      this.data.get("playercordY") || 200,
+      "character"
+    ).setScale(0.25);
     this.cursors = this.input.keyboard.createCursorKeys();
 
     //Collisions
@@ -46,9 +96,9 @@ export default class OverworldScene extends Phaser.Scene {
       this.player,
       npcLayer,
       () => {
-        this.data.set('playercordX', this.player.x);
-        this.data.set('playercordY', this.player.y);
-        this.scene.start('BattleScene');
+        this.data.set("playercordX", this.player.x);
+        this.data.set("playercordY", this.player.y);
+        this.scene.start("BattleScene");
       },
       null,
       this
