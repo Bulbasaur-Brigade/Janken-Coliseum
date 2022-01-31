@@ -51,8 +51,14 @@ export default class BattleScene extends Phaser.Scene {
     this.load.image(ROCK, "assets/sprites/rock.png");
     this.load.image(PAPER, "assets/sprites/paper.png");
     this.load.image(SCISSORS, "assets/sprites/scissors.png");
+    // Battle Music
+    this.load.audio("Battle", "assets/audio/Battle.mp3");
   }
   create() {
+    // Bg Music
+    this.battleMusic = this.sound.add("Battle", { volume: 0.15 }, true);
+    this.battleMusic.play();
+
     this.add.image(0, 0, "battleScene").setOrigin(0, 0).setScale(0.8);
 
     // Player Sprites
@@ -242,6 +248,7 @@ export default class BattleScene extends Phaser.Scene {
   update() {
     if (this.playerWins === 2 || this.computerWins === 2) {
       this.scene.start("OverworldScene");
+      this.battleMusic.stop();
       this.playerWins = 0;
       this.computerWins = 0;
     }
