@@ -15,6 +15,9 @@ export default class OverworldScene extends Phaser.Scene {
     });
     //player
     this.load.image("player", "assets/sprites/sensei.png");
+    // Music
+    this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
+    this.load.audio("Walk", "assets/audio/walk.mp3");
   }
   createAnimations() {
     this.anims.create({
@@ -75,6 +78,10 @@ export default class OverworldScene extends Phaser.Scene {
     const interactiveLayer = map.createLayer("Interactive", tileset, 0, 0);
     const overheadLayer = map.createLayer("Overhead", tileset, 0, 0);
 
+    // Music
+    this.bgMusic = this.sound.add("Pallet", { volume: 0.15 }, true);
+    this.bgMusic.play();
+    this.walkSound = this.sound.add("Walk", { volume: 0.4 });
     //Player
     this.player = new Player(
       this,
@@ -104,6 +111,7 @@ export default class OverworldScene extends Phaser.Scene {
         this.data.set("playercordX", this.player.x);
         this.data.set("playercordY", this.player.y);
         this.scene.start("BattleScene");
+        this.bgMusic.stop();
       },
       null,
       this
@@ -121,6 +129,6 @@ export default class OverworldScene extends Phaser.Scene {
     camera.startFollow(this.player, true);
   }
   update() {
-    this.player.update(this.cursors);
+    this.player.update(this.cursors, this.walkSound);
   }
 }
