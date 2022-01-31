@@ -9,10 +9,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
   //Movements
   updateMovement(cursors) {
-    // this.key_W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    // this.key_W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);asdfads
     // this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     // this.key_S = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     // this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
     if (cursors.up.isDown) {
       this.setVelocityY(-100);
       this.play("runUp", true);

@@ -82,6 +82,11 @@ export default class OverworldScene extends Phaser.Scene {
       this.data.get("playercordY") || 200,
       "character"
     ).setScale(0.25);
+    // this.player.setPipeline("Light2D");
+
+    // var light = this.lights.addLight(200, 200, 200);
+    // this.lights.enable().setAmbientColor(0x555555);
+
     this.cursors = this.input.keyboard.createCursorKeys();
 
     //Collisions
