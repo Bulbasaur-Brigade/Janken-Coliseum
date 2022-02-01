@@ -1,13 +1,13 @@
 import Phaser from "phaser";
 import BattleScene from "../scene/BattleScene";
-import fireBaseConfig from './fireBaseConfig'
+import fireBaseConfig from "./fireBaseConfig";
 // import Firebase from "firebase/app";
 
-import  firebase from "firebase/compat/app";
-import 'firebase/compat/auth';
-import Menu from '../scene/Menu';
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import Menu from "../scene/Menu";
 
-firebase.initializeApp(fireBaseConfig);
+export const app = firebase.initializeApp(fireBaseConfig);
 
 // firebaseApp.auth().onAuthStateChanged(function (user) {
 //     if (user) {
@@ -26,7 +26,7 @@ firebase.initializeApp(fireBaseConfig);
 //     }
 // });
 import OverworldScene from "../scene/OverworldScene";
-
+import FirebasePlugin from "../scene/Login";
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
@@ -42,10 +42,18 @@ export default {
       debug: true,
     },
   },
+  // plugins:{
+  //   global:[{
+  //     key:'FirebasePlugin',
+  //     plugin:FirebasePlugin,
+  //     start:true,
+  //     mapping:'firebase'
+  //   }]
+  // },
 
-  parent: 'content',
-  dom: { 
-    createContainer: true
+  parent: "content",
+  dom: {
+    createContainer: true,
   },
-  scene: [Menu,OverworldScene, BattleScene],
+  scene: [Menu, OverworldScene, BattleScene],
 };
