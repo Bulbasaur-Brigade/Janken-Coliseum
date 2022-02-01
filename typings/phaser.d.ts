@@ -239,6 +239,13 @@ declare type GenerateFrameNumbersConfig = {
  */
 declare type NOOP = ()=>void;
 
+declare namespace Phaser
+{
+	interface Scene
+	{
+		firebase: import('./plugins/FirebasePlugin').default
+	}
+}
 declare type BootCallback = (game: Phaser.Game)=>void;
 
 declare type InputConfig = {

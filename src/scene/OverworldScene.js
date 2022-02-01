@@ -1,11 +1,17 @@
-import Phaser from 'phaser';
-import Player from '../entity/Player';
+import Phaser from "phaser";
+import Player from "../entity/Player";
+// import Items from "../entity/Items";
 
 export default class OverworldScene extends Phaser.Scene {
   constructor() {
     super('OverworldScene');
   }
-
+  // init() {
+  //   this.items = [];
+  //   this.rockCounter = 0;
+  //   this.paperCounter = 0;
+  //   this.scissorsCounter = 0;
+  // }
   preload() {
     this.load.image('tiles', 'assets/maps/tilemap.png');
     this.load.tilemapTiledJSON('tilemap', 'assets/maps/overworldMap.json');
@@ -13,8 +19,10 @@ export default class OverworldScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
-    //player
-    this.load.image('player', 'assets/sprites/sensei.png');
+    //Items
+    this.load.image("rock", "assets/sprites/rock.png");
+    this.load.image("paper", "assets/sprites/paper.png");
+    this.load.image("scissors", "assets/sprites/scissors.png");
     // Music
     this.load.audio('Pallet', 'assets/audio/PalletTown.mp3');
     this.load.audio('Walk', 'assets/audio/walk.mp3');
@@ -79,7 +87,7 @@ export default class OverworldScene extends Phaser.Scene {
     const overheadLayer = map.createLayer('Overhead', tileset, 0, 0);
 
     // Music
-    this.bgMusic = this.sound.add('Pallet', { volume: 0.15 }, true);
+    this.bgMusic = this.sound.add("Pallet", { volume: 0.1 }, true);
     this.bgMusic.play();
     this.walkSound = this.sound.add('Walk', { volume: 0.4 });
     //Player
@@ -127,7 +135,82 @@ export default class OverworldScene extends Phaser.Scene {
     const camera = this.cameras.main;
     camera.setZoom(2);
     camera.startFollow(this.player, true);
+
+    // Inventory
+    // this.graphics = this.add.graphics();
+    // this.graphics.lineStyle(1);
+    // this.graphics.strokeRect(0, 325, 100, 25);
+
+    // for (let i = 0; i < 10; i++) {
+    //   let xx = Phaser.Math.Between(100, 200);
+    //   let yy = Phaser.Math.Between(0, 400);
+    //   this.rock = new Items(this, xx, yy, "rock", i).setScale(0.25);
+    //   this.items.push(this.rock);
+    //   // console.log("this.items", this.items);
+
+    //   this.physics.add.collider(
+    //     this.player,
+    //     this.rock,
+    //     () => {
+    //       this.rockCounter += 1;
+    //       this.rock.destroy();
+
+    //       this.rockText.setText("Rock-" + this.rockCounter);
+    //     },
+    //     null,
+    //     this
+    //   );
+    // }
+    // // this.rock = new Items(this, 150, 200, "rock").setScale(0.25);
+    // this.paper = new Items(this, 150, 180, "paper").setScale(0.25);
+    // this.scissors = new Items(this, 150, 160, "scissors").setScale(0.25);
+
+    // this.rockText = this.add
+    //   .text(200, 400, "Rock-0")
+    //   .setScrollFactor(0, 0)
+    //   .setScale(1);
+    // this.paperText = this.add
+    //   .text(200, 380, "Paper-0")
+    //   .setScrollFactor(0, 0)
+    //   .setScale(1);
+    // this.scissorsText = this.add
+    //   .text(200, 360, "Scissors-0")
+    //   .setScrollFactor(0, 0)
+    //   .setScale(1);
+
+    // this.rockText.setScrollFactor(100, 100);
+    // this.staticRock = this.physics.add
+    //   .staticImage(0, 325, "rock")
+    //   .setScrollFactor(0, 0);
+
+    // this.physics.add.collider(
+    //   this.player,
+    //   this.paper,
+    //   () => {
+    //     this.paper.destroy();
+
+    //     this.paperCounter += 1;
+    //     this.paperText.setText("Paper-" + this.paperCounter);
+    //   },
+    //   null,
+    //   this
+    // );
+    // this.physics.add.collider(
+    //   this.player,
+    //   this.scissors,
+    //   () => {
+    //     this.scissors.destroy();
+
+    //     this.scissorsCounter += 1;
+    //     this.scissorsText.setText("Scissors-" + this.scissorsCounter);
+    //   },
+    //   null,
+    //   this
+    // );
   }
+  // createRock(x, y) {
+  //   this.rockGroup.create(x, y, "rock");
+  // }
   update() {
     this.player.update(this.cursors, this.walkSound);
   }

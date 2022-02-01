@@ -14,15 +14,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // this.key_S = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     // this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-    // if (this.anims.isPlaying) {
-    //   walkSound.play();
-    // }
-
-    // if (this.velocity.x !== 0 || this.velocity.y !== 0) {
-    // } else {
-    //   walkSound.stop();
-    // }
-
     if (cursors.up.isDown) {
       this.setVelocityY(-100);
       this.play("runUp", true);
@@ -43,7 +34,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       this.setVelocityY(0);
       this.setVelocityX(0);
       this.play("idle");
-      walkSound.pause();
+      // walkSound.stop();
     }
   }
 
