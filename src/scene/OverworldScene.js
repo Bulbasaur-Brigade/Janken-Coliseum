@@ -125,6 +125,8 @@ export default class OverworldScene extends Phaser.Scene {
       this
     );
 
+  
+
     interactiveLayer.setCollisionByProperty({ collide: true });
     this.physics.add.collider(this.player, interactiveLayer);
 

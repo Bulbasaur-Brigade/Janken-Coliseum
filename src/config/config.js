@@ -2,12 +2,22 @@ import Phaser from "phaser";
 import BattleScene from "../scene/BattleScene";
 import fireBaseConfig from "./fireBaseConfig";
 // import Firebase from "firebase/app";
-
+import { getDatabase, ref,set } from 'firebase/database';
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import Menu from "../scene/Menu";
 
 export const app = firebase.initializeApp(fireBaseConfig);
+const database = getDatabase(app)
+
+console.log('//////////', database);
+
+set(ref(database, 'players/elstan/'), {
+  name: 'Elstan',
+  inventory: ['rock']
+});
+
+
 
 // firebaseApp.auth().onAuthStateChanged(function (user) {
 //     if (user) {
