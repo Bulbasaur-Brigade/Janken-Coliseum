@@ -26,7 +26,8 @@ export const app = firebase.initializeApp(fireBaseConfig);
 //     }
 // });
 import OverworldScene from "../scene/OverworldScene";
-import FirebasePlugin from "../scene/Login";
+import Heart from "../scene/Heart";
+// import FirebasePlugin from "../scene/Login";
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
@@ -39,7 +40,7 @@ export default {
   physics: {
     default: "arcade",
     arcade: {
-      debug: true,
+      debug: false,
     },
   },
   // plugins:{
@@ -55,5 +56,5 @@ export default {
   dom: {
     createContainer: true,
   },
-  scene: [Menu, OverworldScene, BattleScene],
+  scene: [OverworldScene, BattleScene, Heart],
 };

@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import Player from "../entity/Player";
 // MODES
 // Means the player has not anything
 const NOTHING_SELECTION_MODE = "NOTHING_SELECTED";
@@ -27,7 +28,9 @@ export default class BattleScene extends Phaser.Scene {
   constructor() {
     super("BattleScene");
   }
-  init() {
+  init(data) {
+    // this.data = data;
+    // console.log("this.data", this.data);
     // Rule Set
     this.rules = {
       rock: SCISSORS,
@@ -55,11 +58,14 @@ export default class BattleScene extends Phaser.Scene {
     this.load.audio("Battle", "assets/audio/Battle.mp3");
   }
   create() {
+    // player reference
+    this.playerData = this.registry.get("playerData");
+    console.log("playerData", this.playerData);
     // Bg Music
     this.battleMusic = this.sound.add("Battle", { volume: 0.15 }, true);
     this.battleMusic.play();
 
-    this.add.image(0, 0, "battleScene").setOrigin(0, 0).setScale(0.8);
+    this.add.image(0, 0, "battleScene").setOrigin(0, 0).setScale(1);
 
     // Player Sprites
     this.playerRock = this.add.sprite(100, 150, ROCK).setScale(1.5);
@@ -149,6 +155,13 @@ export default class BattleScene extends Phaser.Scene {
       this.selectedSprite.y = 300;
       computerSelectedSprite.x = 500;
       computerSelectedSprite.y = 300;
+      if (this.playerData.hp < 3) {
+        this.playerData.hp += 1;
+        console.log("this.playerData", this.playerData);
+      } else {
+        this.playerData.hp += 0;
+      }
+
       this.winText = this.add.bitmapText(
         280,
         400,
@@ -169,6 +182,13 @@ export default class BattleScene extends Phaser.Scene {
       this.selectedSprite.y = 300;
       computerSelectedSprite.x = 500;
       computerSelectedSprite.y = 300;
+      if (this.playerData.hp > 0) {
+        this.playerData.hp -= 1;
+        console.log(this.playerData);
+      } else {
+        this.playerData.hp += 0;
+      }
+
       this.loseText = this.add.bitmapText(
         280,
         400,
@@ -188,6 +208,7 @@ export default class BattleScene extends Phaser.Scene {
       this.selectedSprite.y = 300;
       computerSelectedSprite.x = 500;
       computerSelectedSprite.y = 300;
+      console.log(this.playerData);
       this.tieText = this.add.bitmapText(
         280,
         400,
@@ -246,8 +267,9 @@ export default class BattleScene extends Phaser.Scene {
   // What happens after a player wins or loses
   // Scene End
   update() {
-    if (this.playerWins === 2 || this.computerWins === 2) {
-      this.scene.start("OverworldScene");
+    if (this.playerWins === 1 || this.computerWins === 1) {
+      this.scene.stop();
+      this.scene.resume("OverworldScene");
       this.battleMusic.stop();
       this.playerWins = 0;
       this.computerWins = 0;
