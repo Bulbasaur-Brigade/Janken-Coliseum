@@ -3,11 +3,9 @@ import Player from "../entity/Player";
 import Items from "../entity/Items";
 // import Inventory from "../entity/Inventory";
 
-export default class OverworldScene extends Phaser.Scene {
+export default class SinglePlayerMapScene extends Phaser.Scene {
   constructor() {
-    super("OverworldScene");
-
-    this.playerData = { hp: 0, items: [] };
+    super('SinglePlayerMapScene');
   }
   addItem(name, amount) {
     for (let i = 0; i < this.playerData.items.length; i++) {
@@ -39,10 +37,9 @@ export default class OverworldScene extends Phaser.Scene {
       frameHeight: 64,
     });
     //Items
-    this.load.image("rock", "assets/sprites/rock.png");
-    this.load.image("paper", "assets/sprites/paper.png");
-    this.load.image("scissors", "assets/sprites/scissors.png");
-
+    this.load.image('rock', 'assets/sprites/rock.png');
+    this.load.image('paper', 'assets/sprites/paper.png');
+    this.load.image('scissors', 'assets/sprites/scissors.png');
     // Music
     this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
     this.load.audio("Walk", "assets/audio/walk.mp3");
@@ -115,7 +112,7 @@ export default class OverworldScene extends Phaser.Scene {
     const overheadLayer = map.createLayer("Overhead", tileset, 0, 0);
 
     // Music
-    this.bgMusic = this.sound.add("Pallet", { volume: 0.1 }, true);
+    this.bgMusic = this.sound.add('Pallet', { volume: 0.1 }, true);
     this.bgMusic.play();
     this.walkSound = this.sound.add("Walk", { volume: 0.2 });
     //Player

@@ -6,5 +6,6 @@ let firebaseConfig = {
   messagingSenderId: "744334432118",
   appId: "1:744334432118:web:065483639395a25629cc57",
   measurementId: "G-E1J3TSTDP0",
+  // dataBaseUrl:"https://janken-coliseum-default-rtdb.firebaseio.com/"
 };
 export default firebaseConfig;

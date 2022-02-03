@@ -1,32 +1,31 @@
-import Phaser from "phaser";
-import Player from "../entity/Player";
+import Phaser from 'phaser';
 // MODES
 // Means the player has not anything
-const NOTHING_SELECTION_MODE = "NOTHING_SELECTED";
+const NOTHING_SELECTION_MODE = 'NOTHING_SELECTED';
 //  Means player needs click shoot to finalize selection
-const BEFORE_SHOT_MODE = "BEFORE_SHOOT";
+const BEFORE_SHOT_MODE = 'BEFORE_SHOOT';
 //  Means that shooting is in progress
-const SHOOTING_MODE = "SHOOTING";
+const SHOOTING_MODE = 'SHOOTING';
 
 // OUTCOMES
 // Player Won
-const OUTCOME_PLAYER_WON = "OUTCOME_PLAYER_WON";
+const OUTCOME_PLAYER_WON = 'OUTCOME_PLAYER_WON';
 // Computer Won
-const OUTCOME_COMPUTER_WON = "OUTCOME_COMPUTER_WON";
+const OUTCOME_COMPUTER_WON = 'OUTCOME_COMPUTER_WON';
 // Its a Tie
-const OUTCOME_TIE = "OUTCOME_TIE";
+const OUTCOME_TIE = 'OUTCOME_TIE';
 
 // RULES SET
 // Key for rock
-const ROCK = "rock";
+const ROCK = 'rock';
 // Key for paper
-const PAPER = "paper";
+const PAPER = 'paper';
 // Key for scissors
-const SCISSORS = "scissors";
+const SCISSORS = 'scissors';
 
 export default class BattleScene extends Phaser.Scene {
   constructor() {
-    super("BattleScene");
+    super('BattleScene');
   }
   init(data) {
     // this.data = data;
@@ -46,23 +45,23 @@ export default class BattleScene extends Phaser.Scene {
   }
   preload() {
     this.load.bitmapFont(
-      "carrier_command",
-      "assets/fonts/carrier_command.png",
-      "assets/fonts/carrier_command.xml"
+      'carrier_command',
+      'assets/fonts/carrier_command.png',
+      'assets/fonts/carrier_command.xml'
     );
-    this.load.image("battleScene", "assets/backgrounds/battleScene.jpg");
-    this.load.image(ROCK, "assets/sprites/rock.png");
-    this.load.image(PAPER, "assets/sprites/paper.png");
-    this.load.image(SCISSORS, "assets/sprites/scissors.png");
+    this.load.image('battleScene', 'assets/backgrounds/battleScene.jpg');
+    this.load.image(ROCK, 'assets/sprites/rock.png');
+    this.load.image(PAPER, 'assets/sprites/paper.png');
+    this.load.image(SCISSORS, 'assets/sprites/scissors.png');
     // Battle Music
-    this.load.audio("Battle", "assets/audio/Battle.mp3");
+    this.load.audio('Battle', 'assets/audio/Battle.mp3');
   }
   create() {
     // player reference
     this.playerData = this.registry.get("playerData");
     console.log("playerData", this.playerData);
     // Bg Music
-    this.battleMusic = this.sound.add("Battle", { volume: 0.15 }, true);
+    this.battleMusic = this.sound.add('Battle', { volume: 0.15 }, true);
     this.battleMusic.play();
 
     this.add.image(0, 0, "battleScene").setOrigin(0, 0).setScale(1);
@@ -79,7 +78,7 @@ export default class BattleScene extends Phaser.Scene {
     //Make the Player Sprites interactive
     this.playerSprites.forEach((sprite) => {
       sprite.setInteractive({ useHandCursor: true });
-      sprite.on("pointerdown", () => {
+      sprite.on('pointerdown', () => {
         this.selectMove(sprite);
       });
     });
@@ -100,16 +99,16 @@ export default class BattleScene extends Phaser.Scene {
       this.aiScissors,
     ];
 
-    this.add.bitmapText(50, 20, "carrier_command", "Player", 25);
-    this.add.bitmapText(540, 20, "carrier_command", "Computer", 25);
-    this.add.bitmapText(375, 300, "carrier_command", "Vs");
+    this.add.bitmapText(50, 20, 'carrier_command', 'Player', 25);
+    this.add.bitmapText(540, 20, 'carrier_command', 'Computer', 25);
+    this.add.bitmapText(375, 300, 'carrier_command', 'Vs');
 
     // button to select after you make your choice
     this.gameStateText = this.add.bitmapText(
       275,
       530,
-      "carrier_command",
-      "Select Move",
+      'carrier_command',
+      'Select Move',
       25
     );
     this.gameStateText.setInteractive({ useHandCursor: true });
@@ -117,12 +116,12 @@ export default class BattleScene extends Phaser.Scene {
     this.scoreText = this.add.bitmapText(
       320,
       20,
-      "carrier_command",
-      "0 - 0",
+      'carrier_command',
+      '0 - 0',
       25
     );
 
-    this.gameStateText.on("pointerdown", () => {
+    this.gameStateText.on('pointerdown', () => {
       this.shoot();
     });
     // .on("pointerover", () => this.gameStateText)
@@ -134,7 +133,7 @@ export default class BattleScene extends Phaser.Scene {
     this.resetAlphasOnPlayerSprites();
     // alpha is for opacity
     sprite.alpha = 0.5;
-    this.gameStateText.setText("Shoot!");
+    this.gameStateText.setText('Shoot!');
     this.mode = BEFORE_SHOT_MODE;
     this.selectedSprite = sprite;
   }
@@ -165,8 +164,8 @@ export default class BattleScene extends Phaser.Scene {
       this.winText = this.add.bitmapText(
         280,
         400,
-        "carrier_command",
-        "You Win!"
+        'carrier_command',
+        'You Win!'
       );
       // this.gameStateText.setText("You Win");
       this.time.delayedCall(1700, () => {
@@ -192,8 +191,8 @@ export default class BattleScene extends Phaser.Scene {
       this.loseText = this.add.bitmapText(
         280,
         400,
-        "carrier_command",
-        "You Lose!"
+        'carrier_command',
+        'You Lose!'
       );
       this.time.delayedCall(1700, () => {
         this.loseText.visible = false;
@@ -212,8 +211,8 @@ export default class BattleScene extends Phaser.Scene {
       this.tieText = this.add.bitmapText(
         280,
         400,
-        "carrier_command",
-        "Tie Game!"
+        'carrier_command',
+        'Tie Game!'
       );
 
       this.time.delayedCall(1700, () => {
@@ -225,7 +224,7 @@ export default class BattleScene extends Phaser.Scene {
   reset() {
     this.mode = NOTHING_SELECTION_MODE;
     this.selectedSprite = null;
-    this.gameStateText.setText("Select Move");
+    this.gameStateText.setText('Select Move');
     // reset the location of the sprites and change the opacity back to 1
     this.playerSprites.forEach((sprite, index) => {
       sprite.x = 100;
@@ -256,7 +255,7 @@ export default class BattleScene extends Phaser.Scene {
     return OUTCOME_TIE;
   }
   updateScore() {
-    this.scoreText.setText(this.playerWins + " - " + this.computerWins);
+    this.scoreText.setText(this.playerWins + ' - ' + this.computerWins);
   }
   // Resets the Opacity of the Sprites
   resetAlphasOnPlayerSprites() {
@@ -267,9 +266,8 @@ export default class BattleScene extends Phaser.Scene {
   // What happens after a player wins or loses
   // Scene End
   update() {
-    if (this.playerWins === 1 || this.computerWins === 1) {
-      this.scene.stop();
-      this.scene.resume("OverworldScene");
+    if (this.playerWins === 2 || this.computerWins === 2) {
+      this.scene.start('SinglePlayerMapScene');
       this.battleMusic.stop();
       this.playerWins = 0;
       this.computerWins = 0;
