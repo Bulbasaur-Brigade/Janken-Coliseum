@@ -3,69 +3,94 @@ import BattleScene from "../scene/BattleScene";
 import fireBaseConfig from "./fireBaseConfig";
 // import Firebase from "firebase/app";
 import {
-	getFirestore,
-	Firestore,
-	setDoc,
-	doc,
-	getDoc,
-	DocumentSnapshot,
-	addDoc,
-	collection,
-	query,
-	orderBy,
-	limit,
+  getFirestore,
+  Firestore,
+  setDoc,
+  doc,
+  getDoc,
+  DocumentSnapshot,
+  addDoc,
+  collection,
+  query,
+  orderBy,
+  limit,
   getDocs,
   collectionGroup,
-  
-} from 'firebase/firestore'
+} from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import Menu from "../scene/Menu";
 
 export const app = firebase.initializeApp(fireBaseConfig);
-const database = getFirestore(app)
-console.log('/////', database);
+const database = getFirestore(app);
+console.log("/////", database);
 
+// addDoc(doc(database, "games","test"), {
+//   name: "hell"
+// }).then((data) => {
+//   return data
+// }).catch((error) => {
+//   console.log(error);
+// })
 
-  // addDoc(doc(database, "games","test"), {
-  //   name: "hell"
-  // }).then((data) => {
-  //   return data
-  // }).catch((error) => {
-  //   console.log(error);
-  // })
+// setDoc(doc(database, "games/LA/players"), {
+// name: "Los Angeles",
 
-  // setDoc(doc(database, "games/LA/players"), {
-  // name: "Los Angeles",
-  
-  // })
+// })
 
 // const allPosts = getDocs(collectionGroup(database, "Players"))
 
-
-
-setDoc(doc(database, "games", "gamesession1", "players", 'player2'), {
+setDoc(doc(database, "games", "gamesession1", "players", "player3"), {
   health: 2,
-  inventory: [{
-    rock:1,
-    paper:1,
-    scissors:1,
-  }],
-  name:"fuck"
-}).then((data) => {
-  return data
-}).catch(error=>console.log(error));
+  inventory: [
+    {
+      rock: 1,
+      paper: 1,
+      scissors: 1,
+    },
+  ],
+  name: "shit",
+  created: Date.now(),
+})
+  .then((data) => {
+    return data;
+  })
+  .catch((error) => console.log(error));
 
+// const docRef = doc(database, "games", "gamesession1", "players", "player1");
 
+// const docSnap = await getDoc(docRef);
+
+// if (docSnap) {
+//   console.log("Document data:", docSnap);
+// }
+function getData() {
+  try {
+    const docRef = doc(database, "games", "gamesession1", "players", "player1");
+
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap) {
+      console.log("Document data:", docSnap);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+getData()
+
+// doc.data() will be undefined in this case
+console.log("No such document!");
 
 // setDoc(doc(database, "games"), {
 //   name:'player 3'
 // });
 
 // const getData =async() => {
-  // const querySnapshot = await getDocs(collection(database,'players'))
+// const querySnapshot = await getDocs(collection(database,'players'))
 //   console.log('//////////', querySnapshot);
-  
+
 // }
 
 // getData()
@@ -77,11 +102,9 @@ setDoc(doc(database, "games", "gamesession1", "players", 'player2'), {
 //     quantity:0
 //   },
 //     {
-    
+
 //   }]
 // });
-
-
 
 // firebaseApp.auth().onAuthStateChanged(function (user) {
 //     if (user) {
