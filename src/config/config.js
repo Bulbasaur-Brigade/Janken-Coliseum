@@ -29,7 +29,7 @@ import "firebase/compat/auth";
 
 export const app = firebase.initializeApp(fireBaseConfig);
 const database = getFirestore(app);
-console.log("/////", database);
+// console.log("/////", database);
 
 // addDoc(doc(database, "games","test"), {
 //   name: "hell"
@@ -46,21 +46,21 @@ console.log("/////", database);
 
 // const allPosts = getDocs(collectionGroup(database, "Players"))
 
-setDoc(doc(database, "games", "gamesession1", "players", "player2"), {
-  health: 2,
-  inventory: [
-    {
-      rock: 1,
-      paper: 1,
-      scissors: 1,
-    },
-  ],
-  name: "fuck",
-})
-  .then((data) => {
-    return data;
-  })
-  .catch((error) => console.log(error));
+// setDoc(doc(database, "games", "gamesession1", "players", "player2"), {
+//   health: 2,
+//   inventory: [
+//     {
+//       rock: 1,
+//       paper: 1,
+//       scissors: 1,
+//     },
+//   ],
+//   name: "fuck",
+// })
+//   .then((data) => {
+//     return data;
+//   })
+//   .catch((error) => console.log(error));
 
 // setDoc(doc(database, "games"), {
 //   name:'player 3'
@@ -134,11 +134,12 @@ export default {
     createContainer: true,
   },
   scene: [
-    TitleScene,
-    Menu,
-    Heart,
-    MultiPlayerMapScene,
     SinglePlayerMapScene,
+    Heart,
+    // TitleScene,
+    // Menu,
+    // MultiPlayerMapScene,
+
     BattleScene,
     LossScene,
   ],

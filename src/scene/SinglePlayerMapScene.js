@@ -1,33 +1,14 @@
 import Phaser from "phaser";
 import Player from "../entity/Player";
 import Items from "../entity/Items";
-// import Inventory from "../entity/Inventory";
+import { sceneEvents } from "../Events/EventsCenter";
 
 export default class SinglePlayerMapScene extends Phaser.Scene {
   constructor() {
-    super('SinglePlayerMapScene');
+    super("SinglePlayerMapScene");
+    // this.playerData = { hp: 0, items: [] };
   }
-  addItem(name, amount) {
-    for (let i = 0; i < this.playerData.items.length; i++) {
-      if (this.playerData.items[i].name === name) {
-        this.playerData.items[i].amount += amount;
-        return;
-      }
-    }
-    this.playerData.items.push({ name: name, amount: amount });
-  }
-  removeItem(name, amount) {
-    for (let i = 0; i < this.playerData.items.length; i++) {
-      if (this.playerData.items[i].name === name) {
-        this.playerData.items[i].amount -= amount;
-        if (this.playerData.items[i].amount <= 0) {
-          this.playerData.items.splice(i, 1);
-        }
-        return;
-      }
-    }
-    this.playerData.items.push({ name: name, amount: amount });
-  }
+
   // init() {}
   preload() {
     this.load.image("tiles", "assets/maps/tilemap.png");
@@ -37,9 +18,9 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       frameHeight: 64,
     });
     //Items
-    this.load.image('rock', 'assets/sprites/rock.png');
-    this.load.image('paper', 'assets/sprites/paper.png');
-    this.load.image('scissors', 'assets/sprites/scissors.png');
+    this.load.image("rock", "assets/sprites/rock.png");
+    this.load.image("paper", "assets/sprites/paper.png");
+    this.load.image("scissors", "assets/sprites/scissors.png");
     // Music
     this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
     this.load.audio("Walk", "assets/audio/walk.mp3");
@@ -88,15 +69,11 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       frameRate: 10,
     });
   }
-  createPlayer() {
-    this.playerData.hp += 3;
-    this.registry.set("playerData", this.playerData);
-  }
+
   create() {
     //  Hearts
     this.scene.run("Heart");
 
-    this.createPlayer();
     // Start animations
     this.createAnimations();
     // Creating Map using Tile Set
@@ -112,7 +89,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const overheadLayer = map.createLayer("Overhead", tileset, 0, 0);
 
     // Music
-    this.bgMusic = this.sound.add('Pallet', { volume: 0.1 }, true);
+    this.bgMusic = this.sound.add("Pallet", { volume: 0.1 }, true);
     this.bgMusic.play();
     this.walkSound = this.sound.add("Walk", { volume: 0.2 });
     //Player
@@ -123,12 +100,12 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       "character"
     ).setScale(0.25);
 
+    // Set the registry Data for player
+    this.registry.set("playerData", this.player.playerData);
+
     this.cursors = this.input.keyboard.createCursorKeys();
 
     //Collisions
-    //waterLayer.setCollisionByProperty({ collides: true });
-    //this.physics.add.collider(this.player, waterLayer);
-
     groundLayer.setCollisionByProperty({ collide: true });
     this.physics.add.collider(this.player, groundLayer);
 
@@ -140,7 +117,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         this.data.set("playercordX", this.player.x);
         this.data.set("playercordY", this.player.y);
         this.scene.pause();
-        this.scene.launch("BattleScene");
+        this.scene.run("BattleScene");
         this.bgMusic.stop();
       },
       null,
@@ -158,30 +135,25 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     camera.setZoom(2);
     camera.startFollow(this.player, true);
 
-    // Inventory
-    // this.inventory = new Inventory();
-    // this.registry.set("inventory", this.player.inventory);
-
     this.graphics = this.add.graphics();
     this.graphics.lineStyle(1);
     this.graphics.strokeRect(210, 410, 75, 25).setScrollFactor(0, 0);
 
-    // for (let i = 0; i < 10; i++) {
-    //   let xx = Phaser.Math.Between(100, 200);
-    //   let yy = Phaser.Math.Between(0, 400);
-    //   this.rock = new Items(this, xx, yy, "rock", i).setScale(0.25);
-    //   this.items.push(this.rock);
-    //   // console.log("this.items", this.items);
-    // this.rockStatic = new Items(this, 210, 410, "rock")
-
     this.rock = new Items(this, 150, 200, "rock").setScale(0.25);
+
+    this.paper = new Items(this, 150, 180, "paper").setScale(0.25);
+    this.scissors = new Items(this, 150, 160, "scissors").setScale(0.25);
+
+    sceneEvents.on("update-hearts", this.test, this);
+    this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+      sceneEvents.off("update-hearts", this.test, this);
+    });
+
     this.physics.add.collider(
       this.player,
       this.rock,
       () => {
-        this.addItem(this.rock, 1);
-        // this.registry.set("inventory", this.player.inventory);
-        console.log("this.player.inventory", this.playerData);
+        this.player.addItem(this.rock, 1);
 
         this.staticRock = new Items(this, 220, 420, "rock")
           .setScale(0.25)
@@ -193,32 +165,11 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       this
     );
 
-    this.paper = new Items(this, 150, 180, "paper").setScale(0.25);
-    this.scissors = new Items(this, 150, 160, "scissors").setScale(0.25);
-
-    // this.rockText = this.add
-    //   .text(200, 400, "Rock-0")
-    //   .setScrollFactor(0, 0)
-    //   .setScale(1);
-    // this.paperText = this.add
-    //   .text(200, 380, "Paper-0")
-    //   .setScrollFactor(0, 0)
-    //   .setScale(1);
-    // this.scissorsText = this.add
-    //   .text(200, 360, "Scissors-0")
-    //   .setScrollFactor(0, 0)
-    //   .setScale(1);
-
-    // this.rockText.setScrollFactor(100, 100);
-    // this.staticRock = this.physics.add
-    //   .staticImage(0, 325, "rock")
-    //   .setScrollFactor(0, 0);
-
     this.physics.add.collider(
       this.player,
       this.paper,
       () => {
-        this.addItem(this.paper, 1);
+        this.player.addItem(this.paper, 1);
         // this.registry.set("inventory", this.player.inventory);
         console.log(this.playerData);
         this.staticPaper = new Items(this, 245, 420, "paper")
@@ -232,21 +183,19 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.physics.add.collider(
       this.player,
       this.scissors,
-      () => {
-        this.addItem(this.scissors, 1);
-        console.log(this.playerData);
-        this.staticScissors = new Items(this, 270, 420, "scissors")
-          .setScale(0.25)
-          .setScrollFactor(0, 0);
-        this.scissors.destroy();
-      },
+      this.test,
       null,
       this
     );
   }
-  // createRock(x, y) {
-  //   this.rockGroup.create(x, y, "rock");
-  // }
+  test() {
+    this.player.addItem(this.scissors, 1);
+
+    this.staticScissors = new Items(this, 270, 420, "scissors")
+      .setScale(0.25)
+      .setScrollFactor(0, 0);
+    this.scissors.destroy();
+  }
   update() {
     this.player.update(this.cursors, this.walkSound);
   }
