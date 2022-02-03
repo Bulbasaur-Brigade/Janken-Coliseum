@@ -45,21 +45,21 @@ console.log('/////', database);
 
 // const allPosts = getDocs(collectionGroup(database, "Players"))
 
-setDoc(doc(database, 'games', 'gamesession1', 'players', 'player2'), {
-  health: 2,
-  inventory: [
-    {
-      rock: 1,
-      paper: 1,
-      scissors: 1,
-    },
-  ],
-  name: 'fuck',
-})
-  .then((data) => {
-    return data;
-  })
-  .catch((error) => console.log(error));
+// setDoc(doc(database, 'games', 'gamesession1', 'players', 'player2'), {
+//   health: 2,
+//   inventory: [
+//     {
+//       rock: 1,
+//       paper: 1,
+//       scissors: 1,
+//     },
+//   ],
+//   name: 'fuck',
+// })
+//   .then((data) => {
+//     return data;
+//   })
+//   .catch((error) => console.log(error));
 
 // setDoc(doc(database, "games"), {
 //   name:'player 3'
