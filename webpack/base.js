@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
+  entry: ["regenerator-runtime/runtime.js", "./src/index.js"],
   mode: 'development',
   devtool: 'eval-source-map',
   module: {

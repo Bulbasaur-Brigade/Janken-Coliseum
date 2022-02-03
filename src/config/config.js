@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import BattleScene from "../scene/BattleScene";
 import fireBaseConfig from "./fireBaseConfig";
+import 'regenerator-runtime/runtime'
 // import Firebase from "firebase/app";
 import {
   getFirestore,
@@ -64,7 +65,7 @@ setDoc(doc(database, "games", "gamesession1", "players", "player3"), {
 // if (docSnap) {
 //   console.log("Document data:", docSnap);
 // }
-function getData() {
+async function getData() {
   try {
     const docRef = doc(database, "games", "gamesession1", "players", "player1");
 

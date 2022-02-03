@@ -19,7 +19,8 @@
   "homepage": "https://github.com/Bulbasaur-Brigade/Janken-Coliseum#readme",
   "dependencies": {
     "firebase": "^9.6.5",
-    "phaser": "^3.55.2"
+    "phaser": "^3.55.2",
+    "regenerator-runtime": "^0.13.9"
   },
   "devDependencies": {
     "@babel/core": "^7.16.12",
