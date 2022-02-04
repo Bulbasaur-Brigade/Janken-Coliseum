@@ -104,7 +104,7 @@ const database = getFirestore(app);
 
 // import FirebasePlugin from "../scene/Login";
 
-import FirebasePlugin from "../scene/Login";
+// import FirebasePlugin from "../scene/Login";
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine

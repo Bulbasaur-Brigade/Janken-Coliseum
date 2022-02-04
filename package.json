@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "webpack --config webpack/prod.js ",
-    "start": "webpack-dev-server --config webpack/base.js --open"
+    "start": "webpack-dev-server --config webpack/base.js --open & ./server"
   },
   "repository": {
     "type": "git",
@@ -18,8 +18,12 @@
   },
   "homepage": "https://github.com/Bulbasaur-Brigade/Janken-Coliseum#readme",
   "dependencies": {
+    "express": "^4.17.2",
     "firebase": "^9.6.5",
-    "phaser": "^3.55.2"
+    "phaser": "^3.55.2",
+    "socket.io": "^4.4.1",
+    "socket.io-client": "^4.4.1",
+    "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.12",

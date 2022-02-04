@@ -57,10 +57,37 @@ export default class BattleScene extends Phaser.Scene {
     // Battle Music
     this.load.audio("Battle", "assets/audio/Battle.mp3");
   }
+  gainHp() {
+    let data = localStorage.getItem("hp");
+    let hp = data ? JSON.parse(data) : "";
+    if (hp < 3) {
+      hp += 1;
+    } else {
+      hp += 0;
+    }
+
+    localStorage.setItem("hp", JSON.stringify(hp));
+    console.log("localStorage", localStorage);
+  }
+  getAndSetItems() {
+    let data = localStorage.getItem("items");
+    let items = data ? JSON.parse(data) : [];
+    return items;
+  }
+
+  loseHp() {
+    let data = localStorage.getItem("hp");
+    let hp = data ? JSON.parse(data) : "";
+
+    hp -= 1;
+    localStorage.setItem("hp", JSON.stringify(hp));
+    console.log("localStorage", localStorage);
+  }
   create() {
-    // player reference
-    this.playerData = this.registry.get("playerData");
-    console.log("playerData", this.playerData);
+    this.playerItems = this.getAndSetItems();
+    console.log("this.playerItems", this.playerItems);
+    // this.playerData = this.registry.get("playerData");
+    // console.log("playerData", this.playerData);
     // Bg Music
     this.battleMusic = this.sound.add("Battle", { volume: 0.15 }, true);
     this.battleMusic.play();
@@ -68,22 +95,43 @@ export default class BattleScene extends Phaser.Scene {
     this.add.image(0, 0, "battleScene").setOrigin(0, 0).setScale(1);
 
     // Player Sprites
-    this.playerRock = this.add.sprite(100, 150, ROCK).setScale(1.5);
-    this.playerPaper = this.add.sprite(100, 300, PAPER).setScale(1.5);
-    this.playerScissors = this.add.sprite(100, 450, SCISSORS).setScale(1.5);
+    const rock = this.add.sprite(100, 150, ROCK).setScale(1.5);
+    const paper = this.add.sprite(100, 300, PAPER).setScale(1.5);
+    const scissors = this.add.sprite(100, 450, SCISSORS).setScale(1.5);
+
     this.playerSprites = [
-      this.playerRock,
-      this.playerPaper,
-      this.playerScissors,
+      { name: rock, amount: 0 },
+      { name: paper, amount: 0 },
+      { name: scissors, amount: 0 },
     ];
+    this.filteredPlayerSprites = [];
+
+    for (let i = 0; i < this.playerItems.length; i++) {
+      console.log(this.playerItems);
+      if (this.playerItems[i].name === this.playerSprites[i].name.texture.key) {
+        this.filteredPlayerSprites.push(this.playerSprites[i].name);
+      }
+
+      if (this.playerItems[i].amount === 0) {
+        this.playerSprites[i].name.setVisible(false);
+      }
+    }
+    console.log("this.filteredPlayerSprites", this.filteredPlayerSprites);
+
+    // for (let i = 0; i < this.playerSprites.length; i++) {
+    //   this.playerSprites[i].amount;
+    //   if (this.playerSprites[i].amount === 0) {
+
+    //   }
+    // }
+
     //Make the Player Sprites interactive
-    this.playerSprites.forEach((sprite) => {
+    this.filteredPlayerSprites.forEach((sprite) => {
       sprite.setInteractive({ useHandCursor: true });
       sprite.on("pointerdown", () => {
         this.selectMove(sprite);
       });
     });
-
     // Computer sprites
     this.aiRock = this.add.sprite(675, 150, ROCK).setScale(1.5);
     this.aiPaper = this.add.sprite(675, 300, PAPER).setScale(1.5);
@@ -92,9 +140,9 @@ export default class BattleScene extends Phaser.Scene {
 
     // all sprites
     this.sprites = [
-      this.playerRock,
-      this.playerPaper,
-      this.playerScissors,
+      rock,
+      paper,
+      scissors,
       this.aiRock,
       this.aiPaper,
       this.aiScissors,
@@ -155,13 +203,7 @@ export default class BattleScene extends Phaser.Scene {
       this.selectedSprite.y = 300;
       computerSelectedSprite.x = 500;
       computerSelectedSprite.y = 300;
-      if (this.playerData.hp < 3) {
-        this.playerData.hp += 1;
-        console.log("this.playerData", this.playerData);
-      } else {
-        this.playerData.hp += 0;
-      }
-
+      this.gainHp();
       this.winText = this.add.bitmapText(
         280,
         400,
@@ -169,7 +211,7 @@ export default class BattleScene extends Phaser.Scene {
         "You Win!"
       );
       // this.gameStateText.setText("You Win");
-      this.time.delayedCall(1700, () => {
+      this.time.delayedCall(2500, () => {
         this.winText.visible = false;
         this.reset();
       });
@@ -182,22 +224,14 @@ export default class BattleScene extends Phaser.Scene {
       this.selectedSprite.y = 300;
       computerSelectedSprite.x = 500;
       computerSelectedSprite.y = 300;
-      if (this.playerData.hp > 0) {
-        this.playerData.hp -= 1;
-        sceneEvents.emit("player-health-changed", this.playerData.hp);
-
-        console.log(this.playerData);
-      } else {
-        this.playerData.hp += 0;
-      }
-
+      this.loseHp();
       this.loseText = this.add.bitmapText(
         280,
         400,
         "carrier_command",
         "You Lose!"
       );
-      this.time.delayedCall(1700, () => {
+      this.time.delayedCall(2500, () => {
         this.loseText.visible = false;
         this.reset();
       });
@@ -210,7 +244,7 @@ export default class BattleScene extends Phaser.Scene {
       this.selectedSprite.y = 300;
       computerSelectedSprite.x = 500;
       computerSelectedSprite.y = 300;
-      console.log(this.playerData);
+
       this.tieText = this.add.bitmapText(
         280,
         400,
@@ -218,7 +252,7 @@ export default class BattleScene extends Phaser.Scene {
         "Tie Game!"
       );
 
-      this.time.delayedCall(1700, () => {
+      this.time.delayedCall(2500, () => {
         this.tieText.visible = false;
         this.reset();
       });
@@ -229,7 +263,7 @@ export default class BattleScene extends Phaser.Scene {
     this.selectedSprite = null;
     this.gameStateText.setText("Select Move");
     // reset the location of the sprites and change the opacity back to 1
-    this.playerSprites.forEach((sprite, index) => {
+    this.filteredPlayerSprites.forEach((sprite, index) => {
       sprite.x = 100;
       sprite.y = 150 * (index + 1);
       sprite.alpha = 1;
@@ -262,14 +296,15 @@ export default class BattleScene extends Phaser.Scene {
   }
   // Resets the Opacity of the Sprites
   resetAlphasOnPlayerSprites() {
-    this.playerSprites.forEach((sprite) => {
+    this.filteredPlayerSprites.forEach((sprite) => {
       sprite.alpha = 1;
     });
   }
+
   // What happens after a player wins or loses
   // Scene End
   update() {
-    if (this.playerWins === 2 || this.computerWins === 2) {
+    if (this.playerWins === 1 || this.computerWins === 1) {
       this.scene.start("SinglePlayerMapScene");
       this.battleMusic.stop();
       this.playerWins = 0;

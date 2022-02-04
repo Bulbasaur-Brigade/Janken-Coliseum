@@ -6,7 +6,6 @@ import { sceneEvents } from "../Events/EventsCenter";
 export default class SinglePlayerMapScene extends Phaser.Scene {
   constructor() {
     super("SinglePlayerMapScene");
-    // this.playerData = { hp: 0, items: [] };
   }
 
   // init() {}
@@ -17,6 +16,8 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+    // Heart
+    this.load.image("heart", "assets/sprites/heart.png");
     //Items
     this.load.image("rock", "assets/sprites/rock.png");
     this.load.image("paper", "assets/sprites/paper.png");
@@ -69,8 +70,38 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       frameRate: 10,
     });
   }
+  setHp() {
+    let hp = parseInt(localStorage.getItem("hp")) || 3;
+
+    localStorage.setItem("hp", JSON.stringify(hp));
+  }
+  setItems() {
+    let items = [
+      { name: "rock", amount: 0 },
+      { name: "paper", amount: 0 },
+      { name: "scissors", amount: 0 },
+    ];
+    localStorage.setItem("items", JSON.stringify(items));
+  }
+  addItem(name, amount) {
+    let data = localStorage.getItem("items");
+    let items = data ? JSON.parse(data) : [];
+
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].name === name) {
+        items[i].amount += amount;
+      }
+    }
+
+    localStorage.setItem("items", JSON.stringify(items));
+    console.log("localStorage", items);
+  }
 
   create() {
+    // local Storage
+    this.setHp();
+    this.setItems();
+
     //  Hearts
     this.scene.run("Heart");
 
@@ -101,7 +132,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     ).setScale(0.25);
 
     // Set the registry Data for player
-    this.registry.set("playerData", this.player.playerData);
+    // this.registry.set("playerData", this.player.playerData);
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -134,6 +165,17 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const camera = this.cameras.main;
     camera.setZoom(2);
     camera.startFollow(this.player, true);
+    // Inventory Images
+    this.staticRock = new Items(this, 220, 420, "rock")
+      .setScale(0.25)
+      .setScrollFactor(0, 0);
+    this.staticPaper = new Items(this, 245, 420, "paper")
+      .setScale(0.25)
+      .setScrollFactor(0, 0);
+    this.staticPaper = new Items(this, 245, 420, "paper")
+      .setScale(0.25)
+      .setScrollFactor(0, 0);
+    this.rockText = this.add.text(220, 420, "0", 4).setScrollFactor(0, 0);
 
     this.graphics = this.add.graphics();
     this.graphics.lineStyle(1);
@@ -144,20 +186,17 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.paper = new Items(this, 150, 180, "paper").setScale(0.25);
     this.scissors = new Items(this, 150, 160, "scissors").setScale(0.25);
 
-    sceneEvents.on("update-hearts", this.test, this);
-    this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
-      sceneEvents.off("update-hearts", this.test, this);
-    });
+    // sceneEvents.on("update-hearts", this.test, this);
+    // this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+    //   sceneEvents.off("update-hearts", this.test, this);
+    // });
 
     this.physics.add.collider(
       this.player,
       this.rock,
       () => {
-        this.player.addItem(this.rock, 1);
+        this.addItem(this.rock.texture.key, 1);
 
-        this.staticRock = new Items(this, 220, 420, "rock")
-          .setScale(0.25)
-          .setScrollFactor(0, 0);
         this.rock.destroy();
         // this.rockText.setText("Rock-" + this.rockCounter);
       },
@@ -169,12 +208,10 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       this.player,
       this.paper,
       () => {
-        this.player.addItem(this.paper, 1);
+        this.addItem(this.paper.texture.key, 1);
         // this.registry.set("inventory", this.player.inventory);
         console.log(this.playerData);
-        this.staticPaper = new Items(this, 245, 420, "paper")
-          .setScale(0.25)
-          .setScrollFactor(0, 0);
+
         this.paper.destroy();
       },
       null,
@@ -183,19 +220,16 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.physics.add.collider(
       this.player,
       this.scissors,
-      this.test,
+      () => {
+        this.addItem(this.scissors.texture.key, 1);
+
+        this.scissors.destroy();
+      },
       null,
       this
     );
   }
-  test() {
-    this.player.addItem(this.scissors, 1);
 
-    this.staticScissors = new Items(this, 270, 420, "scissors")
-      .setScale(0.25)
-      .setScrollFactor(0, 0);
-    this.scissors.destroy();
-  }
   update() {
     this.player.update(this.cursors, this.walkSound);
   }
