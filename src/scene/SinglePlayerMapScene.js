@@ -1,8 +1,11 @@
-import Phaser from "phaser";
+
 import Player from "../entity/Player";
 import Items from "../entity/Items";
 
-export default class SinglePlayerMapScene extends Phaser.Scene {
+// import Items from "../entity/Items";
+import SceneTransition from './SceneTransition';
+
+export default class SinglePlayerMapScene extends SceneTransition {
   constructor() {
     super("SinglePlayerMapScene");
   }
@@ -78,6 +81,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     //  Hearts
     this.scene.run("Heart");
 
+    super.create();
     // Start animations
     this.createAnimations();
     // Creating Map using Tile Set
@@ -122,7 +126,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         this.data.set("playercordX", this.player.x);
         this.data.set("playercordY", this.player.y);
         this.scene.pause("SinglePlayerMapScene");
-        
+
         this.scene.run("BattleScene");
         this.bgMusic.stop();
       },

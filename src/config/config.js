@@ -8,30 +8,31 @@ import MultiPlayerMapScene from "../scene/MultiPlayerMapScene";
 import Heart from "../scene/Heart";
 import Inventory from "../scene/Inventory";
 import NpcHearts from "../scene/NpcHearts";
+import SceneTransition from '../scene/SceneTransition';
+// import fireBaseConfig from "./fireBaseConfig";
+import VictoryScene from '../scene/VictoryScene';
+// // import Firebase from "firebase/app";
+// import {
+//   getFirestore,
+//   Firestore,
+//   setDoc,
+//   doc,
+//   getDoc,
+//   DocumentSnapshot,
+//   addDoc,
+//   collection,
+//   query,
+//   orderBy,
+//   limit,
+//   getDocs,
+//   collectionGroup,
+// } from "firebase/firestore";
+// import firebase from "firebase/compat/app";
+// import "firebase/compat/auth";
 
-import fireBaseConfig from "./fireBaseConfig";
-// import Firebase from "firebase/app";
-import {
-  getFirestore,
-  Firestore,
-  setDoc,
-  doc,
-  getDoc,
-  DocumentSnapshot,
-  addDoc,
-  collection,
-  query,
-  orderBy,
-  limit,
-  getDocs,
-  collectionGroup,
-} from "firebase/firestore";
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-
-export const app = firebase.initializeApp(fireBaseConfig);
-const database = getFirestore(app);
-// console.log("/////", database);
+// export const app = firebase.initializeApp(fireBaseConfig);
+// const database = getFirestore(app);
+// // console.log("/////", database);
 
 // addDoc(doc(database, "games","test"), {
 //   name: "hell"
@@ -136,6 +137,10 @@ export default {
     createContainer: true,
   },
   scene: [
+    SceneTransition,
+    TitleScene,
+    Menu,
+    MultiPlayerMapScene,
     SinglePlayerMapScene,
 
     Inventory,
@@ -147,5 +152,6 @@ export default {
     Heart,
     NpcHearts,
     LossScene,
+    VictoryScene
   ],
 };
