@@ -4,6 +4,7 @@ import SinglePlayerMapScene from '../scene/SinglePlayerMapScene';
 import TitleScene from '../scene/TitleScene';
 import Menu from '../scene/Menu';
 import LossScene from '../scene/LossScene';
+import VictoryScene from '../scene/VictoryScene';
 import MultiPlayerMapScene from '../scene/MultiPlayerMapScene';
 
 import fireBaseConfig from './fireBaseConfig';
@@ -137,5 +138,6 @@ export default {
     SinglePlayerMapScene,
     BattleScene,
     LossScene,
+    VictoryScene
   ],
 };

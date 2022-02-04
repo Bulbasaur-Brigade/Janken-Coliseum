@@ -115,6 +115,7 @@ export default class TitleScene extends Phaser.Scene {
       this.aboutRectangle.y = 1300
       this.aboutText.y = 1247
     });
+
     // .on("pointerover", () => this.gameStateText)
     // .on("pointerout", () => this.gameStateText.setStyle({ fill: "#111" }));
   }
