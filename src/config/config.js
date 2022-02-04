@@ -1,36 +1,38 @@
-import Phaser from 'phaser';
-import BattleScene from '../scene/BattleScene';
-import SinglePlayerMapScene from '../scene/SinglePlayerMapScene';
-import TitleScene from '../scene/TitleScene';
-import Menu from '../scene/Menu';
-import LossScene from '../scene/LossScene';
-import VictoryScene from '../scene/VictoryScene';
-import MultiPlayerMapScene from '../scene/MultiPlayerMapScene';
+import Phaser from "phaser";
+import BattleScene from "../scene/BattleScene";
+import SinglePlayerMapScene from "../scene/SinglePlayerMapScene";
+import TitleScene from "../scene/TitleScene";
+import Menu from "../scene/Menu";
+import LossScene from "../scene/LossScene";
+import MultiPlayerMapScene from "../scene/MultiPlayerMapScene";
+import Heart from "../scene/Heart";
+import Inventory from "../scene/Inventory";
+import NpcHearts from "../scene/NpcHearts";
 import SceneTransition from '../scene/SceneTransition';
+// import fireBaseConfig from "./fireBaseConfig";
+import VictoryScene from '../scene/VictoryScene';
+// // import Firebase from "firebase/app";
+// import {
+//   getFirestore,
+//   Firestore,
+//   setDoc,
+//   doc,
+//   getDoc,
+//   DocumentSnapshot,
+//   addDoc,
+//   collection,
+//   query,
+//   orderBy,
+//   limit,
+//   getDocs,
+//   collectionGroup,
+// } from "firebase/firestore";
+// import firebase from "firebase/compat/app";
+// import "firebase/compat/auth";
 
-import fireBaseConfig from './fireBaseConfig';
-// import Firebase from "firebase/app";
-import {
-  getFirestore,
-  Firestore,
-  setDoc,
-  doc,
-  getDoc,
-  DocumentSnapshot,
-  addDoc,
-  collection,
-  query,
-  orderBy,
-  limit,
-  getDocs,
-  collectionGroup,
-} from 'firebase/firestore';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-
-export const app = firebase.initializeApp(fireBaseConfig);
-const database = getFirestore(app);
-console.log('/////', database);
+// export const app = firebase.initializeApp(fireBaseConfig);
+// const database = getFirestore(app);
+// // console.log("/////", database);
 
 // addDoc(doc(database, "games","test"), {
 //   name: "hell"
@@ -47,7 +49,7 @@ console.log('/////', database);
 
 // const allPosts = getDocs(collectionGroup(database, "Players"))
 
-// setDoc(doc(database, 'games', 'gamesession1', 'players', 'player2'), {
+// setDoc(doc(database, "games", "gamesession1", "players", "player2"), {
 //   health: 2,
 //   inventory: [
 //     {
@@ -56,7 +58,7 @@ console.log('/////', database);
 //       scissors: 1,
 //     },
 //   ],
-//   name: 'fuck',
+//   name: "fuck",
 // })
 //   .then((data) => {
 //     return data;
@@ -103,7 +105,9 @@ console.log('/////', database);
 //     }
 // });
 
-import FirebasePlugin from '../scene/Login';
+// import FirebasePlugin from "../scene/Login";
+
+// import FirebasePlugin from "../scene/Login";
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
@@ -114,9 +118,9 @@ export default {
     pixelArt: true,
   },
   physics: {
-    default: 'arcade',
+    default: "arcade",
     arcade: {
-      debug: true,
+      debug: false,
     },
   },
   // plugins:{
@@ -128,7 +132,7 @@ export default {
   //   }]
   // },
 
-  parent: 'content',
+  parent: "content",
   dom: {
     createContainer: true,
   },
@@ -138,7 +142,15 @@ export default {
     Menu,
     MultiPlayerMapScene,
     SinglePlayerMapScene,
+
+    Inventory,
+    // TitleScene,
+    // Menu,
+    // MultiPlayerMapScene,
+
     BattleScene,
+    Heart,
+    NpcHearts,
     LossScene,
     VictoryScene
   ],

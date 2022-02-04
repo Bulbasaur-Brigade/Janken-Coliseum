@@ -7,6 +7,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this);
     this.scene.physics.world.enable(this);
   }
+  setHp() {
+    let hp = parseInt(localStorage.getItem("hp")) || 3;
+
+    localStorage.setItem("hp", JSON.stringify(hp));
+  }
+
   //Movements
   updateMovement(cursors, walkSound) {
     // this.key_W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
