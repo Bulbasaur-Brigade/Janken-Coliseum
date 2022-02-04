@@ -1,30 +1,34 @@
-import Phaser from "phaser";
-import BattleScene from "../scene/BattleScene";
-import fireBaseConfig from "./fireBaseConfig";
-import 'regenerator-runtime/runtime'
-// import Firebase from "firebase/app";
-import {
-  getFirestore,
-  Firestore,
-  setDoc,
-  doc,
-  getDoc,
-  DocumentSnapshot,
-  addDoc,
-  collection,
-  query,
-  orderBy,
-  limit,
-  getDocs,
-  collectionGroup,
-} from "firebase/firestore";
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import Menu from "../scene/Menu";
+import Phaser from 'phaser';
+import BattleScene from '../scene/BattleScene';
+import SinglePlayerMapScene from '../scene/SinglePlayerMapScene';
+import TitleScene from '../scene/TitleScene';
+import Menu from '../scene/Menu';
+import LossScene from '../scene/LossScene';
+import MultiPlayerMapScene from '../scene/MultiPlayerMapScene';
 
-export const app = firebase.initializeApp(fireBaseConfig);
-const database = getFirestore(app);
-console.log("/////", database);
+// import fireBaseConfig from './fireBaseConfig';
+// import Firebase from "firebase/app";
+// import {
+//   getFirestore,
+//   Firestore,
+//   setDoc,
+//   doc,
+//   getDoc,
+//   DocumentSnapshot,
+//   addDoc,
+//   collection,
+//   query,
+//   orderBy,
+//   limit,
+//   getDocs,
+//   collectionGroup,
+// } from 'firebase/firestore';
+// import firebase from 'firebase/compat/app';
+// import 'firebase/compat/auth';
+
+// export const app = firebase.initializeApp(fireBaseConfig);
+// const database = getFirestore(app);
+// console.log('/////', database);
 
 // addDoc(doc(database, "games","test"), {
 //   name: "hell"
@@ -41,48 +45,21 @@ console.log("/////", database);
 
 // const allPosts = getDocs(collectionGroup(database, "Players"))
 
-setDoc(doc(database, "games", "gamesession1", "players", "player3"), {
-  health: 2,
-  inventory: [
-    {
-      rock: 1,
-      paper: 1,
-      scissors: 1,
-    },
-  ],
-  name: "shit",
-  created: Date.now(),
-})
-  .then((data) => {
-    return data;
-  })
-  .catch((error) => console.log(error));
-
-// const docRef = doc(database, "games", "gamesession1", "players", "player1");
-
-// const docSnap = await getDoc(docRef);
-
-// if (docSnap) {
-//   console.log("Document data:", docSnap);
-// }
-async function getData() {
-  try {
-    const docRef = doc(database, "games", "gamesession1", "players", "player1");
-
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap) {
-      console.log("Document data:", docSnap);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-getData()
-
-// doc.data() will be undefined in this case
-console.log("No such document!");
+// setDoc(doc(database, 'games', 'gamesession1', 'players', 'player2'), {
+//   health: 2,
+//   inventory: [
+//     {
+//       rock: 1,
+//       paper: 1,
+//       scissors: 1,
+//     },
+//   ],
+//   name: 'fuck',
+// })
+//   .then((data) => {
+//     return data;
+//   })
+//   .catch((error) => console.log(error));
 
 // setDoc(doc(database, "games"), {
 //   name:'player 3'
@@ -123,8 +100,8 @@ console.log("No such document!");
 //         // ...
 //     }
 // });
-import OverworldScene from "../scene/OverworldScene";
-import FirebasePlugin from "../scene/Login";
+
+// import FirebasePlugin from '../scene/Login';
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
@@ -135,7 +112,7 @@ export default {
     pixelArt: true,
   },
   physics: {
-    default: "arcade",
+    default: 'arcade',
     arcade: {
       debug: true,
     },
@@ -149,9 +126,16 @@ export default {
   //   }]
   // },
 
-  parent: "content",
+  parent: 'content',
   dom: {
     createContainer: true,
   },
-  scene: [Menu, OverworldScene, BattleScene],
+  scene: [
+    TitleScene,
+    Menu,
+    MultiPlayerMapScene,
+    SinglePlayerMapScene,
+    BattleScene,
+    LossScene,
+  ],
 };
