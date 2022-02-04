@@ -1,48 +1,46 @@
 import Phaser from "phaser";
 import Items from "../entity/Items";
-// import { sceneEvents } from "../Events/EventsCenter";
 
-export default class Heart extends Phaser.Scene {
+export default class NpcHearts extends Phaser.Scene {
   constructor() {
-    super("Heart");
+    super("NpcHearts");
   }
   preload() {
     this.load.image("heart", "assets/sprites/heart.png");
   }
 
   create() {
-    this.heart1 = new Items(this, 330, 30, "heart").setScale(0.7);
-    this.heart2 = new Items(this, 380, 30, "heart").setScale(0.7);
-    this.heart3 = new Items(this, 430, 30, "heart").setScale(0.7);
+    this.heart1 = new Items(this, 620, 80, "heart").setScale(0.5);
+    this.heart2 = new Items(this, 670, 80, "heart").setScale(0.5);
+    this.heart3 = new Items(this, 720, 80, "heart").setScale(0.5);
   }
-  handlePlayerHealthChanged() {
-    let data = localStorage.getItem("hp");
-    let hp = data ? JSON.parse(data) : 3;
+  handleComputerHealthChanged() {
+    this.computer = this.scene.get("BattleScene");
 
-    if (hp === 3) {
+    if (this.computer.computerHearts === 3) {
       this.heart1.setVisible(true);
       this.heart2.setVisible(true);
       this.heart3.setVisible(true);
     }
-    if (hp === 2) {
+    if (this.computer.computerHearts === 2) {
       this.heart1.setVisible(true);
       this.heart2.setVisible(true);
       this.heart3.setVisible(false);
     }
 
-    if (hp === 1) {
+    if (this.computer.computerHearts === 1) {
       this.heart1.setVisible(true);
       this.heart2.setVisible(false);
       this.heart3.setVisible(false);
     }
 
-    if (hp === 0) {
+    if (this.computer.computerHearts === 0) {
       this.heart1.setVisible(false);
       this.heart2.setVisible(false);
       this.heart3.setVisible(false);
     }
   }
   update() {
-    this.handlePlayerHealthChanged();
+    this.handleComputerHealthChanged();
   }
 }

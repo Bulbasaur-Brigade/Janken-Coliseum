@@ -6,6 +6,8 @@ import Menu from "../scene/Menu";
 import LossScene from "../scene/LossScene";
 import MultiPlayerMapScene from "../scene/MultiPlayerMapScene";
 import Heart from "../scene/Heart";
+import Inventory from "../scene/Inventory";
+import NpcHearts from "../scene/NpcHearts";
 
 import fireBaseConfig from "./fireBaseConfig";
 // import Firebase from "firebase/app";
@@ -135,12 +137,15 @@ export default {
   },
   scene: [
     SinglePlayerMapScene,
-    Heart,
+
+    Inventory,
     // TitleScene,
     // Menu,
     // MultiPlayerMapScene,
 
     BattleScene,
+    Heart,
+    NpcHearts,
     LossScene,
   ],
 };

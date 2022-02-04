@@ -5,12 +5,8 @@ class Game extends Phaser.Game {
   constructor() {
     super(config);
     // this.scene.start("SinglePlayerMapScene");
-
-
   }
-  create() {
-
-  }
+  create() {}
 }
 
 // const app = initializeApp(firebaseConfig);
