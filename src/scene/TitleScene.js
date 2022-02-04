@@ -1,9 +1,11 @@
 import Phaser from 'phaser';
+import SceneTransition from './SceneTransition';
 
-export default class TitleScene extends Phaser.Scene {
+export default class TitleScene extends SceneTransition {
   constructor() {
     super('TitleScene');
   }
+
   preload() {
     this.load.bitmapFont(
       'carrier_command',
@@ -14,7 +16,10 @@ export default class TitleScene extends Phaser.Scene {
     // Music
     this.load.audio('music', 'assets/audio/PalletTown.mp3');
   }
+  
   create() {
+    super.create();
+    
     // Music
     this.titleMusic = this.sound.add('music', { volume: 0.15 }, true);
     this.titleMusic.play();
@@ -89,11 +94,17 @@ export default class TitleScene extends Phaser.Scene {
     );
 
     this.singlePlayer.on('pointerdown', () => {
-      this.scene.start('SinglePlayerMapScene')
+      this.scene.transition({
+        duration: 2500,
+        target: 'SinglePlayerMapScene'
+      });
     });
-
+    
     this.multiplayer.on('pointerdown', () => {
-      this.scene.start('Menu')
+      this.scene.transition({
+        duration: 2500,
+        target: 'Menu'
+      });
     });
 
     this.howToPlay.on('pointerdown', () => {
