@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
+import SceneTransition from './SceneTransition';
 
-export default class VictoryScene extends Phaser.Scene {
+export default class VictoryScene extends SceneTransition {
   constructor() {
     super('VictoryScene');
   }
@@ -15,6 +16,7 @@ export default class VictoryScene extends Phaser.Scene {
     //this.load.audio('music', 'assets/audio/PalletTown.mp3');
   }
   create() {
+    super.create();
     // Music
     // this.titleMusic = this.sound.add('music', { volume: 0.15 }, true);
     // this.titleMusic.play();
@@ -40,7 +42,10 @@ export default class VictoryScene extends Phaser.Scene {
     this.homeScreen.setInteractive({ useHandCursor: true });
 
     this.homeScreen.on('pointerdown', () => {
-      this.scene.start('TitleScene')
+      this.scene.transition({
+        duration: 2500,
+        target: 'TitleScene'
+      });
     });
   }
 }

@@ -6,6 +6,7 @@ import Menu from '../scene/Menu';
 import LossScene from '../scene/LossScene';
 import VictoryScene from '../scene/VictoryScene';
 import MultiPlayerMapScene from '../scene/MultiPlayerMapScene';
+import SceneTransition from '../scene/SceneTransition';
 
 import fireBaseConfig from './fireBaseConfig';
 // import Firebase from "firebase/app";
@@ -132,6 +133,7 @@ export default {
     createContainer: true,
   },
   scene: [
+    SceneTransition,
     TitleScene,
     Menu,
     MultiPlayerMapScene,

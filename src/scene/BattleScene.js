@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import SceneTransition from './SceneTransition';
 // MODES
 // Means the player has not anything
 const NOTHING_SELECTION_MODE = 'NOTHING_SELECTED';
@@ -23,7 +24,7 @@ const PAPER = 'paper';
 // Key for scissors
 const SCISSORS = 'scissors';
 
-export default class BattleScene extends Phaser.Scene {
+export default class BattleScene extends SceneTransition {
   constructor() {
     super('BattleScene');
   }
@@ -55,6 +56,7 @@ export default class BattleScene extends Phaser.Scene {
     this.load.audio('Battle', 'assets/audio/Battle.mp3');
   }
   create() {
+    super.create();
     // Bg Music
     this.battleMusic = this.sound.add('Battle', { volume: 0.15 }, true);
     this.battleMusic.play();
@@ -247,7 +249,10 @@ export default class BattleScene extends Phaser.Scene {
   // Scene End
   update() {
     if (this.playerWins === 2 || this.computerWins === 2) {
-      this.scene.start('SinglePlayerMapScene');
+      this.scene.transition({
+        duration: 2500,
+        target: 'SinglePlayerMapScene'
+      });
       this.battleMusic.stop();
       this.playerWins = 0;
       this.computerWins = 0;

@@ -1,8 +1,9 @@
 import Phaser from 'phaser';
 import Player from '../entity/Player';
 // import Items from "../entity/Items";
+import SceneTransition from './SceneTransition';
 
-export default class SinglePlayerMapScene extends Phaser.Scene {
+export default class SinglePlayerMapScene extends SceneTransition {
   constructor() {
     super('SinglePlayerMapScene');
   }
@@ -72,6 +73,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     });
   }
   create() {
+    super.create();
     // Start animations
     this.createAnimations();
     // Creating Map using Tile Set
