@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import Player from '../entity/Player';
+import NPC from '../entity/NPC';
 // import Items from "../entity/Items";
 
 export default class SinglePlayerMapScene extends Phaser.Scene {
@@ -19,6 +20,26 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+    this.load.spritesheet(
+      'npc-character',
+      'assets/spriteSheets/characters.png',
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      }
+    );
+    //NPC charcters
+    this.load.image('npc01', 'assets/sprites/npcs/npc01.png');
+    this.load.image('npc02', 'assets/sprites/npcs/npc02.png');
+    this.load.image('npc03', 'assets/sprites/npcs/npc03.png');
+    this.load.image('npc04', 'assets/sprites/npcs/npc04.png');
+    this.load.image('npc05', 'assets/sprites/npcs/npc05.png');
+    this.load.image('npc06', 'assets/sprites/npcs/npc06.png');
+    this.load.image('npc07', 'assets/sprites/npcs/npc07.png');
+    this.load.image('npc08', 'assets/sprites/npcs/npc08.png');
+    this.load.image('npc09', 'assets/sprites/npcs/npc09.png');
+    this.load.image('npc10', 'assets/sprites/npcs/npc10.png');
+
     //Items
     this.load.image('rock', 'assets/sprites/rock.png');
     this.load.image('paper', 'assets/sprites/paper.png');
@@ -80,16 +101,25 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const tileset = map.addTilesetImage('characters', 'tiles', 16, 16);
 
     // Layers
-    //const waterLayer = map.createLayer("Water", tileset, 0, 0);
+    const waterLayer = map.createLayer('Water', tileset, 0, 0);
     const groundLayer = map.createLayer('Ground', tileset, 0, 0);
-    const npcLayer = map.createLayer('NPC', tileset, 0, 0);
+    // const npcLayer = map.createLayer('NPC', tileset, 0, 0);
     const interactiveLayer = map.createLayer('Interactive', tileset, 0, 0);
     const overheadLayer = map.createLayer('Overhead', tileset, 0, 0);
+
+    //NPCs
+    const npcs = this.physics.add.staticGroup({ key: 'NPC' });
+    const npcLayer = map.getObjectLayer('NPC');
+    npcLayer.objects.forEach((npc) => {
+      npcs.get(npc.x, npc.y, `${npc.name}`).setScale(0.25);
+    });
+    console.log(npcs);
 
     // Music
     this.bgMusic = this.sound.add('Pallet', { volume: 0.1 }, true);
     this.bgMusic.play();
     this.walkSound = this.sound.add('Walk', { volume: 0.4 });
+
     //Player
     this.player = new Player(
       this,
@@ -97,33 +127,29 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       this.data.get('playercordY') || 200,
       'character'
     ).setScale(0.25);
-    // this.player.setPipeline("Light2D");
 
-    // var light = this.lights.addLight(200, 200, 200);
-    // this.lights.enable().setAmbientColor(0x555555);
+    //NPC generation/collision
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
     //Collisions
-    //waterLayer.setCollisionByProperty({ collides: true });
-    //this.physics.add.collider(this.player, waterLayer);
 
     groundLayer.setCollisionByProperty({ collide: true });
     this.physics.add.collider(this.player, groundLayer);
-
-    npcLayer.setCollisionByProperty({ collide: true });
-    this.physics.add.collider(
-      this.player,
-      npcLayer,
-      () => {
-        this.data.set('playercordX', this.player.x);
-        this.data.set('playercordY', this.player.y);
-        this.scene.start('BattleScene');
-        this.bgMusic.stop();
-      },
-      null,
-      this
-    );
+    this.physics.add.collider(this.player, npcs);
+    // npcLayer.setCollisionByProperty({ collide: true });
+    // this.physics.add.collider(
+    //   this.player,
+    //   npcLayer,
+    //   () => {
+    //     this.data.set('playercordX', this.player.x);
+    //     this.data.set('playercordY', this.player.y);
+    //     this.scene.start('BattleScene');
+    //     this.bgMusic.stop();
+    //   },
+    //   null,
+    //   this
+    // );
 
     interactiveLayer.setCollisionByProperty({ collide: true });
     this.physics.add.collider(this.player, interactiveLayer);
