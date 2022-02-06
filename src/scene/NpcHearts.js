@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import Items from "../entity/Items";
+import SceneTransition from "./SceneTransition";
 
 export default class NpcHearts extends Phaser.Scene {
   constructor() {

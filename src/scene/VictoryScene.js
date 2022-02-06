@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import SceneTransition from './SceneTransition';
 
-export default class VictoryScene extends SceneTransition {
+export default class VictoryScene extends Phaser.Scene {
   constructor() {
     super('VictoryScene');
   }
@@ -16,7 +16,7 @@ export default class VictoryScene extends SceneTransition {
     //this.load.audio('music', 'assets/audio/PalletTown.mp3');
   }
   create() {
-    super.create();
+    // super.create();
     // Music
     // this.titleMusic = this.sound.add('music', { volume: 0.15 }, true);
     // this.titleMusic.play();

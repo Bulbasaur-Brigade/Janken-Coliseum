@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import Items from "../entity/Items";
-// import { sceneEvents } from "../Events/EventsCenter";
+// import SceneTransition from "./SceneTransition";
 
 export default class Heart extends Phaser.Scene {
   constructor() {

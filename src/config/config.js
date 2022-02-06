@@ -8,9 +8,9 @@ import MultiPlayerMapScene from "../scene/MultiPlayerMapScene";
 import Heart from "../scene/Heart";
 import Inventory from "../scene/Inventory";
 import NpcHearts from "../scene/NpcHearts";
-import SceneTransition from '../scene/SceneTransition';
+import SceneTransition from "../scene/SceneTransition";
 // import fireBaseConfig from "./fireBaseConfig";
-import VictoryScene from '../scene/VictoryScene';
+import VictoryScene from "../scene/VictoryScene";
 // // import Firebase from "firebase/app";
 // import {
 //   getFirestore,
@@ -120,7 +120,7 @@ export default {
   physics: {
     default: "arcade",
     arcade: {
-      debug: false,
+      debug: true,
     },
   },
   // plugins:{
@@ -137,21 +137,17 @@ export default {
     createContainer: true,
   },
   scene: [
-    SceneTransition,
-    TitleScene,
-    Menu,
-    MultiPlayerMapScene,
-    SinglePlayerMapScene,
-
-    Inventory,
+    // SceneTransition,
     // TitleScene,
     // Menu,
     // MultiPlayerMapScene,
-
+    SinglePlayerMapScene,
     BattleScene,
+    Inventory,
     Heart,
+
     NpcHearts,
     LossScene,
-    VictoryScene
+    VictoryScene,
   ],
 };
