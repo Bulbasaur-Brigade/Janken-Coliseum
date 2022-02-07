@@ -9,7 +9,6 @@ import Heart from "../scene/Heart";
 import Inventory from "../scene/Inventory";
 import NpcHearts from "../scene/NpcHearts";
 import SceneTransition from "../scene/SceneTransition";
-// import fireBaseConfig from "./fireBaseConfig";
 import VictoryScene from "../scene/VictoryScene";
 
 export default {

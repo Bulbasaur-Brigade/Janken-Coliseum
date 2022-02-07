@@ -2,8 +2,16 @@ import Player from "../entity/Player";
 import Items from "../entity/Items";
 import Phaser from "phaser";
 // import SceneTransition from "./SceneTransition";
+import NPC from '../entity/NPC';
+import SceneTransition from './SceneTransition';
+
+
+
+
+
 
 export default class SinglePlayerMapScene extends Phaser.Scene {
+// export default class SinglePlayerMapScene extends SceneTransition {
   constructor() {
     super("SinglePlayerMapScene");
   }
@@ -15,6 +23,26 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+    this.load.spritesheet(
+      'npc-character',
+      'assets/spriteSheets/characters.png',
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      }
+    );
+    //NPC charcters
+    this.load.image('sey', 'assets/sprites/npcs/sey.png');
+    this.load.image('greg', 'assets/sprites/npcs/greg.png');
+    this.load.image('margarita', 'assets/sprites/npcs/margarita.png');
+    this.load.image('danny', 'assets/sprites/npcs/danny.png');
+    this.load.image('mac', 'assets/sprites/npcs/mac.png');
+    this.load.image('savion', 'assets/sprites/npcs/savion.png');
+    this.load.image('omar', 'assets/sprites/npcs/omar.png');
+    this.load.image('amber', 'assets/sprites/npcs/amber.png');
+    this.load.image('devonne', 'assets/sprites/npcs/devonne.png');
+    this.load.image('eric', 'assets/sprites/npcs/eric.png');
+    this.load.image('zach', 'assets/sprites/npcs/zach.png');
     // Heart
     this.load.image("heart", "assets/sprites/heart.png");
     //Items
@@ -25,6 +53,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     // Music
     this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
+
   }
   createAnimations() {
     this.anims.create({
@@ -91,11 +120,11 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const tileset = map.addTilesetImage("characters", "tiles", 16, 16);
 
     // Layers
-    //const waterLayer = map.createLayer("Water", tileset, 0, 0);
-    const groundLayer = map.createLayer("Ground", tileset, 0, 0);
-    const npcLayer = map.createLayer("NPC", tileset, 0, 0);
-    const interactiveLayer = map.createLayer("Interactive", tileset, 0, 0);
-    const overheadLayer = map.createLayer("Overhead", tileset, 0, 0);
+
+    const waterLayer = map.createLayer('Water', tileset, 0, 0);
+    const groundLayer = map.createLayer('Ground', tileset, 0, 0);
+    const interactiveLayer = map.createLayer('Interactive', tileset, 0, 0);
+    const overheadLayer = map.createLayer('Overhead', tileset, 0, 0);
 
     // Music
     this.bgMusic = this.sound.add("Pallet", { volume: 0.1 }, true);
@@ -109,30 +138,57 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       "character"
     ).setScale(0.25);
 
-    // Set player HP  to 3
+    //NPC generation/collision
+    const npcLayer = map.getObjectLayer('NPC');
+    npcLayer.objects.forEach((npc) => {
+      const text = this.add.text(npc.x - 100, npc.y + 100, '', {
+        font: '12px Courier',
+        fill: '#F0F8FF',
+      });
+      const newNPC = new NPC(this, npc.x, npc.y, npc.type).setScale(0.25);
+      this.physics.add.collider(
+        this.player,
+        newNPC,
+        () => {
+          //Dialog
+          text.setText(`${npc.name} accepts\nyour challenge!!!`);
+          text.setDepth(30);
+
+          this.data.set('playercordX', this.player.x);
+          this.data.set('playercordY', this.player.y);
+          this.scene.start('BattleScene');
+          this.bgMusic.stop();
+        },
+        null,
+        this
+      );
+    });
+
+    //Item randomized/overlaps
+    const itemLayer = map.getObjectLayer('ItemSpawns');
+    const itemArray = ['rock', 'paper', 'scissors', 'heart', ''];
+    itemLayer.objects.forEach((item) => {
+      const randomItem =
+        itemArray[Math.floor(Math.random() * itemArray.length)];
+      if (randomItem) {
+        item.name = randomItem;
+        const newItem = new Items(this, item.x, item.y, item.name).setScale(
+          0.25
+        );
+        this.physics.add.collider(this.player, newItem);
+      }
+    });
+
     this.player.setHp();
 
+    this.cursors = this.input.keyboard.createCursorKeys();
+
     //Collisions
+
+
     groundLayer.setCollisionByProperty({ collide: true });
     this.physics.add.collider(this.player, groundLayer);
 
-    npcLayer.setCollisionByProperty({ collide: true });
-
-    this.physics.add.collider(
-      this.player,
-      npcLayer,
-      () => {
-        this.data.set("playercordX", this.player.x);
-        this.data.set("playercordY", this.player.y);
-
-        // this.scene.start("Transition");
-
-        this.bgMusic.stop();
-        this.time.delayedCall(4000, this.scene.switch("BattleScene"));
-      },
-      null,
-      this
-    );
 
     interactiveLayer.setCollisionByProperty({ collide: true });
     this.physics.add.collider(this.player, interactiveLayer);
@@ -232,8 +288,9 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.keys = this.input.keyboard.addKeys("W,S,A,D");
   }
 
+
   update() {
     this.player.update(this.keys);
-  
+    
   }
 }
