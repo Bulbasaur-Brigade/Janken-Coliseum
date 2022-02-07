@@ -1,17 +1,15 @@
-import Phaser from 'phaser';
-import config from './config/config';
-import { initializeApp } from 'firebase/app';
-import Firebase from 'firebase/app';
-import firebaseConfig from './config/fireBaseConfig';
+import Phaser from "phaser";
+import config from "./config/config";
 
 class Game extends Phaser.Game {
   constructor() {
     super(config);
-    this.scene.start('SinglePlayerMapScene');
+    this.scene.start("TitleScene");
   }
+  create() {}
 }
 
-const app = initializeApp(firebaseConfig);
+// const app = initializeApp(firebaseConfig);
 window.onload = function () {
   window.game = new Game();
 };

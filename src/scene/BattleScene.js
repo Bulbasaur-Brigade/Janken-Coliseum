@@ -1,32 +1,35 @@
 import Phaser from 'phaser';
+import SceneTransition from './SceneTransition';
 // MODES
 // Means the player has not anything
-const NOTHING_SELECTION_MODE = 'NOTHING_SELECTED';
+const NOTHING_SELECTION_MODE = "NOTHING_SELECTED";
 //  Means player needs click shoot to finalize selection
-const BEFORE_SHOT_MODE = 'BEFORE_SHOOT';
+const BEFORE_SHOT_MODE = "BEFORE_SHOOT";
 //  Means that shooting is in progress
-const SHOOTING_MODE = 'SHOOTING';
+const SHOOTING_MODE = "SHOOTING";
 
 // OUTCOMES
 // Player Won
-const OUTCOME_PLAYER_WON = 'OUTCOME_PLAYER_WON';
+const OUTCOME_PLAYER_WON = "OUTCOME_PLAYER_WON";
 // Computer Won
-const OUTCOME_COMPUTER_WON = 'OUTCOME_COMPUTER_WON';
+const OUTCOME_COMPUTER_WON = "OUTCOME_COMPUTER_WON";
 // Its a Tie
-const OUTCOME_TIE = 'OUTCOME_TIE';
+const OUTCOME_TIE = "OUTCOME_TIE";
 
 // RULES SET
 // Key for rock
-const ROCK = 'rock';
+const ROCK = "rock";
 // Key for paper
-const PAPER = 'paper';
+const PAPER = "paper";
 // Key for scissors
-const SCISSORS = 'scissors';
+const SCISSORS = "scissors";
 
-export default class BattleScene extends Phaser.Scene {
+export default class BattleScene extends SceneTransition {
   constructor() {
-    super('BattleScene');
+    super("BattleScene");
+
   }
+
   init() {
     // Rule Set
     this.rules = {
@@ -37,47 +40,144 @@ export default class BattleScene extends Phaser.Scene {
     // initial mode where nothing is selected
     this.mode = NOTHING_SELECTION_MODE;
     this.selectedSprite = null;
-    // Score  for player and computer
-    this.playerWins = 0;
-    this.computerWins = 0;
+    // Computer Hearts
+    this.computerHearts = 3;
   }
   preload() {
     this.load.bitmapFont(
-      'carrier_command',
-      'assets/fonts/carrier_command.png',
-      'assets/fonts/carrier_command.xml'
+      "carrier_command",
+      "assets/fonts/carrier_command.png",
+      "assets/fonts/carrier_command.xml"
     );
-    this.load.image('battleScene', 'assets/backgrounds/battleScene.jpg');
-    this.load.image(ROCK, 'assets/sprites/rock.png');
-    this.load.image(PAPER, 'assets/sprites/paper.png');
-    this.load.image(SCISSORS, 'assets/sprites/scissors.png');
+    this.load.image("battleScene", "assets/backgrounds/battleScene.jpg");
+    this.load.image(ROCK, "assets/sprites/rock.png");
+    this.load.image(PAPER, "assets/sprites/paper.png");
+    this.load.image(SCISSORS, "assets/sprites/scissors.png");
     // Battle Music
-    this.load.audio('Battle', 'assets/audio/Battle.mp3');
+    this.load.audio("Battle", "assets/audio/Battle.mp3");
+  }
+  gainHp() {
+    let data = localStorage.getItem("hp");
+    let hp = data ? JSON.parse(data) : "";
+    if (hp < 3) {
+      hp += 1;
+    } else {
+      hp += 0;
+    }
+
+    localStorage.setItem("hp", JSON.stringify(hp));
+  }
+  getAndSetItems() {
+    let data = localStorage.getItem("items");
+    let items = data ? JSON.parse(data) : [];
+    return items;
+  }
+  loseItems() {
+    let data = localStorage.getItem("items");
+    let items = data ? JSON.parse(data) : [];
+
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].amount > 0) {
+        items[i].amount--;
+      }
+    }
+    localStorage.setItem("items", JSON.stringify(items));
+  }
+  gainItems() {
+    let data = localStorage.getItem("items");
+    let items = data ? JSON.parse(data) : [];
+
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].amount > 0) {
+        items[i].amount++;
+      }
+    }
+    localStorage.setItem("items", JSON.stringify(items));
+  }
+  loseHp() {
+    let data = localStorage.getItem("hp");
+    let hp = data ? JSON.parse(data) : "";
+
+    hp -= 1;
+    localStorage.setItem("hp", JSON.stringify(hp));
+  }
+  gameLoss() {
+    let data = localStorage.getItem("hp");
+    let hp = data ? JSON.parse(data) : "";
+
+    if (hp === 0) {
+      this.scene.stop();
+      this.scene.stop("NpcHearts");
+      this.scene.start("LossScene");
+    }
+  }
+  gameWin() {
+    if (this.computerHearts === 0) {
+      this.scene.stop();
+      this.scene.resume("SinglePlayerMapScene");
+      this.battleMusic.stop();
+    }
+  }
+  playerHasNoItems() {
+    let data = localStorage.getItem("items");
+    let items = data ? JSON.parse(data) : [];
+    if (items.every((item) => item.amount === 0)) {
+      this.add.bitmapText(
+        50,
+        20,
+        "carrier_command",
+        "You need to collect Items to Battle",
+        25
+      );
+      this.time.delayedCall(2500, () => {
+        this.scene.stop();
+        this.scene.stop("NpcHearts");
+        this.scene.resume("SinglePlayerMapScene");
+      });
+    }
   }
   create() {
+    this.scene.run("NpcHearts");
+
+    this.playerItems = this.getAndSetItems();
+
+    super.create();
     // Bg Music
-    this.battleMusic = this.sound.add('Battle', { volume: 0.15 }, true);
+    this.battleMusic = this.sound.add("Battle", { volume: 0.15 }, true);
     this.battleMusic.play();
 
-    this.add.image(0, 0, 'battleScene').setOrigin(0, 0).setScale(0.8);
+    this.add.image(0, 0, "battleScene").setOrigin(0, 0).setScale(1);
 
     // Player Sprites
-    this.playerRock = this.add.sprite(100, 150, ROCK).setScale(1.5);
-    this.playerPaper = this.add.sprite(100, 300, PAPER).setScale(1.5);
-    this.playerScissors = this.add.sprite(100, 450, SCISSORS).setScale(1.5);
+    const rock = this.add.sprite(100, 150, ROCK).setScale(1.5);
+    const paper = this.add.sprite(100, 300, PAPER).setScale(1.5);
+    const scissors = this.add.sprite(100, 450, SCISSORS).setScale(1.5);
+
     this.playerSprites = [
-      this.playerRock,
-      this.playerPaper,
-      this.playerScissors,
+      { name: rock, amount: 0 },
+      { name: paper, amount: 0 },
+      { name: scissors, amount: 0 },
     ];
+    this.filteredPlayerSprites = [];
+
+    for (let i = 0; i < this.playerItems.length; i++) {
+      if (this.playerItems[i].name === this.playerSprites[i].name.texture.key) {
+        this.filteredPlayerSprites.push(this.playerSprites[i].name);
+      }
+
+      if (this.playerItems[i].amount === 0) {
+        this.playerSprites[i].name.setVisible(false);
+      }
+    }
+    console.log("this.filteredPlayerSprites", this.filteredPlayerSprites);
+
     //Make the Player Sprites interactive
-    this.playerSprites.forEach((sprite) => {
+    this.filteredPlayerSprites.forEach((sprite) => {
       sprite.setInteractive({ useHandCursor: true });
-      sprite.on('pointerdown', () => {
+      sprite.on("pointerdown", () => {
         this.selectMove(sprite);
       });
     });
-
     // Computer sprites
     this.aiRock = this.add.sprite(675, 150, ROCK).setScale(1.5);
     this.aiPaper = this.add.sprite(675, 300, PAPER).setScale(1.5);
@@ -86,41 +186,30 @@ export default class BattleScene extends Phaser.Scene {
 
     // all sprites
     this.sprites = [
-      this.playerRock,
-      this.playerPaper,
-      this.playerScissors,
+      rock,
+      paper,
+      scissors,
       this.aiRock,
       this.aiPaper,
       this.aiScissors,
     ];
 
-    this.add.bitmapText(50, 20, 'carrier_command', 'Player', 25);
-    this.add.bitmapText(540, 20, 'carrier_command', 'Computer', 25);
-    this.add.bitmapText(375, 300, 'carrier_command', 'Vs');
+    this.add.bitmapText(50, 20, "carrier_command", "Player", 25);
+    this.add.bitmapText(540, 20, "carrier_command", "Computer", 25);
+    this.add.bitmapText(375, 300, "carrier_command", "Vs");
 
     // button to select after you make your choice
     this.gameStateText = this.add.bitmapText(
       275,
       530,
-      'carrier_command',
-      'Select Move',
+      "carrier_command",
+      "Select Move",
       25
     );
     this.gameStateText.setInteractive({ useHandCursor: true });
-
-    this.scoreText = this.add.bitmapText(
-      320,
-      20,
-      'carrier_command',
-      '0 - 0',
-      25
-    );
-
-    this.gameStateText.on('pointerdown', () => {
+    this.gameStateText.on("pointerdown", () => {
       this.shoot();
     });
-    // .on("pointerover", () => this.gameStateText)
-    // .on("pointerout", () => this.gameStateText.setStyle({ fill: "#111" }));
   }
 
   selectMove(sprite) {
@@ -128,7 +217,7 @@ export default class BattleScene extends Phaser.Scene {
     this.resetAlphasOnPlayerSprites();
     // alpha is for opacity
     sprite.alpha = 0.5;
-    this.gameStateText.setText('Shoot!');
+    this.gameStateText.setText("Shoot!");
     this.mode = BEFORE_SHOT_MODE;
     this.selectedSprite = sprite;
   }
@@ -149,19 +238,20 @@ export default class BattleScene extends Phaser.Scene {
       this.selectedSprite.y = 300;
       computerSelectedSprite.x = 500;
       computerSelectedSprite.y = 300;
+      this.gainItems();
+      this.gainHp();
       this.winText = this.add.bitmapText(
         280,
         400,
-        'carrier_command',
-        'You Win!'
+        "carrier_command",
+        "You Win!"
       );
       // this.gameStateText.setText("You Win");
-      this.time.delayedCall(1700, () => {
+      this.time.delayedCall(2000, () => {
         this.winText.visible = false;
         this.reset();
       });
-      this.playerWins += 1;
-      this.updateScore();
+      this.computerHearts--;
     }
 
     if (this.winner == OUTCOME_COMPUTER_WON) {
@@ -169,18 +259,18 @@ export default class BattleScene extends Phaser.Scene {
       this.selectedSprite.y = 300;
       computerSelectedSprite.x = 500;
       computerSelectedSprite.y = 300;
+      this.loseHp();
+      this.loseItems();
       this.loseText = this.add.bitmapText(
         280,
         400,
-        'carrier_command',
-        'You Lose!'
+        "carrier_command",
+        "You Lose!"
       );
-      this.time.delayedCall(1700, () => {
+      this.time.delayedCall(2000, () => {
         this.loseText.visible = false;
         this.reset();
       });
-      this.computerWins += 1;
-      this.updateScore();
     }
 
     if (this.winner == OUTCOME_TIE) {
@@ -188,14 +278,15 @@ export default class BattleScene extends Phaser.Scene {
       this.selectedSprite.y = 300;
       computerSelectedSprite.x = 500;
       computerSelectedSprite.y = 300;
+
       this.tieText = this.add.bitmapText(
         280,
         400,
-        'carrier_command',
-        'Tie Game!'
+        "carrier_command",
+        "Tie Game!"
       );
 
-      this.time.delayedCall(1700, () => {
+      this.time.delayedCall(2000, () => {
         this.tieText.visible = false;
         this.reset();
       });
@@ -204,9 +295,9 @@ export default class BattleScene extends Phaser.Scene {
   reset() {
     this.mode = NOTHING_SELECTION_MODE;
     this.selectedSprite = null;
-    this.gameStateText.setText('Select Move');
+    this.gameStateText.setText("Select Move");
     // reset the location of the sprites and change the opacity back to 1
-    this.playerSprites.forEach((sprite, index) => {
+    this.filteredPlayerSprites.forEach((sprite, index) => {
       sprite.x = 100;
       sprite.y = 150 * (index + 1);
       sprite.alpha = 1;
@@ -234,23 +325,27 @@ export default class BattleScene extends Phaser.Scene {
 
     return OUTCOME_TIE;
   }
-  updateScore() {
-    this.scoreText.setText(this.playerWins + ' - ' + this.computerWins);
-  }
   // Resets the Opacity of the Sprites
   resetAlphasOnPlayerSprites() {
-    this.playerSprites.forEach((sprite) => {
+    this.filteredPlayerSprites.forEach((sprite) => {
       sprite.alpha = 1;
     });
   }
+
   // What happens after a player wins or loses
   // Scene End
   update() {
-    if (this.playerWins === 2 || this.computerWins === 2) {
-      this.scene.start('SinglePlayerMapScene');
-      this.battleMusic.stop();
-      this.playerWins = 0;
-      this.computerWins = 0;
-    }
+    this.playerHasNoItems();
+    this.gameWin();
+    this.gameLoss();
+    // if (this.playerWins === 2 || this.computerWins === 2) {
+    //   this.scene.transition({
+    //     duration: 2500,
+    //     target: 'SinglePlayerMapScene'
+    //   });
+    //   this.battleMusic.stop();
+    //   this.playerWins = 0;
+    //   this.computerWins = 0;
+    // }
   }
 }
