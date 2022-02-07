@@ -4,7 +4,8 @@ import Phaser from "phaser";
 // import SceneTransition from "./SceneTransition";
 import NPC from "../entity/NPC";
 import SceneTransition from "./SceneTransition";
-
+import { addHp, loseHp } from "../store/hpReducer";
+import store from "../store/store";
 export default class SinglePlayerMapScene extends Phaser.Scene {
   // export default class SinglePlayerMapScene extends SceneTransition {
   constructor() {
@@ -176,10 +177,16 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
           this.player,
           newItem,
           (player, item) => {
+            // console.log("this.hp", typeof this.hp);
+
             this.inventory.addItem(item.texture.key, 1);
             if (item.texture.key === "heart") {
-              this.heart = this.scene.get("Heart");
-              this.heart.gainHp(item.texture.key, 1);
+              store.dispatch(addHp(1));
+              this.hp = store.getState();
+              console.log("this.hp", this.hp);
+
+              // this.heart = this.scene.get("Heart");
+              // this.heart.gainHp(item.texture.key, 1);
             }
             item.destroy();
           },
