@@ -145,7 +145,7 @@ export default class BattleScene extends Phaser.Scene {
   }
   create() {
     // this.time.delayedCall(3500, () => {
-    this.scene.run("NpcHearts");
+    // this.scene.run("NpcHearts");
 
     // });
 

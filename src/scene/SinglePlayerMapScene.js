@@ -22,6 +22,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.load.image("paper", "assets/sprites/paper.png");
     this.load.image("scissors", "assets/sprites/scissors.png");
     this.load.image("heart", "assets/sprites/heart.png");
+
     // Music
     this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
   }
@@ -123,9 +124,11 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       () => {
         this.data.set("playercordX", this.player.x);
         this.data.set("playercordY", this.player.y);
-        // this.scene.pause("SinglePlayerMapScene");
-        this.scene.switch("BattleScene");
+
+        // this.scene.start("Transition");
+
         this.bgMusic.stop();
+        this.time.delayedCall(4000, this.scene.switch("BattleScene"));
       },
       null,
       this
@@ -172,7 +175,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       child.enableBody(true, child.x, child.y, true, true);
     });
 
-    this.rock = new Items(this, 150, 200, "rock").setScale(0.25);
+
 
     this.paper = new Items(this, 150, 180, "paper").setScale(0.25);
     this.scissors = new Items(this, 150, 160, "scissors").setScale(0.25);
@@ -231,5 +234,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
   update() {
     this.player.update(this.keys);
+  
   }
 }
