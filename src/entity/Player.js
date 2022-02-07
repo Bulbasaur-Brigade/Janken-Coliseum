@@ -14,37 +14,29 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   //Movements
-  updateMovement(cursors, walkSound) {
-    // this.key_W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-    // this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    // this.key_S = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    // this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-
-    if (cursors.up.isDown) {
+  updateMovement(cursors) {
+    if (cursors.W.isDown) {
       this.setVelocityY(-100);
       this.play("runUp", true);
-      walkSound.play();
-    } else if (cursors.left.isDown) {
+    } else if (cursors.A.isDown) {
       this.setVelocityX(-100);
       this.play("runLeft", true);
-      walkSound.play();
-    } else if (cursors.down.isDown) {
+    } else if (cursors.S.isDown) {
       this.setVelocityY(100);
       this.play("runDown", true);
-      walkSound.play();
-    } else if (cursors.right.isDown) {
+    } else if (cursors.D.isDown) {
       this.setVelocityX(100);
       this.play("runRight", true);
-      walkSound.play();
     } else {
       this.setVelocityY(0);
       this.setVelocityX(0);
       this.play("idle");
-      // walkSound.stop();
     }
   }
 
-  update(cursors, walkSound) {
-    this.updateMovement(cursors, walkSound);
+  update(cursors) {
+    this.updateMovement(cursors);
+    this.body.velocity.normalize().scale(100);
+    this.body.setSize(20, 25, 50, 25);
   }
 }

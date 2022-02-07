@@ -1,5 +1,5 @@
-import Phaser from "phaser";
 import Items from "../entity/Items";
+// import SceneTransition from "./SceneTransition";
 
 export default class Inventory extends Phaser.Scene {
   constructor() {
@@ -31,24 +31,11 @@ export default class Inventory extends Phaser.Scene {
     for (let i = 0; i < items.length; i++) {
       if (items[i].name === name) {
         items[i].amount += amount;
+      }
+      if (items[i].name === "rock") {
         this.rockText.setText(items[i].amount);
       }
 
-      // if (items[i].name === "rock") {
-      //   // rock changes to diamond
-      //   if (items[i].amount >= 5) {
-      //     this.rock.setTexture("diamond").setScale(1.2);
-      //     items[i].name = "diamond";
-      //     items[i].amount = 1;
-      //   }
-
-      //   // while (items[i].amount < 5 && items[i].name !== "diamond") {
-      //   //   this.rock.setTexture("rock").setScale(0.55);
-      //   //   items[i].name = "rock";
-
-      //   // }
-
-      // }
       if (items[i].name === "paper") {
         this.paperText.setText(items[i].amount);
       }

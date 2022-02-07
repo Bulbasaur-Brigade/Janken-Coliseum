@@ -8,8 +8,8 @@ import MultiPlayerMapScene from "../scene/MultiPlayerMapScene";
 import Heart from "../scene/Heart";
 import Inventory from "../scene/Inventory";
 import NpcHearts from "../scene/NpcHearts";
-import SceneTransition from '../scene/SceneTransition';
-import VictoryScene from '../scene/VictoryScene';
+import SceneTransition from "../scene/SceneTransition";
+import VictoryScene from "../scene/VictoryScene";
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
@@ -31,21 +31,16 @@ export default {
     createContainer: true,
   },
   scene: [
-    SceneTransition,
-    TitleScene,
-    Menu,
-    MultiPlayerMapScene,
-    SinglePlayerMapScene,
-
-    Inventory,
+    // SceneTransition,
     // TitleScene,
     // Menu,
     // MultiPlayerMapScene,
-
+    SinglePlayerMapScene,
     BattleScene,
+    Inventory,
     Heart,
     NpcHearts,
     LossScene,
-    VictoryScene
+    VictoryScene,
   ],
 };

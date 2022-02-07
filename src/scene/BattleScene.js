@@ -1,5 +1,5 @@
-import Phaser from 'phaser';
-import SceneTransition from './SceneTransition';
+import Phaser from "phaser";
+import SceneTransition from "./SceneTransition";
 // MODES
 // Means the player has not anything
 const NOTHING_SELECTION_MODE = "NOTHING_SELECTED";
@@ -24,10 +24,9 @@ const PAPER = "paper";
 // Key for scissors
 const SCISSORS = "scissors";
 
-export default class BattleScene extends SceneTransition {
+export default class BattleScene extends Phaser.Scene {
   constructor() {
     super("BattleScene");
-
   }
 
   init() {
@@ -42,6 +41,12 @@ export default class BattleScene extends SceneTransition {
     this.selectedSprite = null;
     // Computer Hearts
     this.computerHearts = 3;
+    // Getting Local Storage DATA
+    let data = localStorage.getItem("hp");
+    this.hp = data ? JSON.parse(data) : "";
+
+    let itemData = localStorage.getItem("items");
+    this.items = itemData ? JSON.parse(itemData) : [];
   }
   preload() {
     this.load.bitmapFont(
@@ -57,91 +62,97 @@ export default class BattleScene extends SceneTransition {
     this.load.audio("Battle", "assets/audio/Battle.mp3");
   }
   gainHp() {
-    let data = localStorage.getItem("hp");
-    let hp = data ? JSON.parse(data) : "";
-    if (hp < 3) {
-      hp += 1;
+    if (this.hp < 3) {
+      this.hp += 1;
     } else {
-      hp += 0;
+      this.hp += 0;
     }
 
-    localStorage.setItem("hp", JSON.stringify(hp));
+    localStorage.setItem("hp", JSON.stringify(this.hp));
   }
   getAndSetItems() {
-    let data = localStorage.getItem("items");
-    let items = data ? JSON.parse(data) : [];
-    return items;
+    return this.items;
   }
-  loseItems() {
-    let data = localStorage.getItem("items");
-    let items = data ? JSON.parse(data) : [];
-
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].amount > 0) {
-        items[i].amount--;
+  loseItems(item) {
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i].amount > 0) {
+        if (this.items[i].name === item) {
+          this.items[i].amount--;
+        }
+        if (this.items[i].amount === 0) {
+          this.playerSprites[i].name.setVisible(false);
+        }
       }
     }
-    localStorage.setItem("items", JSON.stringify(items));
+    localStorage.setItem("items", JSON.stringify(this.items));
   }
-  gainItems() {
-    let data = localStorage.getItem("items");
-    let items = data ? JSON.parse(data) : [];
-
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].amount > 0) {
-        items[i].amount++;
+  gainItems(item) {
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i].name === item) {
+        this.items[i].amount++;
+      }
+      if (this.items[i].amount > 0) {
+        this.playerSprites[i].name.setVisible(true);
       }
     }
-    localStorage.setItem("items", JSON.stringify(items));
+    localStorage.setItem("items", JSON.stringify(this.items));
   }
   loseHp() {
-    let data = localStorage.getItem("hp");
-    let hp = data ? JSON.parse(data) : "";
-
-    hp -= 1;
-    localStorage.setItem("hp", JSON.stringify(hp));
+    this.hp -= 1;
+    localStorage.setItem("hp", JSON.stringify(this.hp));
   }
   gameLoss() {
-    let data = localStorage.getItem("hp");
-    let hp = data ? JSON.parse(data) : "";
-
-    if (hp === 0) {
-      this.scene.stop();
+    if (this.hp === 0) {
+      this.scene.switch("LossScene");
       this.scene.stop("NpcHearts");
-      this.scene.start("LossScene");
+      this.battleMusic.stop();
     }
   }
   gameWin() {
     if (this.computerHearts === 0) {
+      this.scene.switch("SinglePlayerMapScene");
       this.scene.stop();
-      this.scene.resume("SinglePlayerMapScene");
+      this.scene.stop("NpcHearts");
       this.battleMusic.stop();
+      this.music = this.scene.get("SinglePlayerMapScene");
+      this.music.bgMusic.play();
     }
   }
   playerHasNoItems() {
-    let data = localStorage.getItem("items");
-    let items = data ? JSON.parse(data) : [];
-    if (items.every((item) => item.amount === 0)) {
+    let counter = 0;
+    if (this.items.every((item) => item.amount === 0)) {
       this.add.bitmapText(
-        50,
         20,
+        200,
         "carrier_command",
-        "You need to collect Items to Battle",
-        25
+        "You lost your items \n\n\n Go collect some\n\n\n to Battle!",
+        20
       );
-      this.time.delayedCall(2500, () => {
+      counter++;
+    }
+    if (counter === 1) {
+      this.time.delayedCall(5000, () => {
+        this.battleMusic.stop();
+
         this.scene.stop();
         this.scene.stop("NpcHearts");
-        this.scene.resume("SinglePlayerMapScene");
+        this.scene.switch("SinglePlayerMapScene");
+        // this.music = this.scene.get("SinglePlayerMapScene");
+        // this.music.bgMusic.play();
+        counter = 0;
       });
     }
   }
   create() {
-    this.scene.run("NpcHearts");
+    // this.time.delayedCall(3500, () => {
+    // this.scene.run("NpcHearts");
+
+    // });
 
     this.playerItems = this.getAndSetItems();
 
-    super.create();
+    // super.create();
+
     // Bg Music
     this.battleMusic = this.sound.add("Battle", { volume: 0.15 }, true);
     this.battleMusic.play();
@@ -238,7 +249,11 @@ export default class BattleScene extends SceneTransition {
       this.selectedSprite.y = 300;
       computerSelectedSprite.x = 500;
       computerSelectedSprite.y = 300;
-      this.gainItems();
+      this.gainItems(computerSelectedSprite.texture.key);
+      console.log(
+        "computerSelectedSprite.texture.key",
+        computerSelectedSprite.texture.key
+      );
       this.gainHp();
       this.winText = this.add.bitmapText(
         280,
@@ -260,7 +275,7 @@ export default class BattleScene extends SceneTransition {
       computerSelectedSprite.x = 500;
       computerSelectedSprite.y = 300;
       this.loseHp();
-      this.loseItems();
+      this.loseItems(this.selectedSprite.texture.key);
       this.loseText = this.add.bitmapText(
         280,
         400,
@@ -338,14 +353,5 @@ export default class BattleScene extends SceneTransition {
     this.playerHasNoItems();
     this.gameWin();
     this.gameLoss();
-    // if (this.playerWins === 2 || this.computerWins === 2) {
-    //   this.scene.transition({
-    //     duration: 2500,
-    //     target: 'SinglePlayerMapScene'
-    //   });
-    //   this.battleMusic.stop();
-    //   this.playerWins = 0;
-    //   this.computerWins = 0;
-    // }
   }
 }

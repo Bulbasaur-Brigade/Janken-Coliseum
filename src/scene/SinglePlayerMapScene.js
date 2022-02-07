@@ -1,16 +1,21 @@
-
-import Phaser from 'phaser';
-import Player from '../entity/Player';
+import Player from "../entity/Player";
+import Items from "../entity/Items";
+import Phaser from "phaser";
+// import SceneTransition from "./SceneTransition";
 import NPC from '../entity/NPC';
-import Items from '../entity/Items';
 import SceneTransition from './SceneTransition';
 
-export default class SinglePlayerMapScene extends SceneTransition {
+
+
+
+
+
+export default class SinglePlayerMapScene extends Phaser.Scene {
+// export default class SinglePlayerMapScene extends SceneTransition {
   constructor() {
     super("SinglePlayerMapScene");
   }
 
-  // init() {}
   preload() {
     this.load.image("tiles", "assets/maps/tilemap.png");
     this.load.tilemapTiledJSON("tilemap", "assets/maps/overworldMap.json");
@@ -44,9 +49,11 @@ export default class SinglePlayerMapScene extends SceneTransition {
     this.load.image("rock", "assets/sprites/rock.png");
     this.load.image("paper", "assets/sprites/paper.png");
     this.load.image("scissors", "assets/sprites/scissors.png");
+    this.load.image("heart", "assets/sprites/heart.png");
+
     // Music
     this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
- 
+
   }
   createAnimations() {
     this.anims.create({
@@ -95,13 +102,16 @@ export default class SinglePlayerMapScene extends SceneTransition {
 
   create() {
     // Inventory
+
     this.scene.run("Inventory");
+    this.scene.run("Heart");
+
     this.inventory = this.scene.get("Inventory");
 
     //  Hearts
-    this.scene.run("Heart");
 
-    super.create();
+    // super.create();
+
     // Start animations
     this.createAnimations();
     // Creating Map using Tile Set
@@ -119,8 +129,6 @@ export default class SinglePlayerMapScene extends SceneTransition {
     // Music
     this.bgMusic = this.sound.add("Pallet", { volume: 0.1 }, true);
     this.bgMusic.play();
-
-    this.walkSound = this.sound.add("Walk", { volume: 0.2 });
 
     //Player
     this.player = new Player(
@@ -173,10 +181,6 @@ export default class SinglePlayerMapScene extends SceneTransition {
 
     this.player.setHp();
 
-    // Set the registry Data for player
-    // this.registry.set("playerData", this.player.playerData);
-
-
     this.cursors = this.input.keyboard.createCursorKeys();
 
     //Collisions
@@ -186,26 +190,8 @@ export default class SinglePlayerMapScene extends SceneTransition {
     this.physics.add.collider(this.player, groundLayer);
 
 
-//     npcLayer.setCollisionByProperty({ collide: true });
-//     this.physics.add.collider(
-//       this.player,
-//       npcLayer,
-//       () => {
-//         this.data.set("playercordX", this.player.x);
-//         this.data.set("playercordY", this.player.y);
-//         this.scene.pause("SinglePlayerMapScene");
-
-//         this.scene.run("BattleScene");
-//         this.bgMusic.stop();
-//       },
-//       null,
-//       this
-//     );
-
-
     interactiveLayer.setCollisionByProperty({ collide: true });
     this.physics.add.collider(this.player, interactiveLayer);
-
     this.player.setDepth(0);
     overheadLayer.setDepth(10);
 
@@ -213,27 +199,65 @@ export default class SinglePlayerMapScene extends SceneTransition {
     const camera = this.cameras.main;
     camera.setZoom(2);
     camera.startFollow(this.player, true);
-    // Inventory Images
+    // Inventory
+    this.rocks = this.physics.add.group({
+      key: "rock",
+      allowGravity: false,
+      repeat: 30,
+    });
+    var emptyTiles = interactiveLayer.filterTiles(function (tile) {
+      return tile.index === -1;
+    });
+    this.rocks.children.iterate(function (child) {
+      var randomTile = Phaser.Utils.Array.GetRandom(emptyTiles);
 
-    this.rock = new Items(this, 150, 200, "rock").setScale(0.25);
+      child.setPosition(randomTile.pixelX, randomTile.pixelY);
+      child.setOrigin(0, 0);
+      child.setScale(0.25);
+      child.enableBody(true, child.x, child.y, true, true);
+    });
+    this.hearts = this.physics.add.group({
+      key: "heart",
+      allowGravity: false,
+      repeat: 15,
+    });
+
+    this.hearts.children.iterate(function (child) {
+      var randomTile = Phaser.Utils.Array.GetRandom(emptyTiles);
+
+      child.setPosition(randomTile.pixelX, randomTile.pixelY);
+      child.setOrigin(0, 0);
+      child.setScale(0.25);
+      child.enableBody(true, child.x, child.y, true, true);
+    });
+
+
 
     this.paper = new Items(this, 150, 180, "paper").setScale(0.25);
     this.scissors = new Items(this, 150, 160, "scissors").setScale(0.25);
 
-    // sceneEvents.on("update-hearts", this.test, this);
-    // this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
-    //   sceneEvents.off("update-hearts", this.test, this);
-    // });
-
     this.physics.add.collider(
       this.player,
-      this.rock,
-      () => {
-        this.inventory.addItem(this.rock.texture.key, 1);
-
-        this.rock.destroy();
-        // this.rockText.setText("Rock-" + this.rockCounter);
+      this.rocks,
+      (player, item) => {
+        this.inventory.addItem(item.texture.key, 1);
+        console.log("item", item);
+        item.destroy();
       },
+
+      null,
+      this
+    );
+    this.physics.add.collider(
+      this.player,
+      this.hearts,
+      (player, item) => {
+        this.heart = this.scene.get("Heart");
+        this.heart.gainHp(item.texture.key, 1);
+
+        item.destroy();
+      },
+
       null,
       this
     );
@@ -243,9 +267,6 @@ export default class SinglePlayerMapScene extends SceneTransition {
       this.paper,
       () => {
         this.inventory.addItem(this.paper.texture.key, 1);
-        // this.registry.set("inventory", this.player.inventory);
-        console.log(this.playerData);
-
         this.paper.destroy();
       },
       null,
@@ -262,10 +283,14 @@ export default class SinglePlayerMapScene extends SceneTransition {
       null,
       this
     );
+
+    // WASD KEYS FOR MOVEMENT
+    this.keys = this.input.keyboard.addKeys("W,S,A,D");
   }
 
 
   update() {
-    this.player.update(this.cursors;
+    this.player.update(this.keys);
+    
   }
 }
