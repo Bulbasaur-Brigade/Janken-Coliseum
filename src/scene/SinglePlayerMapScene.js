@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import Player from '../entity/Player';
 import NPC from '../entity/NPC';
-// import Items from "../entity/Items";
+import Items from '../entity/Items';
 
 export default class SinglePlayerMapScene extends Phaser.Scene {
   constructor() {
@@ -124,7 +124,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const npcLayer = map.getObjectLayer('NPC');
     npcLayer.objects.forEach((npc) => {
       const text = this.add.text(npc.x - 100, npc.y + 100, '', {
-        font: '16px Courier',
+        font: '12px Courier',
         fill: '#F0F8FF',
       });
       const newNPC = new NPC(this, npc.x, npc.y, npc.type).setScale(0.25);
@@ -133,7 +133,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         newNPC,
         () => {
           //Dialog
-          text.setText(`${npc.name} accepts \n your challenge!!!`);
+          text.setText(`${npc.name} accepts\nyour challenge!!!`);
           text.setDepth(30);
 
           // this.data.set('playercordX', this.player.x);
@@ -144,6 +144,20 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         null,
         this
       );
+    });
+
+    //Item randomized/overlaps
+    const itemLayer = map.getObjectLayer('ItemSpawns');
+    const itemArray = ['rock', 'paper', 'scissors', 'heart', ''];
+    itemLayer.objects.forEach((item) => {
+      const randomItem =
+        itemArray[Math.floor(Math.random() * itemArray.length)];
+      if (randomItem) {
+        item.name = randomItem;
+        const newItem = new Items(this, item.x, item.y, item.name).setScale(
+          0.25
+        );
+      }
     });
 
     this.cursors = this.input.keyboard.createCursorKeys();
