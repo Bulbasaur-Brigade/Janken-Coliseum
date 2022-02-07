@@ -51,7 +51,7 @@
          "name":"NPC",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":100,
          "x":0,
          "y":0
@@ -62,184 +62,136 @@
          "name":"NPC",
          "objects":[
                 {
-                 "height":0,
-                 "id":3,
-                 "name":"npc10",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"collide",
-                         "type":"bool",
-                         "value":true
-                        }],
+                 "gid":189,
+                 "height":16,
+                 "id":15,
+                 "name":"omar",
                  "rotation":0,
-                 "type":"collide",
+                 "type":"omar",
                  "visible":true,
-                 "width":0,
-                 "x":552,
-                 "y":175
+                 "width":16,
+                 "x":1312,
+                 "y":1312
                 }, 
                 {
-                 "height":0,
-                 "id":4,
-                 "name":"npc09",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"collide",
-                         "type":"bool",
-                         "value":true
-                        }],
+                 "gid":267,
+                 "height":16,
+                 "id":16,
+                 "name":"Savion",
                  "rotation":0,
-                 "type":"collide",
+                 "type":"savion",
                  "visible":true,
-                 "width":0,
-                 "x":909,
-                 "y":395
+                 "width":16,
+                 "x":752,
+                 "y":208
                 }, 
                 {
-                 "height":0,
-                 "id":5,
-                 "name":"npc08",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"collide",
-                         "type":"bool",
-                         "value":true
-                        }],
+                 "gid":133,
+                 "height":16,
+                 "id":17,
+                 "name":"Mac",
                  "rotation":0,
-                 "type":"collide",
+                 "type":"mac",
                  "visible":true,
-                 "width":0,
-                 "x":357,
-                 "y":756
+                 "width":16,
+                 "x":784,
+                 "y":704
                 }, 
                 {
-                 "height":0,
-                 "id":6,
-                 "name":"npc07",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"collide",
-                         "type":"bool",
-                         "value":true
-                        }],
+                 "gid":459,
+                 "height":16,
+                 "id":19,
+                 "name":"Margarita",
                  "rotation":0,
-                 "type":"collide",
+                 "type":"margarita",
                  "visible":true,
-                 "width":0,
-                 "x":852,
-                 "y":1051
+                 "width":16,
+                 "x":224,
+                 "y":208
                 }, 
                 {
-                 "height":0,
-                 "id":7,
-                 "name":"npc06",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"collide",
-                         "type":"bool",
-                         "value":true
-                        }],
+                 "gid":186,
+                 "height":16,
+                 "id":20,
+                 "name":"Greg",
                  "rotation":0,
-                 "type":"collide",
+                 "type":"greg",
                  "visible":true,
-                 "width":0,
-                 "x":851,
-                 "y":696
+                 "width":16,
+                 "x":1216,
+                 "y":784
                 }, 
                 {
-                 "height":0,
-                 "id":8,
-                 "name":"npc05",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"collide",
-                         "type":"bool",
-                         "value":true
-                        }],
+                 "gid":106,
+                 "height":16,
+                 "id":21,
+                 "name":"Sey",
                  "rotation":0,
-                 "type":"collide",
+                 "type":"sey",
                  "visible":true,
-                 "width":0,
-                 "x":139,
-                 "y":154
+                 "width":16,
+                 "x":1216,
+                 "y":240
                 }, 
                 {
-                 "height":0,
-                 "id":9,
-                 "name":"npc04",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"collide",
-                         "type":"bool",
-                         "value":true
-                        }],
+                 "gid":430,
+                 "height":16,
+                 "id":22,
+                 "name":"Amber",
                  "rotation":0,
-                 "type":"collide",
+                 "type":"amber",
                  "visible":true,
-                 "width":0,
-                 "x":736,
-                 "y":1413
+                 "width":16,
+                 "x":576,
+                 "y":1424
                 }, 
                 {
-                 "height":0,
-                 "id":10,
-                 "name":"npc03",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"collide",
-                         "type":"bool",
-                         "value":true
-                        }],
+                 "gid":297,
+                 "height":16,
+                 "id":23,
+                 "name":"Devonne",
                  "rotation":0,
-                 "type":"collide",
+                 "type":"devonne",
                  "visible":true,
-                 "width":0,
-                 "x":309,
-                 "y":1315
+                 "width":16,
+                 "x":640,
+                 "y":1136
                 }, 
                 {
-                 "height":0,
-                 "id":11,
-                 "name":"npc02",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"collide",
-                         "type":"bool",
-                         "value":true
-                        }],
+                 "gid":403,
+                 "height":16,
+                 "id":24,
+                 "name":"Eric",
                  "rotation":0,
-                 "type":"collide",
+                 "type":"eric",
                  "visible":true,
-                 "width":0,
-                 "x":1120,
-                 "y":1383
+                 "width":16,
+                 "x":144,
+                 "y":432
                 }, 
                 {
-                 "height":0,
-                 "id":12,
-                 "name":"npc01",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"collide",
-                         "type":"bool",
-                         "value":true
-                        }],
+                 "gid":81,
+                 "height":16,
+                 "id":25,
+                 "name":"Zach",
                  "rotation":0,
-                 "type":"collide",
+                 "type":"zach",
                  "visible":true,
-                 "width":0,
-                 "x":1160,
-                 "y":1177
+                 "width":16,
+                 "x":352,
+                 "y":784
+                }, 
+                {
+                 "gid":349,
+                 "height":16,
+                 "id":26,
+                 "name":"Danny",
+                 "rotation":0,
+                 "type":"danny",
+                 "visible":true,
+                 "width":16,
+                 "x":192,
+                 "y":1040
                 }],
          "opacity":1,
          "properties":[
@@ -265,8 +217,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":9,
- "nextobjectid":15,
+ "nextlayerid":10,
+ "nextobjectid":29,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.2",

@@ -29,16 +29,17 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       }
     );
     //NPC charcters
-    this.load.image('npc01', 'assets/sprites/npcs/npc01.png');
-    this.load.image('npc02', 'assets/sprites/npcs/npc02.png');
-    this.load.image('npc03', 'assets/sprites/npcs/npc03.png');
-    this.load.image('npc04', 'assets/sprites/npcs/npc04.png');
-    this.load.image('npc05', 'assets/sprites/npcs/npc05.png');
-    this.load.image('npc06', 'assets/sprites/npcs/npc06.png');
-    this.load.image('npc07', 'assets/sprites/npcs/npc07.png');
-    this.load.image('npc08', 'assets/sprites/npcs/npc08.png');
-    this.load.image('npc09', 'assets/sprites/npcs/npc09.png');
-    this.load.image('npc10', 'assets/sprites/npcs/npc10.png');
+    this.load.image('sey', 'assets/sprites/npcs/sey.png');
+    this.load.image('greg', 'assets/sprites/npcs/greg.png');
+    this.load.image('margarita', 'assets/sprites/npcs/margarita.png');
+    this.load.image('danny', 'assets/sprites/npcs/danny.png');
+    this.load.image('mac', 'assets/sprites/npcs/mac.png');
+    this.load.image('savion', 'assets/sprites/npcs/savion.png');
+    this.load.image('omar', 'assets/sprites/npcs/omar.png');
+    this.load.image('amber', 'assets/sprites/npcs/amber.png');
+    this.load.image('devonne', 'assets/sprites/npcs/devonne.png');
+    this.load.image('eric', 'assets/sprites/npcs/eric.png');
+    this.load.image('zach', 'assets/sprites/npcs/zach.png');
 
     //Items
     this.load.image('rock', 'assets/sprites/rock.png');
@@ -103,17 +104,8 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     // Layers
     const waterLayer = map.createLayer('Water', tileset, 0, 0);
     const groundLayer = map.createLayer('Ground', tileset, 0, 0);
-    // const npcLayer = map.createLayer('NPC', tileset, 0, 0);
     const interactiveLayer = map.createLayer('Interactive', tileset, 0, 0);
     const overheadLayer = map.createLayer('Overhead', tileset, 0, 0);
-
-    //NPCs
-    const npcs = this.physics.add.staticGroup({ key: 'NPC' });
-    const npcLayer = map.getObjectLayer('NPC');
-    npcLayer.objects.forEach((npc) => {
-      npcs.get(npc.x, npc.y, `${npc.name}`).setScale(0.25);
-    });
-    console.log(npcs);
 
     // Music
     this.bgMusic = this.sound.add('Pallet', { volume: 0.1 }, true);
@@ -129,6 +121,30 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     ).setScale(0.25);
 
     //NPC generation/collision
+    const npcLayer = map.getObjectLayer('NPC');
+    npcLayer.objects.forEach((npc) => {
+      const text = this.add.text(npc.x - 100, npc.y + 100, '', {
+        font: '16px Courier',
+        fill: '#F0F8FF',
+      });
+      const newNPC = new NPC(this, npc.x, npc.y, npc.type).setScale(0.25);
+      this.physics.add.collider(
+        this.player,
+        newNPC,
+        () => {
+          //Dialog
+          text.setText(`${npc.name} accepts \n your challenge!!!`);
+          text.setDepth(30);
+
+          // this.data.set('playercordX', this.player.x);
+          // this.data.set('playercordY', this.player.y);
+          // this.scene.start('BattleScene');
+          // this.bgMusic.stop();
+        },
+        null,
+        this
+      );
+    });
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -136,20 +152,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     groundLayer.setCollisionByProperty({ collide: true });
     this.physics.add.collider(this.player, groundLayer);
-    this.physics.add.collider(this.player, npcs);
-    // npcLayer.setCollisionByProperty({ collide: true });
-    // this.physics.add.collider(
-    //   this.player,
-    //   npcLayer,
-    //   () => {
-    //     this.data.set('playercordX', this.player.x);
-    //     this.data.set('playercordY', this.player.y);
-    //     this.scene.start('BattleScene');
-    //     this.bgMusic.stop();
-    //   },
-    //   null,
-    //   this
-    // );
 
     interactiveLayer.setCollisionByProperty({ collide: true });
     this.physics.add.collider(this.player, interactiveLayer);
@@ -237,6 +239,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
   // createRock(x, y) {
   //   this.rockGroup.create(x, y, "rock");
   // }
+
   update() {
     this.player.update(this.cursors, this.walkSound);
   }

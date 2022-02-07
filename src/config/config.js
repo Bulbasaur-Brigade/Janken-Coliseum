@@ -6,28 +6,28 @@ import Menu from '../scene/Menu';
 import LossScene from '../scene/LossScene';
 import MultiPlayerMapScene from '../scene/MultiPlayerMapScene';
 
-import fireBaseConfig from './fireBaseConfig';
-// import Firebase from "firebase/app";
-import {
-  getFirestore,
-  Firestore,
-  setDoc,
-  doc,
-  getDoc,
-  DocumentSnapshot,
-  addDoc,
-  collection,
-  query,
-  orderBy,
-  limit,
-  getDocs,
-  collectionGroup,
-} from 'firebase/firestore';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
+// import fireBaseConfig from './fireBaseConfig';
+// // import Firebase from "firebase/app";
+// import {
+//   getFirestore,
+//   Firestore,
+//   setDoc,
+//   doc,
+//   getDoc,
+//   DocumentSnapshot,
+//   addDoc,
+//   collection,
+//   query,
+//   orderBy,
+//   limit,
+//   getDocs,
+//   collectionGroup,
+// } from 'firebase/firestore';
+// import firebase from 'firebase/compat/app';
+// import 'firebase/compat/auth';
 
-export const app = firebase.initializeApp(fireBaseConfig);
-const database = getFirestore(app);
+// export const app = firebase.initializeApp(fireBaseConfig);
+// const database = getFirestore(app);
 // console.log('/////', database);
 
 // addDoc(doc(database, "games","test"), {
@@ -117,14 +117,6 @@ export default {
       debug: true,
     },
   },
-  // plugins:{
-  //   global:[{
-  //     key:'FirebasePlugin',
-  //     plugin:FirebasePlugin,
-  //     start:true,
-  //     mapping:'firebase'
-  //   }]
-  // },
 
   parent: 'content',
   dom: {
