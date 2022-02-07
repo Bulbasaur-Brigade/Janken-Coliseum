@@ -131,14 +131,13 @@ export default class BattleScene extends Phaser.Scene {
       counter++;
     }
     if (counter === 1) {
-      this.time.delayedCall(5000, () => {
+      this.time.delayedCall(3000, () => {
         this.battleMusic.stop();
-
+        this.scene.switch("SinglePlayerMapScene");
         this.scene.stop();
         this.scene.stop("NpcHearts");
-        this.scene.switch("SinglePlayerMapScene");
-        // this.music = this.scene.get("SinglePlayerMapScene");
-        // this.music.bgMusic.play();
+        this.music = this.scene.get("SinglePlayerMapScene");
+        this.music.bgMusic.play();
         counter = 0;
       });
     }
