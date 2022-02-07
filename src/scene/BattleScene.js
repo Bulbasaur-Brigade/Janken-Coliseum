@@ -105,18 +105,17 @@ export default class BattleScene extends Phaser.Scene {
     if (this.hp === 0) {
       this.scene.switch("LossScene");
       this.scene.stop("NpcHearts");
-
       this.battleMusic.stop();
     }
   }
   gameWin() {
-    if (this.computerHearts === 2) {
+    if (this.computerHearts === 0) {
       this.scene.switch("SinglePlayerMapScene");
       this.scene.stop();
-      // this.scene.stop("NpcHearts");
-      // this.battleMusic.stop();
-      // this.music = this.scene.get("SinglePlayerMapScene");
-      // this.music.bgMusic.play();
+      this.scene.stop("NpcHearts");
+      this.battleMusic.stop();
+      this.music = this.scene.get("SinglePlayerMapScene");
+      this.music.bgMusic.play();
     }
   }
   playerHasNoItems() {

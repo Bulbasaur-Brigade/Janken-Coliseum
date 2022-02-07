@@ -8,7 +8,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     super("SinglePlayerMapScene");
   }
 
-  // init() {}
   preload() {
     this.load.image("tiles", "assets/maps/tilemap.png");
     this.load.tilemapTiledJSON("tilemap", "assets/maps/overworldMap.json");
@@ -22,6 +21,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.load.image("rock", "assets/sprites/rock.png");
     this.load.image("paper", "assets/sprites/paper.png");
     this.load.image("scissors", "assets/sprites/scissors.png");
+    this.load.image("heart", "assets/sprites/heart.png");
     // Music
     this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
   }
@@ -157,6 +157,20 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       child.setScale(0.25);
       child.enableBody(true, child.x, child.y, true, true);
     });
+    this.hearts = this.physics.add.group({
+      key: "heart",
+      allowGravity: false,
+      repeat: 15,
+    });
+
+    this.hearts.children.iterate(function (child) {
+      var randomTile = Phaser.Utils.Array.GetRandom(emptyTiles);
+
+      child.setPosition(randomTile.pixelX, randomTile.pixelY);
+      child.setOrigin(0, 0);
+      child.setScale(0.25);
+      child.enableBody(true, child.x, child.y, true, true);
+    });
 
     this.rock = new Items(this, 150, 200, "rock").setScale(0.25);
 
@@ -169,6 +183,19 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       (player, item) => {
         this.inventory.addItem(item.texture.key, 1);
         console.log("item", item);
+        item.destroy();
+      },
+
+      null,
+      this
+    );
+    this.physics.add.collider(
+      this.player,
+      this.hearts,
+      (player, item) => {
+        this.heart = this.scene.get("Heart");
+        this.heart.gainHp(item.texture.key, 1);
+
         item.destroy();
       },
 
@@ -199,10 +226,10 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     );
 
     // WASD KEYS FOR MOVEMENT
-    this.wasdKeys = this.input.keyboard.addKeys("W,S,A,D");
+    this.keys = this.input.keyboard.addKeys("W,S,A,D");
   }
 
   update() {
-    this.player.update(this.wasdKeys);
+    this.player.update(this.keys);
   }
 }
