@@ -157,6 +157,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         const newItem = new Items(this, item.x, item.y, item.name).setScale(
           0.25
         );
+        this.physics.add.collider(this.player, newItem);
       }
     });
 
