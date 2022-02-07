@@ -1,7 +1,6 @@
 import Phaser from "phaser";
 import Items from "../entity/Items";
-// import SceneTransition from "./SceneTransition";
-
+import store from "../store/store";
 export default class Heart extends Phaser.Scene {
   constructor() {
     super("Heart");
@@ -37,22 +36,9 @@ export default class Heart extends Phaser.Scene {
     ];
   }
 
-  gainHp() {
-    let data = localStorage.getItem("hp");
-    this.hp = data ? JSON.parse(data) : 3;
-
-    if (this.hp < 10) {
-      this.hp += 1;
-    } else {
-      this.hp += 0;
-    }
-    localStorage.setItem("hp", JSON.stringify(this.hp));
-  }
   handlePlayerHealthChanged() {
-    let data = localStorage.getItem("hp");
-    this.hp = data ? JSON.parse(data) : 3;
-
-    switch (this.hp) {
+    this.hp = store.getState();
+    switch (this.hp.hpReducer) {
       case 10:
         this.hearts.forEach((heart) => heart.setVisible(true));
         break;

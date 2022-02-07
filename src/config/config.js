@@ -11,6 +11,8 @@ import NpcHearts from "../scene/NpcHearts";
 import SceneTransition from "../scene/SceneTransition";
 import VictoryScene from "../scene/VictoryScene";
 
+
+
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
   width: 800, // Game width in pixels
