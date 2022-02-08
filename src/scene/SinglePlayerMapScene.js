@@ -1,13 +1,13 @@
 import Player from '../entity/Player';
 import Items from '../entity/Items';
 import Phaser from 'phaser';
-// import SceneTransition from "./SceneTransition";
 import NPC from '../entity/NPC';
 import SceneTransition from './SceneTransition';
 import { addHp, loseHp } from '../store/hpReducer';
 import { addNPC, getNPC } from '../store/npcBoard';
 import store from '../store/store';
-export default class SinglePlayerMapScene extends Phaser.Scene {
+import Heart from './Heart';
+export default class SinglePlayerMapScene extends SceneTransition {
   // export default class SinglePlayerMapScene extends SceneTransition {
   constructor() {
     super('SinglePlayerMapScene');
@@ -18,6 +18,9 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const currentNPCS = store.getState();
     const storeNPCS = currentNPCS.npcBoardReducer.npcs;
     if (storeNPCS.every((npc) => npc.defeated)) {
+      this.scene.stop("Heart");
+      this.scene.stop("Inventory");
+      this.scene.stop();
       this.scene.start('VictoryScene');
     }
     storeNPCS.forEach((npc) => {
@@ -122,7 +125,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     //  Hearts
 
-    // super.create();
+    super.create();
 
     // Start animations
     this.createAnimations();

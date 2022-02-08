@@ -113,7 +113,7 @@ export default class BattleScene extends Phaser.Scene {
     }
   }
   gameWin() {
-    if (this.computerHearts === 3) {
+    if (this.computerHearts === 2) {
       store.dispatch(isDefeated(this.computer.npcBoardReducer.singleNPC));
       this.scene.switch('SinglePlayerMapScene');
       this.scene.stop();

@@ -30,7 +30,7 @@ export default {
     createContainer: true,
   },
   scene: [
-    // SceneTransition,
+    SceneTransition,
     TitleScene,
     // Menu,
     MultiPlayerMapScene,
