@@ -13,7 +13,6 @@ import VictoryScene from "../scene/VictoryScene";
 import CharPicker from "../scene/CharPicker";
 
 
-
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
   width: 800, // Game width in pixels
@@ -23,13 +22,13 @@ export default {
     pixelArt: true,
   },
   physics: {
-    default: "arcade",
+    default: 'arcade',
     arcade: {
       debug: false,
     },
   },
 
-  parent: "content",
+  parent: 'content',
   dom: {
     createContainer: true,
   },
@@ -39,6 +38,8 @@ export default {
     TitleScene,
     CharPicker,
     Menu,
+
+    // Menu,
     MultiPlayerMapScene,
     SinglePlayerMapScene,
     BattleScene,

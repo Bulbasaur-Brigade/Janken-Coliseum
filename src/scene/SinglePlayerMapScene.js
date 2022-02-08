@@ -6,10 +6,29 @@ import NPC from "../entity/NPC";
 import SceneTransition from "./SceneTransition";
 import { addHp, loseHp } from "../redux/hpReducer";
 import store from "../redux/store";
+
+import { addNPC, getNPC } from "../store/npcBoard";
+
 export default class SinglePlayerMapScene extends Phaser.Scene {
   // export default class SinglePlayerMapScene extends SceneTransition {
   constructor() {
     super("SinglePlayerMapScene");
+    this.npcsArr = [];
+  }
+
+  destroyNPC() {
+    const currentNPCS = store.getState();
+    const storeNPCS = currentNPCS.npcBoardReducer.npcs;
+    if (storeNPCS.every((npc) => npc.defeated)) {
+      this.scene.start("VictoryScene");
+    }
+    storeNPCS.forEach((npc) => {
+      if (npc.defeated) {
+        this.npcsArr.forEach((sprite) => {
+          if (npc.name === sprite.texture.key) sprite.destroy();
+        });
+      }
+    });
   }
 
   preload() {
@@ -178,27 +197,35 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     //NPC generation/collision
     const npcLayer = map.getObjectLayer("NPC");
+
     npcLayer.objects.forEach((npc) => {
       const text = this.add.text(npc.x - 100, npc.y + 100, "", {
         font: "12px Courier",
         fill: "#F0F8FF",
       });
       const newNPC = new NPC(this, npc.x, npc.y, npc.type).setScale(0.25);
+
+      this.npcsArr.push(newNPC);
+      store.dispatch(addNPC({ name: npc.type, defeated: newNPC.isDefeated }));
+      const npcData = store.getState();
       this.physics.add.collider(
         this.player,
         newNPC,
-        () => {
+        (player, currentNPC) => {
           //Dialog
-          text.setText(`${npc.name} accepts\nyour challenge!!!`);
-          text.setDepth(30);
+          newNPC.createSpeechBubble(
+            npc.x,
+            npc.y,
+            100,
+            100,
+            "Twin ceramic rotor drives on each wheel"
+          );
+          store.dispatch(getNPC(currentNPC.texture.key));
 
           this.data.set("playercordX", this.player.x);
           this.data.set("playercordY", this.player.y);
-          this.player.disableBody();
-          this.input.keyboard.enabled = false;
-          // this.player.setVisible(false);
           this.time.delayedCall(4000, () => {
-            text.setText("");
+            // text.setText('');
             this.scene.switch("BattleScene");
             this.bgMusic.stop();
           });
@@ -252,90 +279,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const camera = this.cameras.main;
     camera.setZoom(2);
     camera.startFollow(this.player, true);
-    // Inventory
-    // this.rocks = this.physics.add.group({
-    //   key: "rock",
-    //   allowGravity: false,
-    //   repeat: 30,
-    // });
-    // var emptyTiles = interactiveLayer.filterTiles(function (tile) {
-    //   return tile.index === -1;
-    // });
-    // this.rocks.children.iterate(function (child) {
-    //   var randomTile = Phaser.Utils.Array.GetRandom(emptyTiles);
-
-    //   child.setPosition(randomTile.pixelX, randomTile.pixelY);
-    //   child.setOrigin(0, 0);
-    //   child.setScale(0.25);
-    //   child.enableBody(true, child.x, child.y, true, true);
-    // });
-
-    // this.hearts = this.physics.add.group({
-    //   key: "heart",
-    //   allowGravity: false,
-    //   repeat: 15,
-    // });
-
-    // this.hearts.children.iterate(function (child) {
-    //   var randomTile = Phaser.Utils.Array.GetRandom(emptyTiles);
-
-    //   child.setPosition(randomTile.pixelX, randomTile.pixelY);
-    //   child.setOrigin(0, 0);
-    //   child.setScale(0.25);
-    //   child.enableBody(true, child.x, child.y, true, true);
-    // });
-
-    // this.paper = new Items(this, 150, 180, "paper").setScale(0.25);
-    // this.scissors = new Items(this, 150, 160, "scissors").setScale(0.25);
-
-    // this.physics.add.collider(
-    //   this.player,
-    //   this.rocks,
-    //   (player, item) => {
-    //     this.inventory.addItem(item.texture.key, 1);
-    //     console.log("item", item);
-    //     item.destroy();
-    //   },
-
-    //   null,
-    //   this
-    // );
-
-    // this.physics.add.collider(
-    //   this.player,
-    //   this.hearts,
-    //   (player, item) => {
-    //     this.heart = this.scene.get("Heart");
-    //     this.heart.gainHp(item.texture.key, 1);
-
-    //     item.destroy();
-    //   },
-
-    //   null,
-    //   this
-    // );
-
-    // this.physics.add.collider(
-    //   this.player,
-    //   this.paper,
-    //   () => {
-    //     this.inventory.addItem(this.paper.texture.key, 1);
-    //     this.paper.destroy();
-    //   },
-    //   null,
-    //   this
-    // );
-    // this.physics.add.collider(
-    //   this.player,
-    //   this.scissors,
-    //   () => {
-    //     this.inventory.addItem(this.scissors.texture.key, 1);
-
-    //     this.scissors.destroy();
-    //   },
-    //   null,
-    //   this
-    // );
 
     // WASD KEYS FOR MOVEMENT
     this.keys = this.input.keyboard.addKeys("W,S,A,D");
@@ -343,5 +286,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
   update() {
     this.player.update(this.keys);
+    this.destroyNPC();
   }
 }
