@@ -90,9 +90,8 @@ export default class TitleScene extends SceneTransition {
     this.singlePlayer.on('pointerdown', () => {
       this.scene.transition({
         duration: 2500,
-        target: 'SinglePlayerMapScene',
+        target: "CharPicker",
       });
-      this.titleMusic.stop();
     });
 
     this.multiplayer.on('pointerdown', () => {

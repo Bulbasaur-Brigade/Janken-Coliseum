@@ -1,34 +1,36 @@
-import Phaser from 'phaser';
-import SceneTransition from './SceneTransition';
-import store from '../store/store';
-import { isDefeated } from '../store/npcBoard';
+import Phaser from "phaser";
+import SceneTransition from "./SceneTransition";
+import store from "../redux/store";
+import { addHp, loseHp } from "../redux/hpReducer";
+import { addItem, loseItem } from "../redux/inventoryReducer";
+import { isDefeated } from "../redux/npcBoard";
 // MODES
 // Means the player has not anything
-const NOTHING_SELECTION_MODE = 'NOTHING_SELECTED';
+const NOTHING_SELECTION_MODE = "NOTHING_SELECTED";
 //  Means player needs click shoot to finalize selection
-const BEFORE_SHOT_MODE = 'BEFORE_SHOOT';
+const BEFORE_SHOT_MODE = "BEFORE_SHOOT";
 //  Means that shooting is in progress
-const SHOOTING_MODE = 'SHOOTING';
+const SHOOTING_MODE = "SHOOTING";
 
 // OUTCOMES
 // Player Won
-const OUTCOME_PLAYER_WON = 'OUTCOME_PLAYER_WON';
+const OUTCOME_PLAYER_WON = "OUTCOME_PLAYER_WON";
 // Computer Won
-const OUTCOME_COMPUTER_WON = 'OUTCOME_COMPUTER_WON';
+const OUTCOME_COMPUTER_WON = "OUTCOME_COMPUTER_WON";
 // Its a Tie
-const OUTCOME_TIE = 'OUTCOME_TIE';
+const OUTCOME_TIE = "OUTCOME_TIE";
 
 // RULES SET
 // Key for rock
-const ROCK = 'rock';
+const ROCK = "rock";
 // Key for paper
-const PAPER = 'paper';
+const PAPER = "paper";
 // Key for scissors
-const SCISSORS = 'scissors';
+const SCISSORS = "scissors";
 
 export default class BattleScene extends Phaser.Scene {
   constructor() {
-    super('BattleScene');
+    super("BattleScene");
   }
 
   init() {
@@ -46,80 +48,75 @@ export default class BattleScene extends Phaser.Scene {
     // Computer Hearts
     this.computerHearts = 3;
     // Getting Local Storage DATA
-    let data = localStorage.getItem('hp');
-    this.hp = data ? JSON.parse(data) : '';
-
-    let itemData = localStorage.getItem('items');
-    this.items = itemData ? JSON.parse(itemData) : [];
+    const data = store.getState();
+    this.hp = data.hpReducer;
+    this.items = data.inventoryReducer.itemArray;
   }
   preload() {
     this.load.bitmapFont(
-      'carrier_command',
-      'assets/fonts/carrier_command.png',
-      'assets/fonts/carrier_command.xml'
+      "carrier_command",
+      "assets/fonts/carrier_command.png",
+      "assets/fonts/carrier_command.xml"
     );
-    this.load.image('battleScene', 'assets/backgrounds/battleScene.jpg');
-    this.load.image(ROCK, 'assets/sprites/rock.png');
-    this.load.image(PAPER, 'assets/sprites/paper.png');
-    this.load.image(SCISSORS, 'assets/sprites/scissors.png');
+    this.load.image("battleScene", "assets/backgrounds/battleScene.jpg");
+    this.load.image(ROCK, "assets/sprites/rock.png");
+    this.load.image(PAPER, "assets/sprites/paper.png");
+    this.load.image(SCISSORS, "assets/sprites/scissors.png");
     // Battle Music
-    this.load.audio('Battle', 'assets/audio/Battle.mp3');
+    this.load.audio("Battle", "assets/audio/Battle.mp3");
   }
   gainHp() {
-    if (this.hp < 3) {
-      this.hp += 1;
+    if (this.hp < 10) {
+      store.dispatch(addHp(1));
     } else {
-      this.hp += 0;
+      store.dispatch(addHp(0));
     }
+  }
 
-    localStorage.setItem('hp', JSON.stringify(this.hp));
-  }
-  getAndSetItems() {
-    return this.items;
-  }
   loseItems(item) {
     for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].amount > 0) {
         if (this.items[i].name === item) {
-          this.items[i].amount--;
+          store.dispatch(loseItem(item));
         }
         if (this.items[i].amount === 0) {
           this.playerSprites[i].name.setVisible(false);
         }
       }
     }
-    localStorage.setItem('items', JSON.stringify(this.items));
   }
   gainItems(item) {
     for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].name === item) {
-        this.items[i].amount++;
+        store.dispatch(addItem(item));
       }
       if (this.items[i].amount > 0) {
         this.playerSprites[i].name.setVisible(true);
       }
     }
-    localStorage.setItem('items', JSON.stringify(this.items));
   }
   loseHp() {
-    this.hp -= 1;
-    localStorage.setItem('hp', JSON.stringify(this.hp));
+    if (this.hp > 0) {
+      store.dispatch(loseHp(1));
+    } else {
+      store.dispatch(loseHp(0));
+    }
   }
   gameLoss() {
     if (this.hp === 0) {
-      this.scene.switch('LossScene');
-      this.scene.stop('NpcHearts');
+      this.scene.switch("LossScene");
+      this.scene.stop("NpcHearts");
       this.battleMusic.stop();
     }
   }
   gameWin() {
     if (this.computerHearts === 2) {
       store.dispatch(isDefeated(this.computer.npcBoardReducer.singleNPC));
-      this.scene.switch('SinglePlayerMapScene');
+      this.scene.switch("SinglePlayerMapScene");
       this.scene.stop();
-      this.scene.stop('NpcHearts');
+      this.scene.stop("NpcHearts");
       this.battleMusic.stop();
-      this.music = this.scene.get('SinglePlayerMapScene');
+      this.music = this.scene.get("SinglePlayerMapScene");
       this.music.bgMusic.play();
     }
   }
@@ -129,19 +126,19 @@ export default class BattleScene extends Phaser.Scene {
       this.add.bitmapText(
         20,
         200,
-        'carrier_command',
-        'You lost your items \n\n\n Go collect some\n\n\n to Battle!',
+        "carrier_command",
+        "You lost your items \n\n\n Go collect some\n\n\n to Battle!",
         20
       );
       counter++;
     }
     if (counter === 1) {
       this.time.delayedCall(3000, () => {
+        this.scene.switch("SinglePlayerMapScene");
         this.battleMusic.stop();
-        this.scene.switch('SinglePlayerMapScene');
         this.scene.stop();
-        this.scene.stop('NpcHearts');
-        this.music = this.scene.get('SinglePlayerMapScene');
+        this.scene.stop("NpcHearts");
+        this.music = this.scene.get("SinglePlayerMapScene");
         this.music.bgMusic.play();
         counter = 0;
       });
@@ -149,19 +146,17 @@ export default class BattleScene extends Phaser.Scene {
   }
   create() {
     // this.time.delayedCall(3500, () => {
-    // this.scene.run("NpcHearts");
+    this.scene.run("NpcHearts");
 
     // });
-
-    this.playerItems = this.getAndSetItems();
 
     // super.create();
 
     // Bg Music
-    this.battleMusic = this.sound.add('Battle', { volume: 0.15 }, true);
+    this.battleMusic = this.sound.add("Battle", { volume: 0.15 }, true);
     this.battleMusic.play();
 
-    this.add.image(0, 0, 'battleScene').setOrigin(0, 0).setScale(1);
+    this.add.image(0, 0, "battleScene").setOrigin(0, 0).setScale(1);
 
     // Player Sprites
     const rock = this.add.sprite(100, 150, ROCK).setScale(1.5);
@@ -175,12 +170,12 @@ export default class BattleScene extends Phaser.Scene {
     ];
     this.filteredPlayerSprites = [];
 
-    for (let i = 0; i < this.playerItems.length; i++) {
-      if (this.playerItems[i].name === this.playerSprites[i].name.texture.key) {
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i].name === this.playerSprites[i].name.texture.key) {
         this.filteredPlayerSprites.push(this.playerSprites[i].name);
       }
 
-      if (this.playerItems[i].amount === 0) {
+      if (this.items[i].amount === 0) {
         this.playerSprites[i].name.setVisible(false);
       }
     }
@@ -188,7 +183,7 @@ export default class BattleScene extends Phaser.Scene {
     //Make the Player Sprites interactive
     this.filteredPlayerSprites.forEach((sprite) => {
       sprite.setInteractive({ useHandCursor: true });
-      sprite.on('pointerdown', () => {
+      sprite.on("pointerdown", () => {
         this.selectMove(sprite);
       });
     });
@@ -208,20 +203,20 @@ export default class BattleScene extends Phaser.Scene {
       this.aiScissors,
     ];
 
-    this.add.bitmapText(50, 20, 'carrier_command', 'Player', 25);
-    this.add.bitmapText(540, 20, 'carrier_command', 'Computer', 25);
-    this.add.bitmapText(375, 300, 'carrier_command', 'Vs');
+    this.add.bitmapText(50, 20, "carrier_command", "Player", 25);
+    this.add.bitmapText(540, 20, "carrier_command", "Computer", 25);
+    this.add.bitmapText(375, 300, "carrier_command", "Vs");
 
     // button to select after you make your choice
     this.gameStateText = this.add.bitmapText(
       275,
       530,
-      'carrier_command',
-      'Select Move',
+      "carrier_command",
+      "Select Move",
       25
     );
     this.gameStateText.setInteractive({ useHandCursor: true });
-    this.gameStateText.on('pointerdown', () => {
+    this.gameStateText.on("pointerdown", () => {
       this.shoot();
     });
   }
@@ -231,7 +226,7 @@ export default class BattleScene extends Phaser.Scene {
     this.resetAlphasOnPlayerSprites();
     // alpha is for opacity
     sprite.alpha = 0.5;
-    this.gameStateText.setText('Shoot!');
+    this.gameStateText.setText("Shoot!");
     this.mode = BEFORE_SHOT_MODE;
     this.selectedSprite = sprite;
   }
@@ -257,8 +252,8 @@ export default class BattleScene extends Phaser.Scene {
       this.winText = this.add.bitmapText(
         280,
         400,
-        'carrier_command',
-        'You Win!'
+        "carrier_command",
+        "You Win!"
       );
       // this.gameStateText.setText("You Win");
       this.time.delayedCall(2000, () => {
@@ -278,8 +273,8 @@ export default class BattleScene extends Phaser.Scene {
       this.loseText = this.add.bitmapText(
         280,
         400,
-        'carrier_command',
-        'You Lose!'
+        "carrier_command",
+        "You Lose!"
       );
       this.time.delayedCall(2000, () => {
         this.loseText.visible = false;
@@ -296,8 +291,8 @@ export default class BattleScene extends Phaser.Scene {
       this.tieText = this.add.bitmapText(
         280,
         400,
-        'carrier_command',
-        'Tie Game!'
+        "carrier_command",
+        "Tie Game!"
       );
 
       this.time.delayedCall(2000, () => {
@@ -309,7 +304,7 @@ export default class BattleScene extends Phaser.Scene {
   reset() {
     this.mode = NOTHING_SELECTION_MODE;
     this.selectedSprite = null;
-    this.gameStateText.setText('Select Move');
+    this.gameStateText.setText("Select Move");
     // reset the location of the sprites and change the opacity back to 1
     this.filteredPlayerSprites.forEach((sprite, index) => {
       sprite.x = 100;

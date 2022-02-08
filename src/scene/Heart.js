@@ -1,11 +1,11 @@
 import Phaser from "phaser";
 import Items from "../entity/Items";
-import store from "../store/store";
+import store from "../redux/store";
 export default class Heart extends Phaser.Scene {
   constructor() {
     super("Heart");
   }
-  init() {}
+
   preload() {
     this.load.image("heart", "assets/sprites/heart.png");
   }
