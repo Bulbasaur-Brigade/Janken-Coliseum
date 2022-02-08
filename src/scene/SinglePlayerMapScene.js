@@ -6,10 +6,10 @@ import NPC from "../entity/NPC";
 import SceneTransition from "./SceneTransition";
 import { addHp, loseHp } from "../redux/hpReducer";
 import store from "../redux/store";
-
+import Heart from './Heart';
 import { addNPC, getNPC } from "../redux/npcBoard";
+export default class SinglePlayerMapScene extends SceneTransition {
 
-export default class SinglePlayerMapScene extends Phaser.Scene {
   // export default class SinglePlayerMapScene extends SceneTransition {
   constructor() {
     super("SinglePlayerMapScene");
@@ -20,7 +20,10 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const currentNPCS = store.getState();
     const storeNPCS = currentNPCS.npcBoardReducer.npcs;
     if (storeNPCS.every((npc) => npc.defeated)) {
-      this.scene.start("VictoryScene");
+      this.scene.stop("Heart");
+      this.scene.stop("Inventory");
+      this.scene.stop();
+      this.scene.start('VictoryScene');
     }
     storeNPCS.forEach((npc) => {
       if (npc.defeated) {
@@ -166,7 +169,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     //  Hearts
 
-    // super.create();
+    super.create();
 
     // Start animations
     this.createAnimations();

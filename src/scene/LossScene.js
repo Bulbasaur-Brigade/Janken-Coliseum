@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import SceneTransition from './SceneTransition';
 
-export default class LossScene extends Phaser.Scene {
+export default class LossScene extends SceneTransition {
   constructor() {
     super('LossScene');
   }
@@ -16,7 +16,7 @@ export default class LossScene extends Phaser.Scene {
     //this.load.audio('music', 'assets/audio/PalletTown.mp3');
   }
   create() {
-    // super.create();
+    super.create();
     // Music
     // this.titleMusic = this.sound.add('music', { volume: 0.15 }, true);
     // this.titleMusic.play();

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-// import SceneTransition from "./SceneTransition";
+import SceneTransition from "./SceneTransition";
 
-export default class TitleScene extends Phaser.Scene {
+export default class TitleScene extends SceneTransition {
   constructor() {
     super('TitleScene');
   }
@@ -18,7 +18,7 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   create() {
-    // super.create();
+    super.create();
 
     // Music
     this.titleMusic = this.sound.add('music', { volume: 0.1 }, true);
@@ -72,7 +72,7 @@ export default class TitleScene extends Phaser.Scene {
       115,
       1247,
       'carrier_command',
-      'Move with the arrow keys\n\nCollect items to grow in power\n\nPlay rock paper scissors\n\nIf you run out of lives you lose',
+      'Move with the WASD keys\n\nCollect items to grow in power\n\nPlay rock paper scissors\n\nIf you run out of lives you lose',
       15
     );
 
