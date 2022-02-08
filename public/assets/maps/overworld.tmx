@@ -2831,17 +2831,61 @@
   <properties>
    <property name="collide" type="bool" value="false"/>
   </properties>
-  <object id="15" name="omar" type="omar" gid="189" x="1312" y="1312" width="16" height="16"/>
-  <object id="16" name="Savion" type="savion" gid="267" x="752" y="208" width="16" height="16"/>
-  <object id="17" name="Mac" type="mac" gid="133" x="784" y="704" width="16" height="16"/>
-  <object id="19" name="Margarita" type="margarita" gid="459" x="224" y="208" width="16" height="16"/>
-  <object id="20" name="Greg" type="greg" gid="186" x="1216" y="784" width="16" height="16"/>
-  <object id="21" name="Sey" type="sey" gid="106" x="1216" y="240" width="16" height="16"/>
-  <object id="22" name="Amber" type="amber" gid="430" x="576" y="1424" width="16" height="16"/>
-  <object id="23" name="Devonne" type="devonne" gid="297" x="640" y="1136" width="16" height="16"/>
-  <object id="24" name="Eric" type="eric" gid="403" x="144" y="432" width="16" height="16"/>
-  <object id="25" name="Zach" type="zach" gid="81" x="352" y="784" width="16" height="16"/>
-  <object id="26" name="Danny" type="danny" gid="349" x="192" y="1040" width="16" height="16"/>
+  <object id="15" name="omar" type="omar" gid="189" x="1312" y="1312" width="16" height="16">
+   <properties>
+    <property name="defeated" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="16" name="Savion" type="savion" gid="267" x="752" y="208" width="16" height="16">
+   <properties>
+    <property name="defeated" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="17" name="Mac" type="mac" gid="133" x="784" y="704" width="16" height="16">
+   <properties>
+    <property name="defeated" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="19" name="Margarita" type="margarita" gid="459" x="224" y="208" width="16" height="16">
+   <properties>
+    <property name="defeated" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="20" name="Greg" type="greg" gid="186" x="1216" y="784" width="16" height="16">
+   <properties>
+    <property name="defeated" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="21" name="Sey" type="sey" gid="106" x="1216" y="240" width="16" height="16">
+   <properties>
+    <property name="defeated" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="22" name="Amber" type="amber" gid="430" x="576" y="1424" width="16" height="16">
+   <properties>
+    <property name="defeated" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="23" name="Devonne" type="devonne" gid="297" x="640" y="1136" width="16" height="16">
+   <properties>
+    <property name="defeated" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="24" name="Eric" type="eric" gid="403" x="144" y="432" width="16" height="16">
+   <properties>
+    <property name="defeated" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="25" name="Zach" type="zach" gid="81" x="352" y="784" width="16" height="16">
+   <properties>
+    <property name="defeated" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="26" name="Danny" type="danny" gid="349" x="192" y="1040" width="16" height="16">
+   <properties>
+    <property name="defeated" type="bool" value="false"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="11" name="ItemSpawns">
   <object id="29" type="item" gid="308" x="128" y="128" width="16" height="16"/>
