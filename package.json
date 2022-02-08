@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "build": "webpack --config webpack/prod.js ",
-    "start": "webpack-dev-server --config webpack/base.js --open"
+    "build": "webpack-dev-server --config webpack/base.js --open",
+    "start": "nodemon server.js "
   },
   "repository": {
     "type": "git",
@@ -18,8 +18,9 @@
   },
   "homepage": "https://github.com/Bulbasaur-Brigade/Janken-Coliseum#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.2",
-    "firebase": "^9.6.5",
+    "nodemon": "^2.0.15",
     "phaser": "^3.55.2",
     "redux": "^4.1.2",
     "socket.io": "^4.4.1",
