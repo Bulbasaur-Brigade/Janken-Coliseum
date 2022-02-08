@@ -7,7 +7,7 @@ import SceneTransition from "./SceneTransition";
 import { addHp, loseHp } from "../redux/hpReducer";
 import store from "../redux/store";
 
-import { addNPC, getNPC } from "../store/npcBoard";
+import { addNPC, getNPC } from "../redux/npcBoard";
 
 export default class SinglePlayerMapScene extends Phaser.Scene {
   // export default class SinglePlayerMapScene extends SceneTransition {
@@ -158,7 +158,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
   create() {
     // Inventory
-
+    // this.scene.run("QuestUi");
     this.scene.run("Inventory");
     this.scene.run("Heart");
 

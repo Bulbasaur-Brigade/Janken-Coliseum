@@ -23,8 +23,6 @@ export default class Inventory extends Phaser.Scene {
     let items = getStore.inventoryReducer;
     let itemsArray = items.itemArray;
 
-  
-
     for (let i = 0; i < itemsArray.length; i++) {
       if (itemsArray[i].name === name) {
         store.dispatch(addItem(name, amount));

@@ -1,7 +1,8 @@
 import Phaser from "phaser";
 import store from "../redux/store";
 import { pickChar } from "../redux/charReducer";
-export default class CharPicker extends Phaser.Scene {
+import SceneTransition from "./SceneTransition";
+export default class CharPicker extends SceneTransition {
   constructor() {
     super("CharPicker");
   }
@@ -15,6 +16,7 @@ export default class CharPicker extends Phaser.Scene {
     );
   }
   create() {
+    super.create();
     const dave = this.add.sprite(250, 150, "dave").setScale(3);
     const april = this.add.sprite(500, 150, "april").setScale(3);
 

@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import BattleScene from "../scene/BattleScene";
 import SinglePlayerMapScene from "../scene/SinglePlayerMapScene";
 import TitleScene from "../scene/TitleScene";
-import Menu from "../scene/Menu";
+
 import LossScene from "../scene/LossScene";
 import MultiPlayerMapScene from "../scene/MultiPlayerMapScene";
 import Heart from "../scene/Heart";
@@ -11,7 +11,7 @@ import NpcHearts from "../scene/NpcHearts";
 import SceneTransition from "../scene/SceneTransition";
 import VictoryScene from "../scene/VictoryScene";
 import CharPicker from "../scene/CharPicker";
-
+import QuestUi from "../scene/QuestUI";
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
@@ -22,26 +22,24 @@ export default {
     pixelArt: true,
   },
   physics: {
-    default: 'arcade',
+    default: "arcade",
     arcade: {
       debug: false,
     },
   },
 
-  parent: 'content',
+  parent: "content",
   dom: {
     createContainer: true,
   },
   scene: [
-    // SceneTransition,
-    // Instructions,
+    SceneTransition,
     TitleScene,
     CharPicker,
-    Menu,
 
-    // Menu,
     MultiPlayerMapScene,
     SinglePlayerMapScene,
+    QuestUi,
     BattleScene,
     Inventory,
     Heart,
