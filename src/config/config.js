@@ -1,17 +1,14 @@
-import Phaser from "phaser";
-import BattleScene from "../scene/BattleScene";
-import SinglePlayerMapScene from "../scene/SinglePlayerMapScene";
-import TitleScene from "../scene/TitleScene";
-import Menu from "../scene/Menu";
-import LossScene from "../scene/LossScene";
-import MultiPlayerMapScene from "../scene/MultiPlayerMapScene";
-import Heart from "../scene/Heart";
-import Inventory from "../scene/Inventory";
-import NpcHearts from "../scene/NpcHearts";
-import SceneTransition from "../scene/SceneTransition";
-import VictoryScene from "../scene/VictoryScene";
-
-
+import Phaser from 'phaser';
+import BattleScene from '../scene/BattleScene';
+import SinglePlayerMapScene from '../scene/SinglePlayerMapScene';
+import TitleScene from '../scene/TitleScene';
+import LossScene from '../scene/LossScene';
+import MultiPlayerMapScene from '../scene/MultiPlayerMapScene';
+import Heart from '../scene/Heart';
+import Inventory from '../scene/Inventory';
+import NpcHearts from '../scene/NpcHearts';
+import SceneTransition from '../scene/SceneTransition';
+import VictoryScene from '../scene/VictoryScene';
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
@@ -22,21 +19,21 @@ export default {
     pixelArt: true,
   },
   physics: {
-    default: "arcade",
+    default: 'arcade',
     arcade: {
       debug: true,
     },
   },
 
-  parent: "content",
+  parent: 'content',
   dom: {
     createContainer: true,
   },
   scene: [
     // SceneTransition,
-    // TitleScene,
+    TitleScene,
     // Menu,
-    // MultiPlayerMapScene,
+    MultiPlayerMapScene,
     SinglePlayerMapScene,
     BattleScene,
     Inventory,
