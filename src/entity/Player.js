@@ -37,6 +37,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   update(cursors) {
     this.updateMovement(cursors);
     this.body.velocity.normalize().scale(100);
-    this.body.setSize(20, 25, 50, 25);
+    this.body.setSize(10);
   }
 }
