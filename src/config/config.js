@@ -10,6 +10,7 @@ import Inventory from "../scene/Inventory";
 import NpcHearts from "../scene/NpcHearts";
 import SceneTransition from "../scene/SceneTransition";
 import VictoryScene from "../scene/VictoryScene";
+import CharPicker from "../scene/CharPicker";
 
 
 
@@ -24,7 +25,7 @@ export default {
   physics: {
     default: "arcade",
     arcade: {
-      debug: true,
+      debug: false,
     },
   },
 
@@ -34,9 +35,11 @@ export default {
   },
   scene: [
     // SceneTransition,
-    // TitleScene,
-    // Menu,
-    // MultiPlayerMapScene,
+    // Instructions,
+    TitleScene,
+    CharPicker,
+    Menu,
+    MultiPlayerMapScene,
     SinglePlayerMapScene,
     BattleScene,
     Inventory,

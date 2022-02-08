@@ -1,5 +1,8 @@
 import Phaser from "phaser";
 import SceneTransition from "./SceneTransition";
+import store from "../redux/store";
+import { addHp, loseHp } from "../redux/hpReducer";
+import { addItem, loseItem } from "../redux/inventoryReducer";
 // MODES
 // Means the player has not anything
 const NOTHING_SELECTION_MODE = "NOTHING_SELECTED";
@@ -42,11 +45,9 @@ export default class BattleScene extends Phaser.Scene {
     // Computer Hearts
     this.computerHearts = 3;
     // Getting Local Storage DATA
-    let data = localStorage.getItem("hp");
-    this.hp = data ? JSON.parse(data) : "";
-
-    let itemData = localStorage.getItem("items");
-    this.items = itemData ? JSON.parse(itemData) : [];
+    const data = store.getState();
+    this.hp = data.hpReducer;
+    this.items = data.inventoryReducer.itemArray;
   }
   preload() {
     this.load.bitmapFont(
@@ -62,44 +63,41 @@ export default class BattleScene extends Phaser.Scene {
     this.load.audio("Battle", "assets/audio/Battle.mp3");
   }
   gainHp() {
-    if (this.hp < 3) {
-      this.hp += 1;
+    if (this.hp < 10) {
+      store.dispatch(addHp(1));
     } else {
-      this.hp += 0;
+      store.dispatch(addHp(0));
     }
+  }
 
-    localStorage.setItem("hp", JSON.stringify(this.hp));
-  }
-  getAndSetItems() {
-    return this.items;
-  }
   loseItems(item) {
     for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].amount > 0) {
         if (this.items[i].name === item) {
-          this.items[i].amount--;
+          store.dispatch(loseItem(item));
         }
         if (this.items[i].amount === 0) {
           this.playerSprites[i].name.setVisible(false);
         }
       }
     }
-    localStorage.setItem("items", JSON.stringify(this.items));
   }
   gainItems(item) {
     for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].name === item) {
-        this.items[i].amount++;
+        store.dispatch(addItem(item));
       }
       if (this.items[i].amount > 0) {
         this.playerSprites[i].name.setVisible(true);
       }
     }
-    localStorage.setItem("items", JSON.stringify(this.items));
   }
   loseHp() {
-    this.hp -= 1;
-    localStorage.setItem("hp", JSON.stringify(this.hp));
+    if (this.hp > 0) {
+      store.dispatch(loseHp(1));
+    } else {
+      store.dispatch(loseHp(0));
+    }
   }
   gameLoss() {
     if (this.hp === 0) {
@@ -132,8 +130,8 @@ export default class BattleScene extends Phaser.Scene {
     }
     if (counter === 1) {
       this.time.delayedCall(3000, () => {
-        this.battleMusic.stop();
         this.scene.switch("SinglePlayerMapScene");
+        this.battleMusic.stop();
         this.scene.stop();
         this.scene.stop("NpcHearts");
         this.music = this.scene.get("SinglePlayerMapScene");
@@ -144,11 +142,11 @@ export default class BattleScene extends Phaser.Scene {
   }
   create() {
     // this.time.delayedCall(3500, () => {
-    // this.scene.run("NpcHearts");
+    this.scene.run("NpcHearts");
 
     // });
 
-    this.playerItems = this.getAndSetItems();
+  
 
     // super.create();
 
@@ -170,16 +168,15 @@ export default class BattleScene extends Phaser.Scene {
     ];
     this.filteredPlayerSprites = [];
 
-    for (let i = 0; i < this.playerItems.length; i++) {
-      if (this.playerItems[i].name === this.playerSprites[i].name.texture.key) {
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i].name === this.playerSprites[i].name.texture.key) {
         this.filteredPlayerSprites.push(this.playerSprites[i].name);
       }
 
-      if (this.playerItems[i].amount === 0) {
+      if (this.items[i].amount === 0) {
         this.playerSprites[i].name.setVisible(false);
       }
     }
-    console.log("this.filteredPlayerSprites", this.filteredPlayerSprites);
 
     //Make the Player Sprites interactive
     this.filteredPlayerSprites.forEach((sprite) => {

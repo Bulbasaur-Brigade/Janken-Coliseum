@@ -4,8 +4,8 @@ import Phaser from "phaser";
 // import SceneTransition from "./SceneTransition";
 import NPC from "../entity/NPC";
 import SceneTransition from "./SceneTransition";
-import { addHp, loseHp } from "../store/hpReducer";
-import store from "../store/store";
+import { addHp, loseHp } from "../redux/hpReducer";
+import store from "../redux/store";
 export default class SinglePlayerMapScene extends Phaser.Scene {
   // export default class SinglePlayerMapScene extends SceneTransition {
   constructor() {
@@ -93,6 +93,48 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       frames: [{ key: "character", frame: 3 }],
       frameRate: 10,
     });
+    this.anims.create({
+      key: "runLeftApril",
+      frames: this.anims.generateFrameNumbers("character", {
+        start: 60,
+        end: 62,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "runRightApril",
+      frames: this.anims.generateFrameNumbers("character", {
+        start: 69,
+        end: 71,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "runDownApril",
+      frames: this.anims.generateFrameNumbers("character", {
+        start: 63,
+        end: 65,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "runUpApril",
+      frames: this.anims.generateFrameNumbers("character", {
+        start: 66,
+        end: 68,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "idleApril",
+      frames: [{ key: "character", frame: 63 }],
+      frameRate: 10,
+    });
   }
 
   create() {
@@ -126,6 +168,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.bgMusic.play();
 
     //Player
+    // this.time.delayedCall(3000,()=>{})
     this.player = new Player(
       this,
       this.data.get("playercordX") || 250,
@@ -151,6 +194,9 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
           this.data.set("playercordX", this.player.x);
           this.data.set("playercordY", this.player.y);
+          this.player.disableBody();
+          this.input.keyboard.enabled = false;
+          // this.player.setVisible(false);
           this.time.delayedCall(4000, () => {
             text.setText("");
             this.scene.switch("BattleScene");
@@ -177,16 +223,10 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
           this.player,
           newItem,
           (player, item) => {
-            // console.log("this.hp", typeof this.hp);
+            this.inventory.addItem(item.texture.key);
 
-            this.inventory.addItem(item.texture.key, 1);
             if (item.texture.key === "heart") {
               store.dispatch(addHp(1));
-              this.hp = store.getState();
-              console.log("this.hp", this.hp);
-
-              // this.heart = this.scene.get("Heart");
-              // this.heart.gainHp(item.texture.key, 1);
             }
             item.destroy();
           },
@@ -195,8 +235,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         );
       }
     });
-
-    this.player.setHp();
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
