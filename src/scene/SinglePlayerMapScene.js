@@ -8,6 +8,7 @@ import { addHp, loseHp } from '../redux/hpReducer';
 import store from '../redux/store';
 import Heart from './Heart';
 import { addNPC, getNPC } from '../redux/npcBoard';
+
 export default class SinglePlayerMapScene extends SceneTransition {
   // export default class SinglePlayerMapScene extends SceneTransition {
   constructor() {
@@ -48,7 +49,8 @@ export default class SinglePlayerMapScene extends SceneTransition {
         frameHeight: 64,
       }
     );
-
+    //Dialog Data
+    this.load.json('speech', 'assets/speech/npcSpeech.json');
     // Music
     this.load.audio('Pallet', 'assets/audio/PalletTown.mp3');
   }
@@ -147,8 +149,6 @@ export default class SinglePlayerMapScene extends SceneTransition {
 
     this.inventory = this.scene.get('Inventory');
 
-    //  Hearts
-
     super.create();
 
     // Start animations
@@ -179,15 +179,12 @@ export default class SinglePlayerMapScene extends SceneTransition {
     ).setScale(0.25);
 
     //NPC generation/collision
+    this.speechData = this.cache.json.get('speech');
+
     const npcLayer = map.getObjectLayer('NPC');
 
     npcLayer.objects.forEach((npc) => {
-      const text = this.add.text(npc.x - 100, npc.y + 100, '', {
-        font: '12px Courier',
-        fill: '#F0F8FF',
-      });
       const newNPC = new NPC(this, npc.x, npc.y, npc.type).setScale(0.25);
-
       this.npcsArr.push(newNPC);
       store.dispatch(addNPC({ name: npc.type, defeated: newNPC.isDefeated }));
       const npcData = store.getState();
@@ -201,7 +198,8 @@ export default class SinglePlayerMapScene extends SceneTransition {
             npc.y,
             125,
             50,
-            'Twin ceramic rotor drives on each wheel'
+            this.speechData[npc.type],
+            npc.type
           );
           store.dispatch(getNPC(currentNPC.texture.key));
 

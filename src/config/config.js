@@ -10,10 +10,6 @@ import NpcHearts from '../scene/NpcHearts';
 import SceneTransition from '../scene/SceneTransition';
 import VictoryScene from '../scene/VictoryScene';
 import Preloader from '../scene/Preloader';
-import Phaser from 'phaser';
-import BattleScene from '../scene/BattleScene';
-import SinglePlayerMapScene from '../scene/SinglePlayerMapScene';
-import TitleScene from '../scene/TitleScene';
 import CharPicker from '../scene/CharPicker';
 import QuestUi from '../scene/QuestUI';
 

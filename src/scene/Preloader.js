@@ -27,9 +27,16 @@ export default class Preloader extends Phaser.Scene {
     this.load.image('scissors', 'assets/sprites/scissors.png');
     this.load.image('heart', 'assets/sprites/heart.png');
     this.load.image('diamond', 'assets/sprites/diamond.png');
+
+    //Font
+    this.load.bitmapFont(
+      'carrier_command',
+      'assets/fonts/carrier_command.png',
+      'assets/fonts/carrier_command.xml'
+    );
   }
 
   create() {
-    this.scene.start('TitleScene');
+    this.scene.start('SinglePlayerMapScene');
   }
 }

@@ -6,10 +6,6 @@ export default class Heart extends Phaser.Scene {
     super('Heart');
   }
 
-  preload() {
-    this.load.image('heart', 'assets/sprites/heart.png');
-  }
-
   create() {
     this.heart1 = new Items(this, 280, 30, 'heart').setScale(0.7);
     this.heart2 = new Items(this, 330, 30, 'heart').setScale(0.7);
