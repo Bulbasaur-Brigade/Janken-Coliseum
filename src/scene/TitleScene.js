@@ -87,6 +87,7 @@ export default class TitleScene extends SceneTransition {
       15
     );
 
+    
     this.singlePlayer.on('pointerdown', () => {
       this.scene.transition({
         duration: 2500,

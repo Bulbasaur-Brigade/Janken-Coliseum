@@ -9,7 +9,7 @@ import store from "../redux/store";
 import Heart from "./Heart";
 import { addNPC, getNPC } from "../redux/npcBoard";
 import { createCharacterAnims } from "../anims/CharacterAnims";
-export default class SinglePlayerMapScene extends SceneTransition {
+export default class SinglePlayerMapScene extends Phaser.Scene {
   // export default class SinglePlayerMapScene extends SceneTransition {
   constructor() {
     super("SinglePlayerMapScene");
@@ -75,7 +75,7 @@ export default class SinglePlayerMapScene extends SceneTransition {
 
   create() {
     // Inventory
-    super.create();
+    // super.create();
     this.scene.run("QuestUi");
     this.scene.run("Inventory");
     this.scene.run("Heart");
@@ -140,11 +140,14 @@ export default class SinglePlayerMapScene extends SceneTransition {
 
           this.data.set("playercordX", this.player.x);
           this.data.set("playercordY", this.player.y);
-          this.time.delayedCall(4000, () => {
-            // text.setText('');
-            this.scene.switch("BattleScene");
-            this.bgMusic.stop();
-          });
+          // this.time.delayedCall(4000, () => {
+          // text.setText('');
+          this.scene.stop("QuestUi");
+          this.scene.stop("Inventory");
+          this.scene.stop("Heart");
+          this.scene.switch("BattleScene");
+          this.bgMusic.stop();
+          // });
         },
         null,
         this
@@ -178,6 +181,8 @@ export default class SinglePlayerMapScene extends SceneTransition {
         );
       }
     });
+
+    // this.item = new Item
 
     this.cursors = this.input.keyboard.createCursorKeys();
 

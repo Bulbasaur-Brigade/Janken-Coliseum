@@ -4,7 +4,7 @@ import config from "./config/config";
 class Game extends Phaser.Game {
   constructor() {
     super(config);
-    // this.scene.start("MultiPlayerMapScene");
+    this.scene.start("SinglePlayerMapScene");
   }
   create() {}
 }
