@@ -24,11 +24,16 @@ export default {
   physics: {
     default: 'arcade',
     arcade: {
-      debug: true,
+      debug: false,
     },
   },
 
-  parent: 'content',
+  scale: {
+    parent: "content",
+    autoCenter: true,
+  },
+  parent: "content",
+
   dom: {
     createContainer: true,
   },
@@ -38,6 +43,7 @@ export default {
     TitleScene,
     CharPicker,
     MultiPlayerMapScene,
+
     SinglePlayerMapScene,
     QuestUi,
     BattleScene,

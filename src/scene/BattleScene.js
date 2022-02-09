@@ -36,6 +36,8 @@ export default class BattleScene extends Phaser.Scene {
   init() {
     //Battle NPC
     this.computer = store.getState();
+    const npcName = this.computer.npcBoardReducer.singleNPC;
+    console.log("this.computer", this.computer);
     // Rule Set
     this.rules = {
       rock: SCISSORS,
@@ -46,8 +48,13 @@ export default class BattleScene extends Phaser.Scene {
     this.mode = NOTHING_SELECTION_MODE;
     this.selectedSprite = null;
     // Computer Hearts
-    this.computerHearts = 3;
+    if (npcName === "mac" || npcName === "zach" || npcName === "omar") {
+      this.computerHearts = 5;
+    } else {
+      this.computerHearts = 2;
+    }
     // Getting DATA
+
     const data = store.getState();
     this.hp = data.hpReducer;
     this.items = data.inventoryReducer.itemArray;
@@ -111,7 +118,7 @@ export default class BattleScene extends Phaser.Scene {
     }
   }
   gameWin() {
-    if (this.computerHearts === 2) {
+    if (this.computerHearts === 0) {
       store.dispatch(isDefeated(this.computer.npcBoardReducer.singleNPC));
       this.scene.switch('SinglePlayerMapScene');
       this.scene.stop();
@@ -146,10 +153,11 @@ export default class BattleScene extends Phaser.Scene {
     }
   }
   create() {
-    // this.time.delayedCall(3500, () => {
-    this.scene.run('NpcHearts');
+      this.scene.run("NpcHearts");
+    this.scene.run("Inventory");
+    this.scene.run("Heart");
 
-    // });
+  
 
     // super.create();
 
