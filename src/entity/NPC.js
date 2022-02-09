@@ -17,7 +17,7 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
     var bubblePadding = 10;
     var arrowHeight = bubbleHeight / 4;
 
-    var bubble = this.scene.add.graphics({ x: x, y: y });
+    var bubble = this.scene.add.graphics({ x: x - 20, y: y - 75 });
 
     //  Bubble shadow
     bubble.fillStyle(0x222222, 0.5);
@@ -53,7 +53,7 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
 
     var content = this.scene.add.text(0, 0, quote, {
       fontFamily: 'Arial',
-      fontSize: 16,
+      fontSize: 10,
       color: '#000000',
       align: 'center',
       wordWrap: { width: bubbleWidth - bubblePadding * 2 },

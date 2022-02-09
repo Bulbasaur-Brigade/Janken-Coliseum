@@ -9,6 +9,7 @@ import Inventory from '../scene/Inventory';
 import NpcHearts from '../scene/NpcHearts';
 import SceneTransition from '../scene/SceneTransition';
 import VictoryScene from '../scene/VictoryScene';
+import Preloader from '../scene/Preloader';
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
@@ -30,9 +31,9 @@ export default {
     createContainer: true,
   },
   scene: [
+    Preloader,
     SceneTransition,
     TitleScene,
-    // Menu,
     MultiPlayerMapScene,
     SinglePlayerMapScene,
     BattleScene,
