@@ -42,7 +42,7 @@ export default {
     SceneTransition,
     TitleScene,
     CharPicker,
-    MultiPlayerMapScene,
+    // MultiPlayerMapScene,
 
     SinglePlayerMapScene,
     QuestUi,
