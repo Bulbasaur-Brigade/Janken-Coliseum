@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-
+import store from "../redux/store";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, spriteKey) {
     super(scene, x, y, spriteKey);
@@ -7,36 +7,54 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this);
     this.scene.physics.world.enable(this);
   }
-  setHp() {
-    let hp = parseInt(localStorage.getItem("hp")) || 3;
-
-    localStorage.setItem("hp", JSON.stringify(hp));
-  }
 
   //Movements
+
   updateMovement(cursors) {
-    if (cursors.W.isDown) {
-      this.setVelocityY(-100);
-      this.play("runUp", true);
-    } else if (cursors.A.isDown) {
-      this.setVelocityX(-100);
-      this.play("runLeft", true);
-    } else if (cursors.S.isDown) {
-      this.setVelocityY(100);
-      this.play("runDown", true);
-    } else if (cursors.D.isDown) {
-      this.setVelocityX(100);
-      this.play("runRight", true);
+    const character = store.getState();
+
+    if (character.charReducer === "dave") {
+      if (cursors.W.isDown) {
+        this.setVelocityY(-100);
+        this.play("runUp", true);
+      } else if (cursors.A.isDown) {
+        this.setVelocityX(-100);
+        this.play("runLeft", true);
+      } else if (cursors.S.isDown) {
+        this.setVelocityY(100);
+        this.play("runDown", true);
+      } else if (cursors.D.isDown) {
+        this.setVelocityX(100);
+        this.play("runRight", true);
+      } else {
+        this.setVelocityY(0);
+        this.setVelocityX(0);
+        this.play("idle");
+      }
     } else {
-      this.setVelocityY(0);
-      this.setVelocityX(0);
-      this.play("idle");
+      if (cursors.W.isDown) {
+        this.setVelocityY(-100);
+        this.play("runUpApril", true);
+      } else if (cursors.A.isDown) {
+        this.setVelocityX(-100);
+        this.play("runLeftApril", true);
+      } else if (cursors.S.isDown) {
+        this.setVelocityY(100);
+        this.play("runDownApril", true);
+      } else if (cursors.D.isDown) {
+        this.setVelocityX(100);
+        this.play("runRightApril", true);
+      } else {
+        this.setVelocityY(0);
+        this.setVelocityX(0);
+        this.play("idleApril");
+      }
     }
   }
 
   update(cursors) {
     this.updateMovement(cursors);
     this.body.velocity.normalize().scale(100);
-    this.body.setSize(20, 25, 50, 25);
+    this.body.setSize(10);
   }
 }

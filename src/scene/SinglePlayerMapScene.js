@@ -1,12 +1,13 @@
 import Player from '../entity/Player';
 import Items from '../entity/Items';
 import Phaser from 'phaser';
+// import SceneTransition from "./SceneTransition";
 import NPC from '../entity/NPC';
 import SceneTransition from './SceneTransition';
-import { addHp, loseHp } from '../store/hpReducer';
-import { addNPC, getNPC } from '../store/npcBoard';
-import store from '../store/store';
+import { addHp, loseHp } from '../redux/hpReducer';
+import store from '../redux/store';
 import Heart from './Heart';
+import { addNPC, getNPC } from '../redux/npcBoard';
 export default class SinglePlayerMapScene extends SceneTransition {
   // export default class SinglePlayerMapScene extends SceneTransition {
   constructor() {
@@ -94,11 +95,53 @@ export default class SinglePlayerMapScene extends SceneTransition {
       frames: [{ key: 'character', frame: 3 }],
       frameRate: 10,
     });
+    this.anims.create({
+      key: 'runLeftApril',
+      frames: this.anims.generateFrameNumbers('character', {
+        start: 60,
+        end: 62,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: 'runRightApril',
+      frames: this.anims.generateFrameNumbers('character', {
+        start: 69,
+        end: 71,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: 'runDownApril',
+      frames: this.anims.generateFrameNumbers('character', {
+        start: 63,
+        end: 65,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: 'runUpApril',
+      frames: this.anims.generateFrameNumbers('character', {
+        start: 66,
+        end: 68,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: 'idleApril',
+      frames: [{ key: 'character', frame: 63 }],
+      frameRate: 10,
+    });
   }
 
   create() {
     // Inventory
-
+    // this.scene.run("QuestUi");
     this.scene.run('Inventory');
     this.scene.run('Heart');
 
@@ -127,6 +170,7 @@ export default class SinglePlayerMapScene extends SceneTransition {
     this.bgMusic.play();
 
     //Player
+    // this.time.delayedCall(3000,()=>{})
     this.player = new Player(
       this,
       this.data.get('playercordX') || 250,
@@ -189,16 +233,10 @@ export default class SinglePlayerMapScene extends SceneTransition {
           this.player,
           newItem,
           (player, item) => {
-            // console.log("this.hp", typeof this.hp);
+            this.inventory.addItem(item.texture.key);
 
-            this.inventory.addItem(item.texture.key, 1);
             if (item.texture.key === 'heart') {
               store.dispatch(addHp(1));
-              this.hp = store.getState();
-              console.log('this.hp', this.hp);
-
-              // this.heart = this.scene.get("Heart");
-              // this.heart.gainHp(item.texture.key, 1);
             }
             item.destroy();
           },
@@ -207,8 +245,6 @@ export default class SinglePlayerMapScene extends SceneTransition {
         );
       }
     });
-
-    this.player.setHp();
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -226,90 +262,6 @@ export default class SinglePlayerMapScene extends SceneTransition {
     const camera = this.cameras.main;
     camera.setZoom(2);
     camera.startFollow(this.player, true);
-    // Inventory
-    // this.rocks = this.physics.add.group({
-    //   key: "rock",
-    //   allowGravity: false,
-    //   repeat: 30,
-    // });
-    // var emptyTiles = interactiveLayer.filterTiles(function (tile) {
-    //   return tile.index === -1;
-    // });
-    // this.rocks.children.iterate(function (child) {
-    //   var randomTile = Phaser.Utils.Array.GetRandom(emptyTiles);
-
-    //   child.setPosition(randomTile.pixelX, randomTile.pixelY);
-    //   child.setOrigin(0, 0);
-    //   child.setScale(0.25);
-    //   child.enableBody(true, child.x, child.y, true, true);
-    // });
-
-    // this.hearts = this.physics.add.group({
-    //   key: "heart",
-    //   allowGravity: false,
-    //   repeat: 15,
-    // });
-
-    // this.hearts.children.iterate(function (child) {
-    //   var randomTile = Phaser.Utils.Array.GetRandom(emptyTiles);
-
-    //   child.setPosition(randomTile.pixelX, randomTile.pixelY);
-    //   child.setOrigin(0, 0);
-    //   child.setScale(0.25);
-    //   child.enableBody(true, child.x, child.y, true, true);
-    // });
-
-    // this.paper = new Items(this, 150, 180, "paper").setScale(0.25);
-    // this.scissors = new Items(this, 150, 160, "scissors").setScale(0.25);
-
-    // this.physics.add.collider(
-    //   this.player,
-    //   this.rocks,
-    //   (player, item) => {
-    //     this.inventory.addItem(item.texture.key, 1);
-    //     console.log("item", item);
-    //     item.destroy();
-    //   },
-
-    //   null,
-    //   this
-    // );
-
-    // this.physics.add.collider(
-    //   this.player,
-    //   this.hearts,
-    //   (player, item) => {
-    //     this.heart = this.scene.get("Heart");
-    //     this.heart.gainHp(item.texture.key, 1);
-
-    //     item.destroy();
-    //   },
-
-    //   null,
-    //   this
-    // );
-
-    // this.physics.add.collider(
-    //   this.player,
-    //   this.paper,
-    //   () => {
-    //     this.inventory.addItem(this.paper.texture.key, 1);
-    //     this.paper.destroy();
-    //   },
-    //   null,
-    //   this
-    // );
-    // this.physics.add.collider(
-    //   this.player,
-    //   this.scissors,
-    //   () => {
-    //     this.inventory.addItem(this.scissors.texture.key, 1);
-
-    //     this.scissors.destroy();
-    //   },
-    //   null,
-    //   this
-    // );
 
     // WASD KEYS FOR MOVEMENT
     this.keys = this.input.keyboard.addKeys('W,S,A,D');

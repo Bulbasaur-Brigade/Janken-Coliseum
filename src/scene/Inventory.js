@@ -1,45 +1,36 @@
 import Items from '../entity/Items';
 // import SceneTransition from "./SceneTransition";
+import { addItem, loseItem } from '../redux/inventoryReducer';
+import store from '../redux/store';
 
 export default class Inventory extends Phaser.Scene {
   constructor() {
     super('Inventory');
   }
-  setItems() {
-    let items = [
-      { name: 'rock', amount: 0 },
-      { name: 'paper', amount: 0 },
-      { name: 'scissors', amount: 0 },
-    ];
-    localStorage.setItem('items', JSON.stringify(items));
-  }
   // transformItem(item) {}
   addItem(name, amount) {
-    let data = localStorage.getItem('items');
-    let items = data ? JSON.parse(data) : [];
+    let getStore = store.getState();
+    let items = getStore.inventoryReducer;
+    let itemsArray = items.itemArray;
 
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].name === name) {
-        items[i].amount += amount;
+    for (let i = 0; i < itemsArray.length; i++) {
+      if (itemsArray[i].name === name) {
+        store.dispatch(addItem(name, amount));
       }
-      if (items[i].name === 'rock') {
-        this.rockText.setText(items[i].amount);
+      if (itemsArray[i].name === 'rock') {
+        this.rockText.setText(itemsArray[i].amount);
       }
 
-      if (items[i].name === 'paper') {
-        this.paperText.setText(items[i].amount);
+      if (itemsArray[i].name === 'paper') {
+        this.paperText.setText(itemsArray[i].amount);
       }
-      if (items[i].name === 'scissors') {
-        this.scissorsText.setText(items[i].amount);
+      if (itemsArray[i].name === 'scissors') {
+        this.scissorsText.setText(itemsArray[i].amount);
       }
     }
-
-    localStorage.setItem('items', JSON.stringify(items));
   }
 
   create() {
-    this.setItems();
-
     this.inventory = new Items(this, 85, 560, 'inventory').setScale(1.2);
     this.rock = new Items(this, 41, 560, 'rock').setScale(0.55);
     this.paper = new Items(this, 85, 560, 'paper').setScale(0.55);
