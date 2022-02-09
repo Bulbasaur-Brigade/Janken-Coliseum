@@ -1,18 +1,18 @@
-import Player from "../entity/Player";
-import Items from "../entity/Items";
-import Phaser from "phaser";
+import Player from '../entity/Player';
+import Items from '../entity/Items';
+import Phaser from 'phaser';
 // import SceneTransition from "./SceneTransition";
-import NPC from "../entity/NPC";
-import SceneTransition from "./SceneTransition";
-import { addHp, loseHp } from "../redux/hpReducer";
-import store from "../redux/store";
+import NPC from '../entity/NPC';
+import SceneTransition from './SceneTransition';
+import { addHp, loseHp } from '../redux/hpReducer';
+import store from '../redux/store';
 import Heart from './Heart';
-import { addNPC, getNPC } from "../redux/npcBoard";
-export default class SinglePlayerMapScene extends SceneTransition {
+import { addNPC, getNPC } from '../redux/npcBoard';
 
+export default class SinglePlayerMapScene extends SceneTransition {
   // export default class SinglePlayerMapScene extends SceneTransition {
   constructor() {
-    super("SinglePlayerMapScene");
+    super('SinglePlayerMapScene');
     this.npcsArr = [];
   }
 
@@ -20,8 +20,8 @@ export default class SinglePlayerMapScene extends SceneTransition {
     const currentNPCS = store.getState();
     const storeNPCS = currentNPCS.npcBoardReducer.npcs;
     if (storeNPCS.every((npc) => npc.defeated)) {
-      this.scene.stop("Heart");
-      this.scene.stop("Inventory");
+      this.scene.stop('Heart');
+      this.scene.stop('Inventory');
       this.scene.stop();
       this.scene.start('VictoryScene');
     }
@@ -35,47 +35,29 @@ export default class SinglePlayerMapScene extends SceneTransition {
   }
 
   preload() {
-    this.load.image("tiles", "assets/maps/tilemap.png");
-    this.load.tilemapTiledJSON("tilemap", "assets/maps/overworldMap.json");
-    this.load.spritesheet("character", "assets/spriteSheets/characters.png", {
+    this.load.image('tiles', 'assets/maps/tilemap.png');
+    this.load.tilemapTiledJSON('tilemap', 'assets/maps/overworldMap.json');
+    this.load.spritesheet('character', 'assets/spriteSheets/characters.png', {
       frameWidth: 64,
       frameHeight: 64,
     });
     this.load.spritesheet(
-      "npc-character",
-      "assets/spriteSheets/characters.png",
+      'npc-character',
+      'assets/spriteSheets/characters.png',
       {
         frameWidth: 64,
         frameHeight: 64,
       }
     );
-    //NPC charcters
-    this.load.image("sey", "assets/sprites/npcs/sey.png");
-    this.load.image("greg", "assets/sprites/npcs/greg.png");
-    this.load.image("margarita", "assets/sprites/npcs/margarita.png");
-    this.load.image("danny", "assets/sprites/npcs/danny.png");
-    this.load.image("mac", "assets/sprites/npcs/mac.png");
-    this.load.image("savion", "assets/sprites/npcs/savion.png");
-    this.load.image("omar", "assets/sprites/npcs/omar.png");
-    this.load.image("amber", "assets/sprites/npcs/amber.png");
-    this.load.image("devonne", "assets/sprites/npcs/devonne.png");
-    this.load.image("eric", "assets/sprites/npcs/eric.png");
-    this.load.image("zach", "assets/sprites/npcs/zach.png");
-    // Heart
-    this.load.image("heart", "assets/sprites/heart.png");
-    //Items
-    this.load.image("rock", "assets/sprites/rock.png");
-    this.load.image("paper", "assets/sprites/paper.png");
-    this.load.image("scissors", "assets/sprites/scissors.png");
-    this.load.image("heart", "assets/sprites/heart.png");
-
+    //Dialog Data
+    this.load.json('speech', 'assets/speech/npcSpeech.json');
     // Music
-    this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
+    this.load.audio('Pallet', 'assets/audio/PalletTown.mp3');
   }
   createAnimations() {
     this.anims.create({
-      key: "runLeft",
-      frames: this.anims.generateFrameNumbers("character", {
+      key: 'runLeft',
+      frames: this.anims.generateFrameNumbers('character', {
         start: 0,
         end: 2,
       }),
@@ -83,8 +65,8 @@ export default class SinglePlayerMapScene extends SceneTransition {
       repeat: -1,
     });
     this.anims.create({
-      key: "runRight",
-      frames: this.anims.generateFrameNumbers("character", {
+      key: 'runRight',
+      frames: this.anims.generateFrameNumbers('character', {
         start: 9,
         end: 11,
       }),
@@ -92,8 +74,8 @@ export default class SinglePlayerMapScene extends SceneTransition {
       repeat: -1,
     });
     this.anims.create({
-      key: "runDown",
-      frames: this.anims.generateFrameNumbers("character", {
+      key: 'runDown',
+      frames: this.anims.generateFrameNumbers('character', {
         start: 3,
         end: 5,
       }),
@@ -101,8 +83,8 @@ export default class SinglePlayerMapScene extends SceneTransition {
       repeat: -1,
     });
     this.anims.create({
-      key: "runUp",
-      frames: this.anims.generateFrameNumbers("character", {
+      key: 'runUp',
+      frames: this.anims.generateFrameNumbers('character', {
         start: 6,
         end: 8,
       }),
@@ -111,13 +93,13 @@ export default class SinglePlayerMapScene extends SceneTransition {
     });
 
     this.anims.create({
-      key: "idle",
-      frames: [{ key: "character", frame: 3 }],
+      key: 'idle',
+      frames: [{ key: 'character', frame: 3 }],
       frameRate: 10,
     });
     this.anims.create({
-      key: "runLeftApril",
-      frames: this.anims.generateFrameNumbers("character", {
+      key: 'runLeftApril',
+      frames: this.anims.generateFrameNumbers('character', {
         start: 60,
         end: 62,
       }),
@@ -125,8 +107,8 @@ export default class SinglePlayerMapScene extends SceneTransition {
       repeat: -1,
     });
     this.anims.create({
-      key: "runRightApril",
-      frames: this.anims.generateFrameNumbers("character", {
+      key: 'runRightApril',
+      frames: this.anims.generateFrameNumbers('character', {
         start: 69,
         end: 71,
       }),
@@ -134,8 +116,8 @@ export default class SinglePlayerMapScene extends SceneTransition {
       repeat: -1,
     });
     this.anims.create({
-      key: "runDownApril",
-      frames: this.anims.generateFrameNumbers("character", {
+      key: 'runDownApril',
+      frames: this.anims.generateFrameNumbers('character', {
         start: 63,
         end: 65,
       }),
@@ -143,8 +125,8 @@ export default class SinglePlayerMapScene extends SceneTransition {
       repeat: -1,
     });
     this.anims.create({
-      key: "runUpApril",
-      frames: this.anims.generateFrameNumbers("character", {
+      key: 'runUpApril',
+      frames: this.anims.generateFrameNumbers('character', {
         start: 66,
         end: 68,
       }),
@@ -153,8 +135,8 @@ export default class SinglePlayerMapScene extends SceneTransition {
     });
 
     this.anims.create({
-      key: "idleApril",
-      frames: [{ key: "character", frame: 63 }],
+      key: 'idleApril',
+      frames: [{ key: 'character', frame: 63 }],
       frameRate: 10,
     });
   }
@@ -162,75 +144,117 @@ export default class SinglePlayerMapScene extends SceneTransition {
   create() {
     // Inventory
     // this.scene.run("QuestUi");
-    this.scene.run("Inventory");
-    this.scene.run("Heart");
+    this.scene.run('Inventory');
+    this.scene.run('Heart');
 
-    this.inventory = this.scene.get("Inventory");
-
-    //  Hearts
+    this.inventory = this.scene.get('Inventory');
 
     super.create();
 
     // Start animations
     this.createAnimations();
     // Creating Map using Tile Set
-    const map = this.make.tilemap({ key: "tilemap" });
+    const map = this.make.tilemap({ key: 'tilemap' });
     // "characters" comes from name in Tiled software
-    const tileset = map.addTilesetImage("characters", "tiles", 16, 16);
+    const tileset = map.addTilesetImage('characters', 'tiles', 16, 16);
 
     // Layers
 
-    const waterLayer = map.createLayer("Water", tileset, 0, 0);
-    const groundLayer = map.createLayer("Ground", tileset, 0, 0);
-    const interactiveLayer = map.createLayer("Interactive", tileset, 0, 0);
-    const overheadLayer = map.createLayer("Overhead", tileset, 0, 0);
+    const waterLayer = map.createLayer('Water', tileset, 0, 0);
+    const groundLayer = map.createLayer('Ground', tileset, 0, 0);
+    const interactiveLayer = map.createLayer('Interactive', tileset, 0, 0);
+    const overheadLayer = map.createLayer('Overhead', tileset, 0, 0);
 
     // Music
-    this.bgMusic = this.sound.add("Pallet", { volume: 0.1 }, true);
+    this.bgMusic = this.sound.add('Pallet', { volume: 0.1 }, true);
     this.bgMusic.play();
 
     //Player
     // this.time.delayedCall(3000,()=>{})
     this.player = new Player(
       this,
-      this.data.get("playercordX") || 250,
-      this.data.get("playercordY") || 200,
-      "character"
+      this.data.get('playercordX') || 250,
+      this.data.get('playercordY') || 200,
+      'character'
     ).setScale(0.25);
 
     //NPC generation/collision
-    const npcLayer = map.getObjectLayer("NPC");
+    this.speechData = this.cache.json.get('speech');
 
+    const npcLayer = map.getObjectLayer('NPC');
+    // npcLayer.setCollisionByProperty({ collide: true });
     npcLayer.objects.forEach((npc) => {
-      const text = this.add.text(npc.x - 100, npc.y + 100, "", {
-        font: "12px Courier",
-        fill: "#F0F8FF",
-      });
       const newNPC = new NPC(this, npc.x, npc.y, npc.type).setScale(0.25);
-
       this.npcsArr.push(newNPC);
       store.dispatch(addNPC({ name: npc.type, defeated: newNPC.isDefeated }));
       const npcData = store.getState();
-      this.physics.add.collider(
+      const npcCollider = this.physics.add.collider(
         this.player,
         newNPC,
         (player, currentNPC) => {
+          // npcCollider.active = false;
+          // this.player.setImmovable(true);
           //Dialog
-          newNPC.createSpeechBubble(
-            npc.x,
-            npc.y,
-            100,
-            100,
-            "Twin ceramic rotor drives on each wheel"
-          );
+          this.dialogbox = this.add
+            .rectangle(npc.x + 50, npc.y - 50, 120, 60, 0xfffaf0)
+            .setDepth(20);
+          this.dialogText = this.add
+            .text(npc.x, npc.y - 70, this.speechData[npc.type], {
+              font: '9px',
+              fill: '#000000',
+              wordWrap: { width: this.dialogbox.width - 1 * 2 },
+            })
+            .setDepth(20);
+          this.dialogTextName = this.add
+            .text(npc.x + 20, npc.y - 80, npc.type.toUpperCase(), {
+              font: '9px',
+              fill: '#000000',
+            })
+            .setDepth(20);
+          this.yesRec = this.add
+            .rectangle(npc.x + 30, npc.y - 25, 20, 10, 0x000000)
+            .setDepth(20);
+          this.yesButton = this.add
+            .text(npc.x + 23, npc.y - 30, 'Yes', {
+              font: '9px',
+              fill: '#FFFAF0',
+            })
+            .setInteractive({ useHandCursor: true })
+            .setVisible(true)
+            .setDepth(25);
+          this.noRec = this.add
+            .rectangle(npc.x + 60, npc.y - 25, 20, 10, 0x000000)
+            .setDepth(20);
+          this.noButton = this.add
+            .text(npc.x + 55, npc.y - 30, 'No', {
+              font: '9px',
+              fill: '#FFFAF0',
+            })
+            .setInteractive({ useHandCursor: true })
+            .setVisible(true)
+            .setDepth(25);
+
           store.dispatch(getNPC(currentNPC.texture.key));
 
-          this.data.set("playercordX", this.player.x);
-          this.data.set("playercordY", this.player.y);
-          this.time.delayedCall(4000, () => {
-            // text.setText('');
-            this.scene.switch("BattleScene");
-            this.bgMusic.stop();
+          this.data.set('playercordX', this.player.x);
+          this.data.set('playercordY', this.player.y);
+          this.yesButton.on('pointerdown', () => {
+            this.scene.switch('BattleScene');
+          });
+          const dialogArr = [
+            this.yesRec,
+            this.yesButton,
+            this.noRec,
+            this.noButton,
+            this.dialogbox,
+            this.dialogText,
+            this.dialogTextName,
+          ];
+          this.noButton.on('pointerdown', () => {
+            dialogArr.forEach((item) => {
+              item.setVisible(false);
+            });
+            npcCollider.active = true;
           });
         },
         null,
@@ -239,8 +263,8 @@ export default class SinglePlayerMapScene extends SceneTransition {
     });
 
     //Item randomized/overlaps
-    const itemLayer = map.getObjectLayer("ItemSpawns");
-    const itemArray = ["rock", "paper", "scissors", "heart", ""];
+    const itemLayer = map.getObjectLayer('ItemSpawns');
+    const itemArray = ['rock', 'paper', 'scissors', 'heart', ''];
     itemLayer.objects.forEach((item) => {
       const randomItem =
         itemArray[Math.floor(Math.random() * itemArray.length)];
@@ -255,7 +279,7 @@ export default class SinglePlayerMapScene extends SceneTransition {
           (player, item) => {
             this.inventory.addItem(item.texture.key);
 
-            if (item.texture.key === "heart") {
+            if (item.texture.key === 'heart') {
               store.dispatch(addHp(1));
             }
             item.destroy();
@@ -280,11 +304,11 @@ export default class SinglePlayerMapScene extends SceneTransition {
 
     // Placeholder Camera
     const camera = this.cameras.main;
-    camera.setZoom(2);
+    camera.setZoom(3);
     camera.startFollow(this.player, true);
 
     // WASD KEYS FOR MOVEMENT
-    this.keys = this.input.keyboard.addKeys("W,S,A,D");
+    this.keys = this.input.keyboard.addKeys('W,S,A,D');
   }
 
   update() {

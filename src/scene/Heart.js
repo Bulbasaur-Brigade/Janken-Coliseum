@@ -1,26 +1,22 @@
-import Phaser from "phaser";
-import Items from "../entity/Items";
-import store from "../redux/store";
+import Phaser from 'phaser';
+import Items from '../entity/Items';
+import store from '../redux/store';
 export default class Heart extends Phaser.Scene {
   constructor() {
-    super("Heart");
-  }
-
-  preload() {
-    this.load.image("heart", "assets/sprites/heart.png");
+    super('Heart');
   }
 
   create() {
-    this.heart1 = new Items(this, 280, 30, "heart").setScale(0.7);
-    this.heart2 = new Items(this, 330, 30, "heart").setScale(0.7);
-    this.heart3 = new Items(this, 380, 30, "heart").setScale(0.7);
-    this.heart4 = new Items(this, 430, 30, "heart").setScale(0.7);
-    this.heart5 = new Items(this, 480, 30, "heart").setScale(0.7);
-    this.heart6 = new Items(this, 280, 80, "heart").setScale(0.7);
-    this.heart7 = new Items(this, 330, 80, "heart").setScale(0.7);
-    this.heart8 = new Items(this, 380, 80, "heart").setScale(0.7);
-    this.heart9 = new Items(this, 430, 80, "heart").setScale(0.7);
-    this.heart10 = new Items(this, 480, 80, "heart").setScale(0.7);
+    this.heart1 = new Items(this, 280, 30, 'heart').setScale(0.7);
+    this.heart2 = new Items(this, 330, 30, 'heart').setScale(0.7);
+    this.heart3 = new Items(this, 380, 30, 'heart').setScale(0.7);
+    this.heart4 = new Items(this, 430, 30, 'heart').setScale(0.7);
+    this.heart5 = new Items(this, 480, 30, 'heart').setScale(0.7);
+    this.heart6 = new Items(this, 280, 80, 'heart').setScale(0.7);
+    this.heart7 = new Items(this, 330, 80, 'heart').setScale(0.7);
+    this.heart8 = new Items(this, 380, 80, 'heart').setScale(0.7);
+    this.heart9 = new Items(this, 430, 80, 'heart').setScale(0.7);
+    this.heart10 = new Items(this, 480, 80, 'heart').setScale(0.7);
 
     this.hearts = [
       this.heart1,
