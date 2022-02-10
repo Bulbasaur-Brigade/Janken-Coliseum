@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   devtool: 'eval-source-map',
   module: {
     // externals: [nodeExternals()],
