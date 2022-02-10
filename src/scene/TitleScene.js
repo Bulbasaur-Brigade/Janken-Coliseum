@@ -199,7 +199,7 @@ export default class TitleScene extends SceneTransition {
         target: 'VictoryScene',
       });
     });
-    
+
     // .on("pointerover", () => this.gameStateText)
     // .on("pointerout", () => this.gameStateText.setStyle({ fill: "#111" }));
   }
