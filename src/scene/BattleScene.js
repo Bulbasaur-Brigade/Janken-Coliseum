@@ -194,7 +194,9 @@ export default class BattleScene extends Phaser.Scene {
     //Make the Player Sprites interactive
     this.filteredPlayerSprites.forEach((sprite) => {
       sprite.setInteractive({ useHandCursor: true });
+
       sprite.on("pointerdown", () => {
+
         this.selectMove(sprite);
       });
     });

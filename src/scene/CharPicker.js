@@ -14,11 +14,13 @@ export default class CharPicker extends SceneTransition {
       "assets/fonts/carrier_command.png",
       "assets/fonts/carrier_command.xml"
     );
+    this.load.audio('selectSound','assets/audio/selectSound.mp3')
   }
   create() {
     super.create();
     const dave = this.add.sprite(250, 150, "dave").setScale(3);
     const april = this.add.sprite(500, 150, "april").setScale(3);
+    this.selectSound = this.sound.add('selectSound',{volume:.1})
 
     dave.setInteractive({ useHandCursor: true });
     april.setInteractive({ useHandCursor: true });
@@ -28,6 +30,7 @@ export default class CharPicker extends SceneTransition {
 
     dave.on("pointerdown", () => {
       store.dispatch(pickChar("dave"));
+      this.selectSound.play()
       this.scene.transition({
         duration: 2500,
         target: "SinglePlayerMapScene",
@@ -37,6 +40,7 @@ export default class CharPicker extends SceneTransition {
     });
     april.on("pointerdown", () => {
       store.dispatch(pickChar("april"));
+      this.selectSound.play()
       this.scene.transition({
         duration: 2500,
         target: "SinglePlayerMapScene",

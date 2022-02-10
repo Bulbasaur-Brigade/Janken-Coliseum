@@ -19,6 +19,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     if (storeNPCS.every((npc) => npc.defeated)) {
       this.scene.stop("Heart");
       this.scene.stop("Inventory");
+
       this.scene.stop("QuestUi");
       this.scene.stop();
       this.scene.start("VictoryScene");
@@ -35,21 +36,24 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
   preload() {
     this.load.image("tiles", "assets/maps/tilemap.png");
     this.load.tilemapTiledJSON("tilemap", "assets/maps/overworldMap.json");
+    this.load.spritesheet("character", "assets/spriteSheets/characters.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+    this.load.spritesheet(
+      "npc-character",
+      "assets/spriteSheets/characters.png",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      }
+    );
 
-    // this.load.spritesheet(
-    //   "npc-character",
-    //   "assets/spriteSheets/characters.png",
-    //   {
-    //     frameWidth: 64,
-    //     frameHeight: 64,
-    //   }
-    // );
 
     //Dialog Data
     this.load.json("speech", "assets/speech/npcSpeech.json");
 
-    // Music
-    this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
+
   }
 
   create() {
@@ -58,8 +62,15 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.scene.run("QuestUi");
     this.scene.run("Inventory");
     this.scene.run("Heart");
+    this.sound.setVolume(0.08);
 
     this.inventory = this.scene.get("Inventory");
+    this.rockPickup = this.sound.add("rockPickup");
+    this.scissorsPickup = this.sound.add("scissorsPickup");
+    this.paperPickup = this.sound.add("paperPickup");
+    this.heartPickup = this.sound.add("heartPickup");
+    this.selectSound = this.sound.add('selectSound')
+
 
     // Start animations
     createCharacterAnims(this.anims);
@@ -76,7 +87,8 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const overheadLayer = map.createLayer("Overhead", tileset, 0, 0);
 
     // Music
-    this.bgMusic = this.sound.add("Pallet", { volume: 0.1 }, true);
+    this.bgMusic = this.sound.add("Pallet", { volume: 0.08 }, true);
+
     this.bgMusic.play();
 
     //Player
@@ -178,12 +190,81 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         this.player,
         newNPC,
         (player, currentNPC) => {
+
+          // npcCollider.active = false;
+          // this.player.setImmovable(true);
+          //Dialog
+          this.keys.enabled = false;
+          this.dialogbox = this.add
+            .rectangle(npc.x + 50, npc.y - 50, 120, 60, 0xfffaf0)
+            .setDepth(20);
+          this.dialogText = this.add
+            .text(npc.x, npc.y - 70, this.speechData[npc.type], {
+              font: "9px",
+              fill: "#000000",
+              wordWrap: { width: this.dialogbox.width - 1 * 2 },
+            })
+            .setDepth(20);
+          this.dialogTextName = this.add
+            .text(npc.x + 20, npc.y - 80, npc.type.toUpperCase(), {
+              font: "9px",
+              fill: "#000000",
+            })
+            .setDepth(20);
+          this.yesRec = this.add
+            .rectangle(npc.x + 30, npc.y - 25, 20, 10, 0x000000)
+            .setDepth(20);
+          this.yesButton = this.add
+            .text(npc.x + 23, npc.y - 30, "Yes", {
+              font: "9px",
+              fill: "#FFFAF0",
+            })
+            .setInteractive({ useHandCursor: true })
+            .setVisible(true)
+            .setDepth(25);
+          this.noRec = this.add
+            .rectangle(npc.x + 60, npc.y - 25, 20, 10, 0x000000)
+            .setDepth(20);
+          this.noButton = this.add
+            .text(npc.x + 55, npc.y - 30, "No", {
+              font: "9px",
+              fill: "#FFFAF0",
+            })
+            .setInteractive({ useHandCursor: true })
+            .setVisible(true)
+            .setDepth(25);
+
+          store.dispatch(getNPC(currentNPC.texture.key));
+
+          this.data.set("playercordX", this.player.x);
+          this.data.set("playercordY", this.player.y);
+          this.yesButton.on("pointerdown", () => {
+            this.scene.stop("Inventory");
+            this.scene.stop("Heart");
+            this.scene.stop("QuestUi");
+            this.selectSound.play()
+            this.bgMusic.stop();
+            this.scene.switch("BattleScene");
+          });
+          const dialogArr = [
+            this.yesRec,
+            this.yesButton,
+            this.noRec,
+            this.noButton,
+            this.dialogbox,
+            this.dialogText,
+            this.dialogTextName,
+          ];
+          this.noButton.on("pointerdown", () => {
+            this.selectSound.play()
+
           store.dispatch(getNPC(currentNPC.texture.key));
           newNPC.disableBody();
           dialogArr.forEach((item) => {
             item.setVisible(true);
           });
           this.time.delayedCall(5000, () => {
+
             dialogArr.forEach((item) => {
               item.setVisible(false);
               let npcName = currentNPC.texture.key;
@@ -227,8 +308,18 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
           newItem,
           (player, item) => {
             this.inventory.addItem(item.texture.key);
+            
+            if (item.texture.key === "rock") {
+              this.rockPickup.play()
+            } else if (item.texture.key === 'scissors') {
+              this.scissorsPickup.play()
+            } else if (item.texture.key === 'paper') {
+              this.paperPickup.play()
+              }
+              
 
             if (item.texture.key === "heart") {
+              this.heartPickup.play()
               store.dispatch(addHp(1));
             }
             item.destroy();
@@ -256,6 +347,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     // WASD KEYS FOR MOVEMENT
     this.keys = this.input.keyboard.addKeys("W,S,A,D");
+
   }
 
   update() {

@@ -6,24 +6,12 @@ export default class TitleScene extends Phaser.Scene {
     super('TitleScene');
   }
 
-  preload() {
-    this.load.bitmapFont(
-      'carrier_command',
-      'assets/fonts/carrier_command.png',
-      'assets/fonts/carrier_command.xml'
-    );
-    this.load.image('background', 'assets/backgrounds/background.png');
-    this.load.image('rock', 'assets/sprites/rock.png');
-    this.load.image('paper', 'assets/sprites/paper.png');
-    this.load.image('scissors', 'assets/sprites/scissors.png');
-    // Music
-    this.load.audio('music', 'assets/audio/PalletTown.mp3');
-  }
-
   create() {
     // Music
     this.titleMusic = this.sound.add('music', { volume: 0.1 }, true);
     this.titleMusic.play();
+
+    this.selectSound = this.sound.add('selectSound',{volume:.1})
 
     this.add.image(0, -50, 'background').setOrigin(0, 0).setScale(0.7);
 
@@ -151,6 +139,7 @@ export default class TitleScene extends Phaser.Scene {
     this.aboutText.setDepth(4);
 
     this.singlePlayer.on('pointerdown', () => {
+      this.selectSound.play()
       this.scene.transition({
         duration: 2500,
         target: 'CharPicker',
@@ -165,11 +154,13 @@ export default class TitleScene extends Phaser.Scene {
     });
 
     this.howToPlay.on('pointerdown', () => {
+      this.selectSound.play()
       this.howToRectangle.y = 300;
       this.howToText.y = 247;
     });
 
     this.about.on('pointerdown', () => {
+      this.selectSound.play()
       this.aboutRectangle.y = 300;
       this.aboutText.y = 247;
     });

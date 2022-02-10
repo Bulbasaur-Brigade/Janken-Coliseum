@@ -9,6 +9,9 @@ export default class Preloader extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+    
+    this.load.image('background', 'assets/backgrounds/background.png');
+    
     //NPC charcters
     this.load.image('sey', 'assets/sprites/npcs/sey.png');
     this.load.image('greg', 'assets/sprites/npcs/greg.png');
@@ -34,8 +37,17 @@ export default class Preloader extends Phaser.Scene {
   
 
     // this.load.image('diamond', 'assets/sprites/diamond.png');
-    this.load.audio('loss', 'assets/audio/lossMusic.mp3');
-    this.load.audio('win', 'assets/audio/win.mp3');
+    this.load.audio("loss", "assets/audio/lossMusic.mp3");
+    this.load.audio("win", "assets/audio/win.mp3");
+    
+    this.load.audio("rockPickup", "assets/audio/rockPickup.mp3");
+    this.load.audio("scissorsPickup", "assets/audio/scissorsPickup.mp3");
+    this.load.audio("paperPickup", "assets/audio/paperPickup.mp3");
+    this.load.audio("heartPickup", "assets/audio/heartPickup.mp3");
+    this.load.audio("selectSound", "assets/audio/selectSound.mp3");
+    this.load.audio('music', 'assets/audio/titleScreen.mp3');
+    this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
+
 
     //Font
     this.load.bitmapFont(
@@ -51,6 +63,6 @@ export default class Preloader extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start('SinglePlayerMapScene');
+    this.scene.start('TitleScene');
   }
 }
