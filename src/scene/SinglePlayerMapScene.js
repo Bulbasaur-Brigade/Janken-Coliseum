@@ -1,18 +1,15 @@
-import Player from "../entity/Player";
-import Items from "../entity/Items";
-import Phaser from "phaser";
-// import SceneTransition from "./SceneTransition";
-
-import NPC from "../entity/NPC";
-import SceneTransition from "./SceneTransition";
-import { addHp, loseHp } from "../redux/hpReducer";
-import store from "../redux/store";
-import Heart from "./Heart";
-import { addNPC, getNPC } from "../redux/npcBoard";
-import { createCharacterAnims } from "../anims/CharacterAnims";
+import Player from '../entity/Player';
+import Items from '../entity/Items';
+import Phaser from 'phaser';
+import NPC from '../entity/NPC';
+import SceneTransition from './SceneTransition';
+import { addHp, loseHp } from '../redux/hpReducer';
+import store from '../redux/store';
+import { addNPC, getNPC } from '../redux/npcBoard';
+import { createCharacterAnims } from '../anims/CharacterAnims';
 export default class SinglePlayerMapScene extends Phaser.Scene {
   constructor() {
-    super("SinglePlayerMapScene");
+    super('SinglePlayerMapScene');
     this.npcsArr = [];
   }
 
@@ -24,7 +21,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       this.scene.stop("Inventory");
       this.scene.stop("QuestUi");
       this.scene.stop();
-      this.scene.start("VictoryScene");
+      this.scene.start('VictoryScene');
     }
     storeNPCS.forEach((npc) => {
       if (npc.defeated) {
@@ -49,52 +46,52 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     // );
 
     //Dialog Data
-    this.load.json("speech", "assets/speech/npcSpeech.json");
+    this.load.json('speech', 'assets/speech/npcSpeech.json');
 
     // Music
-    this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
+    this.load.audio('Pallet', 'assets/audio/PalletTown.mp3');
   }
 
   create() {
     // Inventory
     // super.create();
-    this.scene.run("QuestUi");
-    this.scene.run("Inventory");
-    this.scene.run("Heart");
+    this.scene.run('QuestUi');
+    this.scene.run('Inventory');
+    this.scene.run('Heart');
 
-    this.inventory = this.scene.get("Inventory");
+    this.inventory = this.scene.get('Inventory');
 
     // Start animations
     createCharacterAnims(this.anims);
     // Creating Map using Tile Set
-    const map = this.make.tilemap({ key: "tilemap" });
+    const map = this.make.tilemap({ key: 'tilemap' });
     // "characters" comes from name in Tiled software
-    const tileset = map.addTilesetImage("characters", "tiles", 16, 16);
+    const tileset = map.addTilesetImage('characters', 'tiles', 16, 16);
 
     // Layers
 
-    const waterLayer = map.createLayer("Water", tileset, 0, 0);
-    const groundLayer = map.createLayer("Ground", tileset, 0, 0);
-    const interactiveLayer = map.createLayer("Interactive", tileset, 0, 0);
-    const overheadLayer = map.createLayer("Overhead", tileset, 0, 0);
+    const waterLayer = map.createLayer('Water', tileset, 0, 0);
+    const groundLayer = map.createLayer('Ground', tileset, 0, 0);
+    const interactiveLayer = map.createLayer('Interactive', tileset, 0, 0);
+    const overheadLayer = map.createLayer('Overhead', tileset, 0, 0);
 
     // Music
-    this.bgMusic = this.sound.add("Pallet", { volume: 0.1 }, true);
+    this.bgMusic = this.sound.add('Pallet', { volume: 0.1 }, true);
     this.bgMusic.play();
 
     //Player
     // this.time.delayedCall(3000,()=>{})
     this.player = new Player(
       this,
-      this.data.get("playercordX") || 250,
-      this.data.get("playercordY") || 200,
-      "character"
+      this.data.get('playercordX') || 250,
+      this.data.get('playercordY') || 200,
+      'character'
     ).setScale(0.25);
 
     //NPC generation/collision
-    this.speechData = this.cache.json.get("speech");
+    this.speechData = this.cache.json.get('speech');
 
-    const npcLayer = map.getObjectLayer("NPC");
+    const npcLayer = map.getObjectLayer('NPC');
     // npcLayer.setCollisionByProperty({ collide: true });
     npcLayer.objects.forEach((npc) => {
       const newNPC = new NPC(this, npc.x, npc.y, npc.type).setScale(0.25);
@@ -200,8 +197,8 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     });
 
     //Item randomized/overlaps
-    const itemLayer = map.getObjectLayer("ItemSpawns");
-    const itemArray = ["rock", "paper", "scissors", "heart", ""];
+    const itemLayer = map.getObjectLayer('ItemSpawns');
+    const itemArray = ['rock', 'paper', 'scissors', 'heart', ''];
     itemLayer.objects.forEach((item) => {
       const randomItem =
         itemArray[Math.floor(Math.random() * itemArray.length)];
@@ -216,7 +213,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
           (player, item) => {
             this.inventory.addItem(item.texture.key);
 
-            if (item.texture.key === "heart") {
+            if (item.texture.key === 'heart') {
               store.dispatch(addHp(1));
             }
             item.destroy();
@@ -243,7 +240,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     camera.startFollow(this.player, true);
 
     // WASD KEYS FOR MOVEMENT
-    this.keys = this.input.keyboard.addKeys("W,S,A,D");
+    this.keys = this.input.keyboard.addKeys('W,S,A,D');
   }
 
   update() {
