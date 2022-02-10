@@ -14,7 +14,8 @@ export default class TitleScene extends SceneTransition {
     );
     this.load.image('background', 'assets/backgrounds/background.png');
     // Music
-    this.load.audio('music', 'assets/audio/PalletTown.mp3');
+    this.load.audio('music', 'assets/audio/titleScreen.mp3');
+    this.load.audio('selectSound', 'assets/audio/selectSound.mp3');
   }
 
   create() {
@@ -23,6 +24,8 @@ export default class TitleScene extends SceneTransition {
     // Music
     this.titleMusic = this.sound.add('music', { volume: 0.1 }, true);
     this.titleMusic.play();
+
+    this.selectSound = this.sound.add('selectSound',{volume:.1})
 
     this.add.image(0, -50, 'background').setOrigin(0, 0).setScale(0.7);
 
@@ -88,6 +91,7 @@ export default class TitleScene extends SceneTransition {
     );
 
     this.singlePlayer.on('pointerdown', () => {
+      this.selectSound.play()
       this.scene.transition({
         duration: 2500,
         target: 'CharPicker',
@@ -102,11 +106,13 @@ export default class TitleScene extends SceneTransition {
     });
 
     this.howToPlay.on('pointerdown', () => {
+      this.selectSound.play()
       this.howToRectangle.y = 300;
       this.howToText.y = 247;
     });
 
     this.about.on('pointerdown', () => {
+      this.selectSound.play()
       this.aboutRectangle.y = 300;
       this.aboutText.y = 247;
     });
