@@ -1,11 +1,12 @@
 {
   "name": "jankencapstone",
   "version": "1.0.0",
-  "description": "",
+  "description": "Battle Royale",
   "main": "src/index.js",
   "scripts": {
-    "build": "webpack-dev-server --config webpack/base.js --open",
-    "start": "nodemon server.js "
+    "build": "webpack --config webpack/prod.js ",
+    "start-dev": "webpack-dev-server --config webpack/base.js --open",
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
