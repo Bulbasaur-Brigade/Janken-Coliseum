@@ -65,7 +65,7 @@ export default class TitleScene extends SceneTransition {
     this.about = this.add.bitmapText(326, 470, "carrier_command", "About", 25);
     this.about.setInteractive({ useHandCursor: true });
 
-    this.howToRectangle = this.add.rectangle(400, 1300, 600, 148, 0xfa6900);
+    this.howToRectangle = this.add.rectangle(400, 1300, 600, 148, 0x520075);
     this.howToRectangle.setStrokeStyle(4, 0xffffff);
     this.howToRectangle.setInteractive({ useHandCursor: true });
     this.howToText = this.add.bitmapText(
@@ -76,7 +76,7 @@ export default class TitleScene extends SceneTransition {
       15
     );
 
-    this.aboutRectangle = this.add.rectangle(400, 1300, 675, 148, 0xfa6900);
+    this.aboutRectangle = this.add.rectangle(400, 1300, 675, 148, 0x520075);
     this.aboutRectangle.setStrokeStyle(4, 0xffffff);
     this.aboutRectangle.setInteractive({ useHandCursor: true });
     this.aboutText = this.add.bitmapText(
