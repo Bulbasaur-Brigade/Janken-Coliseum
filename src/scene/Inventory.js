@@ -19,6 +19,7 @@ export default class Inventory extends Phaser.Scene {
       }
       if (itemsArray[i].name === 'rock') {
         this.rockText.setText(itemsArray[i].amount);
+        
       }
 
       if (itemsArray[i].name === 'paper') {

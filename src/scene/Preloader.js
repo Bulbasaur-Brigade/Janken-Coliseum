@@ -49,6 +49,6 @@ export default class Preloader extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start("SinglePlayerMapScene");
+    this.scene.start("TitleScene");
   }
 }
