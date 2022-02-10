@@ -22,6 +22,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     if (storeNPCS.every((npc) => npc.defeated)) {
       this.scene.stop("Heart");
       this.scene.stop("Inventory");
+      this.scene.stop("QuestUi");
       this.scene.stop();
       this.scene.start("VictoryScene");
     }
@@ -37,18 +38,15 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
   preload() {
     this.load.image("tiles", "assets/maps/tilemap.png");
     this.load.tilemapTiledJSON("tilemap", "assets/maps/overworldMap.json");
-    this.load.spritesheet("character", "assets/spriteSheets/characters.png", {
-      frameWidth: 64,
-      frameHeight: 64,
-    });
-    this.load.spritesheet(
-      "npc-character",
-      "assets/spriteSheets/characters.png",
-      {
-        frameWidth: 64,
-        frameHeight: 64,
-      }
-    );
+
+    // this.load.spritesheet(
+    //   "npc-character",
+    //   "assets/spriteSheets/characters.png",
+    //   {
+    //     frameWidth: 64,
+    //     frameHeight: 64,
+    //   }
+    // );
 
     //Dialog Data
     this.load.json("speech", "assets/speech/npcSpeech.json");
@@ -101,80 +99,99 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     npcLayer.objects.forEach((npc) => {
       const newNPC = new NPC(this, npc.x, npc.y, npc.type).setScale(0.25);
       this.npcsArr.push(newNPC);
+
       store.dispatch(addNPC({ name: npc.type, defeated: newNPC.isDefeated }));
+
       const npcData = store.getState();
-      const npcCollider = this.physics.add.collider(
+
+      this.dialogbox = this.add
+        .graphics()
+        .fillStyle(0xfffaf0, 1)
+        .fillRoundedRect(npc.x - 8, npc.y - 80, 120, 60, 16)
+        .setDepth(20);
+
+      this.dialogText = this.add
+        .text(npc.x, npc.y - 70, this.speechData[npc.type], {
+          font: "10px Arial",
+          fill: "#000000",
+          wordWrap: { width: 120 - 2 * 2 },
+        })
+        .setDepth(20);
+      this.dialogTextName = this.add
+        .text(npc.x + 20, npc.y - 80, npc.type.toUpperCase(), {
+          font: "9px",
+          fill: "#000000",
+        })
+        .setDepth(20);
+
+      this.yesRec = this.add
+        .rectangle(npc.x + 30, npc.y - 30, 20, 10, 0x000000)
+        .setDepth(20);
+      this.yesButton = this.add
+        .text(npc.x + 23, npc.y - 35, "Yes", {
+          font: "9px",
+          fill: "#FFFAF0",
+        })
+        .setInteractive({ useHandCursor: true })
+        .setVisible(true)
+        .setDepth(25);
+      this.noRec = this.add
+        .rectangle(npc.x + 60, npc.y - 30, 20, 10, 0x000000)
+        .setDepth(20);
+      this.noButton = this.add
+        .text(npc.x + 55, npc.y - 35, "No", {
+          font: "9px",
+          fill: "#FFFAF0",
+        })
+        .setInteractive({ useHandCursor: true })
+        .setVisible(true)
+        .setDepth(25);
+
+      this.data.set("playercordX", this.player.x);
+      this.data.set("playercordY", this.player.y);
+      this.yesButton.on("pointerdown", () => {
+        dialogArr.forEach((item) => {
+          item.setVisible(false);
+        });
+        newNPC.enableBody();
+        this.scene.stop("QuestUi");
+        this.scene.switch("BattleScene");
+        this.bgMusic.stop();
+      });
+      const dialogArr = [
+        this.yesRec,
+        this.yesButton,
+        this.noRec,
+        this.noButton,
+        this.dialogbox,
+        this.dialogText,
+        this.dialogTextName,
+      ];
+      dialogArr.forEach((item) => {
+        item.setVisible(false);
+      });
+      this.noButton.on("pointerdown", () => {
+        dialogArr.forEach((item) => {
+          item.setVisible(false);
+          newNPC.enableBody();
+        });
+      });
+      this.physics.add.collider(
         this.player,
         newNPC,
         (player, currentNPC) => {
-          // npcCollider.active = false;
-          // this.player.setImmovable(true);
-          //Dialog
-          this.keys.enabled = false;
-          this.dialogbox = this.add
-            .rectangle(npc.x + 50, npc.y - 50, 120, 60, 0xfffaf0)
-            .setDepth(20);
-          this.dialogText = this.add
-            .text(npc.x, npc.y - 70, this.speechData[npc.type], {
-              font: "9px",
-              fill: "#000000",
-              wordWrap: { width: this.dialogbox.width - 1 * 2 },
-            })
-            .setDepth(20);
-          this.dialogTextName = this.add
-            .text(npc.x + 20, npc.y - 80, npc.type.toUpperCase(), {
-              font: "9px",
-              fill: "#000000",
-            })
-            .setDepth(20);
-          this.yesRec = this.add
-            .rectangle(npc.x + 30, npc.y - 25, 20, 10, 0x000000)
-            .setDepth(20);
-          this.yesButton = this.add
-            .text(npc.x + 23, npc.y - 30, "Yes", {
-              font: "9px",
-              fill: "#FFFAF0",
-            })
-            .setInteractive({ useHandCursor: true })
-            .setVisible(true)
-            .setDepth(25);
-          this.noRec = this.add
-            .rectangle(npc.x + 60, npc.y - 25, 20, 10, 0x000000)
-            .setDepth(20);
-          this.noButton = this.add
-            .text(npc.x + 55, npc.y - 30, "No", {
-              font: "9px",
-              fill: "#FFFAF0",
-            })
-            .setInteractive({ useHandCursor: true })
-            .setVisible(true)
-            .setDepth(25);
-
           store.dispatch(getNPC(currentNPC.texture.key));
-
-          this.data.set("playercordX", this.player.x);
-          this.data.set("playercordY", this.player.y);
-          this.yesButton.on("pointerdown", () => {
-            this.scene.stop("Inventory");
-            this.scene.stop("Heart");
-            this.scene.stop("QuestUi");
-            this.scene.switch("BattleScene");
-            this.bgMusic.stop();
+          newNPC.disableBody();
+          dialogArr.forEach((item) => {
+            item.setVisible(true);
           });
-          const dialogArr = [
-            this.yesRec,
-            this.yesButton,
-            this.noRec,
-            this.noButton,
-            this.dialogbox,
-            this.dialogText,
-            this.dialogTextName,
-          ];
-          this.noButton.on("pointerdown", () => {
+          this.time.delayedCall(5000, () => {
             dialogArr.forEach((item) => {
               item.setVisible(false);
+              if (newNPC) {
+                newNPC.enableBody();
+              }
             });
-            npcCollider.active = true;
           });
         },
         null,
@@ -222,7 +239,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     // Placeholder Camera
     const camera = this.cameras.main;
-    camera.setZoom(3);
+    camera.setZoom(2.5);
     camera.startFollow(this.player, true);
 
     // WASD KEYS FOR MOVEMENT

@@ -61,25 +61,17 @@ export default class BattleScene extends Phaser.Scene {
     this.npcComputer = data.npcBoardReducer.singleNPC;
   }
   preload() {
-    this.load.bitmapFont(
-      "carrier_command",
-      "assets/fonts/carrier_command.png",
-      "assets/fonts/carrier_command.xml"
-    );
-    this.load.image("battleScene", "assets/backgrounds/battleScene.jpg");
     this.load.image(ROCK, "assets/sprites/rock.png");
     this.load.image(PAPER, "assets/sprites/paper.png");
     this.load.image(SCISSORS, "assets/sprites/scissors.png");
-    // Battle Music
-    this.load.audio("Battle", "assets/audio/Battle.mp3");
   }
-  gainHp() {
-    if (this.hp < 10) {
-      store.dispatch(addHp(1));
-    } else {
-      store.dispatch(addHp(0));
-    }
-  }
+  // gainHp() {
+  //   if (this.hp < 10) {
+  //     store.dispatch(addHp(1));
+  //   } else {
+  //     store.dispatch(addHp(0));
+  //   }
+  // }
 
   loseItems(item) {
     for (let i = 0; i < this.items.length; i++) {
@@ -106,21 +98,29 @@ export default class BattleScene extends Phaser.Scene {
   loseHp() {
     if (this.hp > 0) {
       store.dispatch(loseHp(1));
-    } else {
-      store.dispatch(loseHp(0));
     }
   }
   gameLoss() {
-    if (this.hp === 0) {
+    if (this.hp === 2) {
+      // this.scene.stop();
       this.scene.switch("LossScene");
+      this.scene.stop("Heart");
       this.scene.stop("NpcHearts");
+      this.scene.stop("Inventory");
+      this.scene.stop("SinglePlayerMapScene");
+      this.music = this.scene.get("SinglePlayerMapScene");
+      this.music.bgMusic.stop();
       this.battleMusic.stop();
     }
   }
+  // singlePlayerScene() {
+  //   this.scene.switch("SinglePlayerMapScene");
+  // }
   gameWin() {
-    if (this.computerHearts === 0) {
+    if (this.computerHearts < 3) {
       store.dispatch(isDefeated(this.computer.npcBoardReducer.singleNPC));
       this.scene.switch("SinglePlayerMapScene");
+      this.scene.start("QuestUi");
       this.scene.stop();
       this.scene.stop("NpcHearts");
       this.battleMusic.stop();
@@ -129,7 +129,7 @@ export default class BattleScene extends Phaser.Scene {
     }
   }
   playerHasNoItems() {
-    let counter = 0;
+    this.counter = 0;
     if (this.items.every((item) => item.amount === 0)) {
       this.add.bitmapText(
         20,
@@ -138,24 +138,25 @@ export default class BattleScene extends Phaser.Scene {
         "You lost your items \n\n\n Go collect some\n\n\n to Battle!",
         20
       );
-      counter++;
+      this.counter++;
     }
-    if (counter === 1) {
-      this.time.delayedCall(3000, () => {
+    if (this.counter === 1 && this.hp > 2) {
+      this.time.delayedCall(2500, () => {
         this.scene.switch("SinglePlayerMapScene");
+        this.scene.start("QuestUi");
         this.battleMusic.stop();
-        this.scene.stop();
+
         this.scene.stop("NpcHearts");
         this.music = this.scene.get("SinglePlayerMapScene");
         this.music.bgMusic.play();
-        counter = 0;
+        this.counter = 0;
       });
     }
   }
   create() {
     this.scene.run("NpcHearts");
-    this.scene.run("Inventory");
-    this.scene.run("Heart");
+    // this.scene.run("Inventory");
+    // this.scene.run("Heart");
 
     // super.create();
 
@@ -255,7 +256,7 @@ export default class BattleScene extends Phaser.Scene {
       computerSelectedSprite.x = 500;
       computerSelectedSprite.y = 300;
       this.gainItems(computerSelectedSprite.texture.key);
-      this.gainHp();
+      // this.gainHp();
       this.winText = this.add.bitmapText(
         280,
         400,
@@ -351,8 +352,15 @@ export default class BattleScene extends Phaser.Scene {
   // What happens after a player wins or loses
   // Scene End
   update() {
+    //   if (this.hp === 2) {
+    //   }
+    //   if (this.computerHearts === 0) {
+    //     this.gameWin();
+    //   }
+    //   if (this.counter === 1 && this.hp > 0) {
     this.playerHasNoItems();
-    this.gameWin();
     this.gameLoss();
+    this.gameWin();
+    //   }
   }
 }
