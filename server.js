@@ -3,7 +3,6 @@ const http = require('http').createServer(server);
 const path = require('path');
 const serverStatic = require('serve-static');
 const cors = require('cors');
-
 const io = require('socket.io')(http, {
   cors: {
     origin: 'http://localhost:8080',
