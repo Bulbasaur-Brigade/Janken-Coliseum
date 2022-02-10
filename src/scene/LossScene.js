@@ -52,11 +52,11 @@ export default class LossScene extends SceneTransition {
     },this)
 
     this.homeScreen.on("pointerdown", () => {
+      this.lossMusic.stop();
       this.scene.transition({
-        duration: 2500,
+        duration: 1500,
         target: "TitleScene",
       });
-      this.lossMusic.stop();
     });
   }
 

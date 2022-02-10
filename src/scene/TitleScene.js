@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import SceneTransition from './SceneTransition';
 
-export default class TitleScene extends SceneTransition {
+export default class TitleScene extends Phaser.Scene {
   constructor() {
     super('TitleScene');
   }
@@ -21,8 +21,6 @@ export default class TitleScene extends SceneTransition {
   }
 
   create() {
-    super.create();
-
     // Music
     this.titleMusic = this.sound.add('music', { volume: 0.1 }, true);
     this.titleMusic.play();

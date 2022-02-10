@@ -55,11 +55,11 @@ export default class VictoryScene extends SceneTransition {
     },this)
 
     this.homeScreen.on("pointerdown", () => {
+      this.winMusic.stop();
       this.scene.transition({
-        duration: 2500,
+        duration: 1500,
         target: "TitleScene",
       });
-      this.winMusic.stop();
     });
   }
 
