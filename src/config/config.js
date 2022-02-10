@@ -29,10 +29,10 @@ export default {
   },
 
   scale: {
-    parent: "content",
+    parent: 'content',
     autoCenter: true,
   },
-  parent: "content",
+  parent: 'content',
 
   dom: {
     createContainer: true,
@@ -42,8 +42,7 @@ export default {
     SceneTransition,
     TitleScene,
     CharPicker,
-    // MultiPlayerMapScene,
-
+    MultiPlayerMapScene,
     SinglePlayerMapScene,
     QuestUi,
     BattleScene,
