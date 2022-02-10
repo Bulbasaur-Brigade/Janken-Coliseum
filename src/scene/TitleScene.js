@@ -13,9 +13,8 @@ export default class TitleScene extends SceneTransition {
       'assets/fonts/carrier_command.xml'
     );
     this.load.image('background', 'assets/backgrounds/background.png');
-    // Music
-    this.load.audio('music', 'assets/audio/titleScreen.mp3');
-    this.load.audio('selectSound', 'assets/audio/selectSound.mp3');
+  
+  
   }
 
   create() {

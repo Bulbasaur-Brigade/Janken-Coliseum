@@ -29,6 +29,17 @@ export default class Preloader extends Phaser.Scene {
     // this.load.image('diamond', 'assets/sprites/diamond.png');
     this.load.audio("loss", "assets/audio/lossMusic.mp3");
     this.load.audio("win", "assets/audio/win.mp3");
+    
+    this.load.audio("rockPickup", "assets/audio/rockPickup.mp3");
+    this.load.audio("scissorsPickup", "assets/audio/scissorsPickup.mp3");
+    this.load.audio("paperPickup", "assets/audio/paperPickup.mp3");
+    this.load.audio("heartPickup", "assets/audio/heartPickup.mp3");
+    this.load.audio("selectSound", "assets/audio/selectSound.mp3");
+    this.load.audio('music', 'assets/audio/titleScreen.mp3');
+    this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
+
+
+
 
     //Font
     this.load.bitmapFont(

@@ -50,13 +50,8 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     //Dialog Data
     this.load.json("speech", "assets/speech/npcSpeech.json");
 
-    // Music
-    this.load.audio("rockPickup", "assets/audio/rockPickup.mp3");
-    this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
-    this.load.audio("scissorsPickup", "assets/audio/scissorsPickup.mp3");
-    this.load.audio("paperPickup", "assets/audio/paperPickup.mp3");
-    this.load.audio("heartPickup", "assets/audio/heartPickup.mp3");
-    this.load.audio("selectSound", "assets/audio/selectSound.mp3");
+    
+    
   }
 
   create() {
@@ -65,7 +60,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.scene.run("QuestUi");
     this.scene.run("Inventory");
     this.scene.run("Heart");
-    this.sound.setVolume(0.05);
+    this.sound.setVolume(0.08);
 
     this.inventory = this.scene.get("Inventory");
     this.rockPickup = this.sound.add("rockPickup");
@@ -89,7 +84,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const overheadLayer = map.createLayer("Overhead", tileset, 0, 0);
 
     // Music
-    this.bgMusic = this.sound.add("Pallet", { volume: 0.05 }, true);
+    this.bgMusic = this.sound.add("Pallet", { volume: 0.08 }, true);
     this.bgMusic.play();
 
     //Player
