@@ -347,9 +347,9 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     // WASD KEYS FOR MOVEMENT
     this.keys = this.input.keyboard.addKeys("W,S,A,D");
-
+  })
   }
-
+  
   update() {
     this.player.update(this.keys);
     this.destroyNPC();
