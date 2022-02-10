@@ -23,7 +23,17 @@ export default class VictoryScene extends SceneTransition {
 
     this.add.image(0, 0, "victoryBackground").setOrigin(0, 0).setScale(2);
 
+    this.titleBorder = this.add.rectangle(400, 70, 360, 80, 0x520075);
+    this.titleBorder.setDepth(2);
+    this.titleBorder.setStrokeStyle(4, 0xffffff);
+
     this.title = this.add.bitmapText(234, 50, "carrier_command", "Victory", 40);
+    this.title.setDepth(2);
+
+    this.homeScreenBorder = this.add.rectangle(400, 560, 700, 60, 0x520075);
+    this.homeScreenBorder.visible = false;
+    this.homeScreenBorder.setDepth(2);
+    this.homeScreenBorder.setStrokeStyle(4, 0xffffff);
 
     // scene change buttons
     this.homeScreen = this.add.bitmapText(
@@ -34,13 +44,41 @@ export default class VictoryScene extends SceneTransition {
       25
     );
     this.homeScreen.setInteractive({ useHandCursor: true });
+    this.homeScreen.setDepth(2);
+
+    this.homeScreen.on('pointerover',function(pointer){
+      this.homeScreenBorder.visible = true;
+    },this)
+    
+    this.homeScreen.on('pointerout',function(pointer){
+      this.homeScreenBorder.visible = false;
+    },this)
 
     this.homeScreen.on("pointerdown", () => {
+      this.winMusic.stop();
       this.scene.transition({
-        duration: 2500,
+        duration: 1500,
         target: "TitleScene",
       });
-      this.winMusic.stop();
     });
+  }
+
+  update() {
+    let randomEvent = Phaser.Math.RND.integerInRange(0,180);
+    if(randomEvent == 1) {
+      this.physicsImage = this.physics.add.image(Phaser.Math.RND.integerInRange(100,700), -100, "rock");
+      this.physicsImage.setVelocity(Phaser.Math.RND.integerInRange(-300,300), 300);
+      this.physicsImage.setRotation(Phaser.Math.RND.integerInRange(0,360));
+    }
+    if(randomEvent == 2) {
+      this.physicsImage = this.physics.add.image(Phaser.Math.RND.integerInRange(100,700), -100, "paper");
+      this.physicsImage.setVelocity(Phaser.Math.RND.integerInRange(-300,300), 300);
+      this.physicsImage.setRotation(Phaser.Math.RND.integerInRange(0,360));
+    }
+    if(randomEvent == 3) {
+      this.physicsImage = this.physics.add.image(Phaser.Math.RND.integerInRange(100,700), -100, "scissors");
+      this.physicsImage.setVelocity(Phaser.Math.RND.integerInRange(-300,300), 300);
+      this.physicsImage.setRotation(Phaser.Math.RND.integerInRange(0,360));
+    }
   }
 }
