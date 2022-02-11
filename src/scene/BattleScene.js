@@ -204,6 +204,8 @@ export default class BattleScene extends Phaser.Scene {
   create() {
     this.scene.run("NpcHearts");
 
+    
+
     this.textBorder = this.add
       .rectangle(400, 280, 400, 300, 0xe34234)
       .setDepth(2)
@@ -222,7 +224,7 @@ export default class BattleScene extends Phaser.Scene {
     // Particle effects
     this.particles = this.add.particles("explosion").setDepth(2);
 
-    this.explode = this.sound.add("explode", { volume: 0.6 });
+    this.explode = this.sound.add("explode", { volume: 0.3 });
     this.particles.createEmitter({
       frame: ["smoke-puff", "cloud", "smoke-puff", "smoke0"],
       angle: { min: 240, max: 300 },

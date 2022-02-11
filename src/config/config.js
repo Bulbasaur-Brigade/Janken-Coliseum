@@ -29,10 +29,10 @@ export default {
   },
 
   scale: {
-    parent: 'content',
+    parent: "content",
     autoCenter: true,
   },
-  parent: 'content',
+  parent: "content",
 
   dom: {
     createContainer: true,
@@ -46,6 +46,7 @@ export default {
     SinglePlayerMapScene,
     QuestUi,
     BattleScene,
+
     Inventory,
     Heart,
     NpcHearts,

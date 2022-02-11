@@ -9,6 +9,17 @@ export default class Preloader extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+    this.load.spritesheet("blueBird", "assets/spriteSheets/blueBird.png", {
+      frameWidth: 342,
+      frameHeight: 290,
+    });
+    this.load.spritesheet("greenBird", "assets/spriteSheets/greenBird.png", {
+      frameWidth: 342,
+      frameHeight: 290,
+    });
+    //Player Character
+    this.load.image("dave", "assets/sprites/charPicker/dave.png");
+    this.load.image("april", "assets/sprites/charPicker/april.png");
 
     this.load.image("background", "assets/backgrounds/background.png");
 
@@ -29,6 +40,9 @@ export default class Preloader extends Phaser.Scene {
     //Inventory
     this.load.image("inventory", "assets/sprites/inventory.png");
     //Items
+    this.load.image("cloud1", "assets/sprites/cloud1.png");
+    this.load.image("cloud2", "assets/sprites/cloud2.png");
+    this.load.image("cloud3", "assets/sprites/cloud3.png");
 
     this.load.image("rock", "assets/sprites/rock.png");
     this.load.image("paper", "assets/sprites/paper.png");
@@ -62,6 +76,6 @@ export default class Preloader extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start("SinglePlayerMapScene");
+    this.scene.start("TitleScene");
   }
 }

@@ -6,21 +6,12 @@ export default class CharPicker extends SceneTransition {
   constructor() {
     super("CharPicker");
   }
-  preload() {
-    this.load.image("dave", "assets/sprites/charPicker/dave.png");
-    this.load.image("april", "assets/sprites/charPicker/april.png");
-    this.load.bitmapFont(
-      "carrier_command",
-      "assets/fonts/carrier_command.png",
-      "assets/fonts/carrier_command.xml"
-    );
-    this.load.audio("selectSound", "assets/audio/selectSound.mp3");
-  }
+  preload() {}
   create() {
     super.create();
     const dave = this.add.sprite(250, 150, "dave").setScale(2.5);
     const april = this.add.sprite(500, 150, "april").setScale(2.5);
-    this.selectSound = this.sound.add("selectSound", { volume: 0.1 });
+    this.selectSound = this.sound.add("selectSound", { volume: 0.06 });
 
     dave.setInteractive({ useHandCursor: true });
     april.setInteractive({ useHandCursor: true });

@@ -13,10 +13,10 @@ export default class TitleScene extends Phaser.Scene {
 
   create() {
     // Music
-    this.titleMusic = this.sound.add("music", { volume: 0.1 }, true);
+    this.titleMusic = this.sound.add("music", { volume: 0.2 }, true);
     this.titleMusic.play();
 
-    this.selectSound = this.sound.add("selectSound", { volume: 0.1 });
+    this.selectSound = this.sound.add("selectSound", { volume: 0.06 });
 
     this.add.image(0, -50, "background").setOrigin(0, 0).setScale(0.7);
 
