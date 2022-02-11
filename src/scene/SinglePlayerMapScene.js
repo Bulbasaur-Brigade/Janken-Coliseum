@@ -103,6 +103,9 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     const npcLayer = map.getObjectLayer("NPC");
     // npcLayer.setCollisionByProperty({ collide: true });
+    store.dispatch(addNPC({ name: "omar", defeated: false }));
+    store.dispatch(addNPC({ name: "zach", defeated: false }));
+    store.dispatch(addNPC({ name: "mac", defeated: false }));
     npcLayer.objects.forEach((npc) => {
       const newNPC = new NPC(this, npc.x, npc.y, npc.type).setScale(0.25);
       this.npcsArr.push(newNPC);
@@ -224,16 +227,25 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     itemLayer.objects.forEach((item) => {
       const randomItem =
         itemArray[Math.floor(Math.random() * itemArray.length)];
-      if(item.name === "bossroom" && item.properties[0].value) {
+      if (item.name === "bossroom" && item.properties[0].value) {
         //console.log("Item: ", item);
         const newItem = new Items(
           this,
-          (item.x + 16),
-          (item.y - 8),
+          item.x + 16,
+          item.y - 8,
           item.name
-      ).setScale(1);
-      this.physics.add.collider(this.player, newItem, () => {this.scene.switch("RoomOne")}, null, this);
-      if(item.name === "bossroom") {}
+        ).setScale(1);
+        this.physics.add.collider(
+          this.player,
+          newItem,
+          () => {
+            this.scene.switch("RoomOne");
+          },
+          null,
+          this
+        );
+        if (item.name === "bossroom") {
+        }
       } else if (randomItem) {
         item.name = randomItem;
         const newItem = new Items(this, item.x, item.y, item.name).setScale(
