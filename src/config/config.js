@@ -27,7 +27,7 @@ export default {
   physics: {
     default: "arcade",
     arcade: {
-      debug: true,
+      debug: false,
     },
   },
 
@@ -45,7 +45,7 @@ export default {
     SceneTransition,
     TitleScene,
     CharPicker,
-    MultiPlayerMapScene,
+    // MultiPlayerMapScene,
     SinglePlayerMapScene,
     QuestUi,
     BattleScene,
@@ -57,6 +57,6 @@ export default {
     RoomTwo,
     RoomThree,
     LossScene,
-    VictoryScene
+    VictoryScene,
   ],
 };

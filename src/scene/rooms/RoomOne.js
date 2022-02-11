@@ -3,6 +3,7 @@ import Player from "../../entity/Player";
 import { createCharacterAnims } from "../../anims/CharacterAnims";
 import NPC from "../../entity/NPC";
 import Items from "../../entity/Items";
+import store from "../../redux/store";
 
 export default class RoomOne extends Phaser.Scene {
     constructor() {
@@ -12,7 +13,7 @@ export default class RoomOne extends Phaser.Scene {
     preload() {
         this.load.image("roomOne", "assets/maps/tilemap.png");
         this.load.tilemapTiledJSON("roomOneMap", "assets/maps/roomOne.json");
-    
+
         // Music
         this.load.audio("Pallet", "assets/audio/PalletTown.mp3");
     }

@@ -187,12 +187,12 @@ export default class TitleScene extends Phaser.Scene {
       });
     });
 
-    this.multiplayer.on("pointerdown", () => {
-      this.scene.transition({
-        duration: 2500,
-        target: "MultiPlayerMapScene",
-      });
-    });
+    // this.multiplayer.on("pointerdown", () => {
+    //   this.scene.transition({
+    //     duration: 2500,
+    //     target: "MultiPlayerMapScene",
+    //   });
+    // });
 
     this.howToPlay.on("pointerdown", () => {
       this.selectSound.play();
