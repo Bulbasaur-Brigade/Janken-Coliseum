@@ -22,6 +22,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       this.scene.stop("QuestUi");
       this.scene.stop();
       this.scene.start("VictoryScene");
+      // "Congratulations!!!\n\nYou conquered FullStack!\n\nYou're ready to graduate",
     }
     storeNPCS.forEach((npc) => {
       if (npc.defeated) {
@@ -58,6 +59,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.scene.run("QuestUi");
     this.scene.run("Inventory");
     this.scene.run("Heart");
+    // this.scene.run("AnimationLayer");
 
     this.sound.setVolume(0.08);
 
@@ -78,7 +80,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     // Layers
 
-    const waterLayer = map.createLayer("Water", tileset, 0, 0);
+    map.createLayer("Water", tileset, 0, 0);
     const groundLayer = map.createLayer("Ground", tileset, 0, 0);
     const interactiveLayer = map.createLayer("Interactive", tileset, 0, 0);
     const overheadLayer = map.createLayer("Overhead", tileset, 0, 0);
@@ -107,8 +109,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
       store.dispatch(addNPC({ name: npc.type, defeated: newNPC.isDefeated }));
 
-      const npcData = store.getState();
-
       this.dialogbox = this.add
         .graphics()
         .fillStyle(0xfffaf0, 1)
@@ -121,36 +121,40 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
           fill: "#000000",
           wordWrap: { width: 120 - 2 * 2 },
         })
-        .setDepth(20);
+        .setDepth(20)
+        .setResolution(10);
       this.dialogTextName = this.add
         .text(npc.x + 20, npc.y - 80, npc.type.toUpperCase(), {
-          font: "9px",
-          fill: "#000000",
+          font: "9px Arial",
+          fill: "#FF0000",
         })
-        .setDepth(20);
+        .setDepth(20)
+        .setResolution(10);
 
       this.yesRec = this.add
         .rectangle(npc.x + 30, npc.y - 30, 20, 10, 0x000000)
         .setDepth(20);
       this.yesButton = this.add
-        .text(npc.x + 23, npc.y - 35, "Yes", {
+        .text(npc.x + 22, npc.y - 36, "Yes", {
           font: "9px",
           fill: "#FFFAF0",
         })
         .setInteractive({ useHandCursor: true })
         .setVisible(true)
-        .setDepth(25);
+        .setDepth(25)
+        .setResolution(10);
       this.noRec = this.add
-        .rectangle(npc.x + 60, npc.y - 30, 20, 10, 0x000000)
+        .rectangle(npc.x + 75, npc.y - 30, 20, 10, 0x000000)
         .setDepth(20);
       this.noButton = this.add
-        .text(npc.x + 55, npc.y - 35, "No", {
+        .text(npc.x + 70, npc.y - 36, "No", {
           font: "9px",
           fill: "#FFFAF0",
         })
         .setInteractive({ useHandCursor: true })
         .setVisible(true)
-        .setDepth(25);
+        .setDepth(25)
+        .setResolution(10);
 
       this.data.set("playercordX", this.player.x);
       this.data.set("playercordY", this.player.y);
@@ -212,13 +216,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         null,
         this
       );
-      // this.physics.add.collider(
-      //   newNPC,
-      //   interactiveLayer,
-      //   newNPC.movementNpc(),
-      //   null,
-      //   this
-      // );
     });
 
     //Item randomized/overlaps
@@ -289,5 +286,52 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
   update() {
     this.player.update(this.keys);
     this.destroyNPC();
+
+    let randomEvent = Phaser.Math.RND.integerInRange(0, 3000);
+
+    if (randomEvent == 1) {
+      this.cloud1 = this.physics.add
+        .image(-100, Phaser.Math.RND.integerInRange(100, 1800), "cloud1")
+        .setAlpha(0.2)
+        .setScale(0.4)
+        .setDepth(30);
+      this.cloud1.setVelocity(25, 0);
+    }
+    if (randomEvent == 2) {
+      this.cloud2 = this.physics.add
+        .image(-100, Phaser.Math.RND.integerInRange(100, 1800), "cloud2")
+        .setAlpha(0.2)
+        .setScale(0.4)
+        .setDepth(30);
+      this.cloud2.setVelocity(25, 0);
+    }
+    if (randomEvent == 3) {
+      this.cloud2 = this.physics.add
+        .image(-100, Phaser.Math.RND.integerInRange(100, 1800), "cloud3")
+        .setAlpha(0.2)
+        .setScale(0.4)
+        .setDepth(30);
+      this.cloud2.setVelocity(25, 0);
+    }
+    if (randomEvent == 4) {
+      this.blueBird = this.physics.add
+        .sprite(-100, Phaser.Math.RND.integerInRange(100, 1800), "blueBird")
+
+        .setScale(0.1)
+        .setAlpha(0.8)
+        .setDepth(30);
+      this.blueBird.anims.play("blueBirdFly");
+      this.blueBird.setVelocity(25, 0);
+    }
+    if (randomEvent == 5) {
+      this.blueBird = this.physics.add
+        .sprite(-100, Phaser.Math.RND.integerInRange(100, 1800), "greenBird")
+
+        .setScale(0.1)
+        .setAlpha(0.8)
+        .setDepth(30);
+      this.blueBird.anims.play("greenBirdFly");
+      this.blueBird.setVelocity(40, 0);
+    }
   }
 }

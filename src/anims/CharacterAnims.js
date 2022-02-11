@@ -85,6 +85,26 @@ const createCharacterAnims = (anims = Phaser.Animations.AnimationManager) => {
     frames: [{ key: "character", frame: 63 }],
     frameRate: 10,
   });
+  anims.create({
+    key: "blueBirdFly",
+    frames: anims.generateFrameNumbers("blueBird", {
+      start: 0,
+      end: 8,
+    }),
+    frameRate: 5,
+    repeat: -1,
+    suffix: ".png",
+  });
+  anims.create({
+    key: "greenBirdFly",
+    frames: anims.generateFrameNumbers("greenBird", {
+      start: 0,
+      end: 8,
+    }),
+    frameRate: 5,
+    repeat: -1,
+    suffix: ".png",
+  });
 };
 
 export { createCharacterAnims };

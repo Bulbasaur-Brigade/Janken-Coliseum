@@ -43,13 +43,21 @@ export default class LossScene extends SceneTransition {
     this.homeScreen.setInteractive({ useHandCursor: true });
     this.homeScreen.setDepth(2);
 
-    this.homeScreen.on('pointerover',function(pointer){
-      this.homeScreenBorder.visible = true;
-    },this)
-    
-    this.homeScreen.on('pointerout',function(pointer){
-      this.homeScreenBorder.visible = false;
-    },this)
+    this.homeScreen.on(
+      "pointerover",
+      function (pointer) {
+        this.homeScreenBorder.visible = true;
+      },
+      this
+    );
+
+    this.homeScreen.on(
+      "pointerout",
+      function (pointer) {
+        this.homeScreenBorder.visible = false;
+      },
+      this
+    );
 
     this.homeScreen.on("pointerdown", () => {
       this.lossMusic.stop();
@@ -61,21 +69,42 @@ export default class LossScene extends SceneTransition {
   }
 
   update() {
-    let randomEvent = Phaser.Math.RND.integerInRange(0,180);
-    if(randomEvent == 1) {
-      this.physicsImage = this.physics.add.image(Phaser.Math.RND.integerInRange(100,700), -100, "rock");
-      this.physicsImage.setVelocity(Phaser.Math.RND.integerInRange(-300,300), 300);
-      this.physicsImage.setRotation(Phaser.Math.RND.integerInRange(0,360));
+    let randomEvent = Phaser.Math.RND.integerInRange(0, 180);
+    if (randomEvent == 1) {
+      this.physicsImage = this.physics.add.image(
+        Phaser.Math.RND.integerInRange(100, 700),
+        -100,
+        "rock"
+      );
+      this.physicsImage.setVelocity(
+        Phaser.Math.RND.integerInRange(-300, 300),
+        300
+      );
+      this.physicsImage.setRotation(Phaser.Math.RND.integerInRange(0, 360));
     }
-    if(randomEvent == 2) {
-      this.physicsImage = this.physics.add.image(Phaser.Math.RND.integerInRange(100,700), -100, "paper");
-      this.physicsImage.setVelocity(Phaser.Math.RND.integerInRange(-300,300), 300);
-      this.physicsImage.setRotation(Phaser.Math.RND.integerInRange(0,360));
+    if (randomEvent == 2) {
+      this.physicsImage = this.physics.add.image(
+        Phaser.Math.RND.integerInRange(100, 700),
+        -100,
+        "paper"
+      );
+      this.physicsImage.setVelocity(
+        Phaser.Math.RND.integerInRange(-300, 300),
+        300
+      );
+      this.physicsImage.setRotation(Phaser.Math.RND.integerInRange(0, 360));
     }
-    if(randomEvent == 3) {
-      this.physicsImage = this.physics.add.image(Phaser.Math.RND.integerInRange(100,700), -100, "scissors");
-      this.physicsImage.setVelocity(Phaser.Math.RND.integerInRange(-300,300), 300);
-      this.physicsImage.setRotation(Phaser.Math.RND.integerInRange(0,360));
+    if (randomEvent == 3) {
+      this.physicsImage = this.physics.add.image(
+        Phaser.Math.RND.integerInRange(100, 700),
+        -100,
+        "scissors"
+      );
+      this.physicsImage.setVelocity(
+        Phaser.Math.RND.integerInRange(-300, 300),
+        300
+      );
+      this.physicsImage.setRotation(Phaser.Math.RND.integerInRange(0, 360));
     }
   }
 }
