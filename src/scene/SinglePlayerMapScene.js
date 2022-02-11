@@ -91,8 +91,8 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     // this.time.delayedCall(3000,()=>{})
     this.player = new Player(
       this,
-      this.data.get("playercordX") || 250,
-      this.data.get("playercordY") || 200,
+      this.data.get("playercordX") || 370,
+      this.data.get("playercordY") || 340,
       "character"
     ).setScale(0.25);
 
