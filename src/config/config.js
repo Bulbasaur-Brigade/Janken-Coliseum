@@ -12,6 +12,9 @@ import VictoryScene from "../scene/VictoryScene";
 import Preloader from "../scene/Preloader";
 import CharPicker from "../scene/CharPicker";
 import QuestUi from "../scene/QuestUI";
+import RoomOne from "../scene/rooms/RoomOne";
+import RoomTwo from "../scene/rooms/RoomTwo";
+import RoomThree from "../scene/rooms/RoomThree";
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
@@ -24,7 +27,7 @@ export default {
   physics: {
     default: "arcade",
     arcade: {
-      debug: false,
+      debug: true,
     },
   },
 
@@ -50,7 +53,10 @@ export default {
     Inventory,
     Heart,
     NpcHearts,
+    RoomOne,
+    RoomTwo,
+    RoomThree,
     LossScene,
-    VictoryScene,
+    VictoryScene
   ],
 };

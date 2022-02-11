@@ -49,6 +49,11 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("scissors", "assets/sprites/scissors.png");
     this.load.image("heart", "assets/sprites/heart.png");
 
+    this.load.image("stairsUp", "assets/sprites/stairsUp.png");
+    this.load.image("stairsDown", "assets/sprites/stairsDown.png");
+    this.load.image("bossroom", "assets/sprites/blank.png");
+    
+
     // this.load.image('diamond', 'assets/sprites/diamond.png');
     this.load.audio("loss", "assets/audio/lossMusic.mp3");
     this.load.audio("win", "assets/audio/win.mp3");
@@ -76,6 +81,8 @@ export default class Preloader extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start("TitleScene");
+
+        this.scene.start("TitleScene");
+
   }
 }
