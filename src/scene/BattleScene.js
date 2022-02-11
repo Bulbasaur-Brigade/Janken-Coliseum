@@ -36,7 +36,7 @@ export default class BattleScene extends Phaser.Scene {
   init() {
     //Battle NPC
     this.computer = store.getState();
-    const npcName = this.computer.npcBoardReducer.singleNPC;
+    this.npcName = this.computer.npcBoardReducer.singleNPC;
 
     // Rule Set
     this.rules = {
@@ -49,7 +49,11 @@ export default class BattleScene extends Phaser.Scene {
     this.selectedSprite = null;
     // Computer Hearts
 
-    if (npcName === "mac" || npcName === "zach" || npcName === "omar") {
+    if (
+      this.npcName === "mac" ||
+      this.npcName === "zach" ||
+      this.npcName === "omar"
+    ) {
       this.computerHearts = 5;
     } else {
       this.computerHearts = 2;
@@ -65,6 +69,11 @@ export default class BattleScene extends Phaser.Scene {
     this.load.image(ROCK, "assets/sprites/rock.png");
     this.load.image(PAPER, "assets/sprites/paper.png");
     this.load.image(SCISSORS, "assets/sprites/scissors.png");
+    this.load.atlas(
+      "explosion",
+      "assets/sprites/explosion.png",
+      "assets/sprites/explosion.json"
+    );
   }
   // gainHp() {
   //   if (this.hp < 10) {
@@ -106,11 +115,12 @@ export default class BattleScene extends Phaser.Scene {
     let hp = data.hpReducer;
 
     if (hp === 0) {
-      this.time.delayedCall(1500, () => {
-        this.scene.switch("LossScene");
+      this.time.delayedCall(3800, () => {
+        this.scene.start("LossScene");
         this.scene.stop("Heart");
         this.scene.stop("NpcHearts");
         this.scene.stop("Inventory");
+        this.scene.stop("QuestUi");
         this.scene.stop("SinglePlayerMapScene");
         this.music = this.scene.get("SinglePlayerMapScene");
         this.music.bgMusic.stop();
@@ -122,7 +132,7 @@ export default class BattleScene extends Phaser.Scene {
   gameWin() {
     if (this.computerHearts === 0) {
       store.dispatch(isDefeated(this.computer.npcBoardReducer.singleNPC));
-      this.time.delayedCall(1500, () => {
+      this.time.delayedCall(4000, () => {
         this.scene.switch("SinglePlayerMapScene");
         this.scene.start("QuestUi");
         this.scene.stop();
@@ -133,22 +143,54 @@ export default class BattleScene extends Phaser.Scene {
       });
     }
   }
-  playerHasNoItems() {
+  dynamicText() {
     const data = store.getState();
     let hp = data.hpReducer;
-    this.counter = 0;
-    if (this.items.every((item) => item.amount === 0)) {
-      this.add.bitmapText(
-        20,
-        200,
-        "carrier_command",
-        "You lost your items \n\n\n Go collect some\n\n\n to Battle!",
-        20
-      );
-      this.counter++;
+
+    if (
+      this.computerHearts === 0 ||
+      (this.hp === 0 && this.items.every((item) => item.amount === 0)) ||
+      this.items.every((item) => item.amount === 0) ||
+      hp === 0
+    ) {
+      this.time.delayedCall(1300, () => {
+        this.sprites.forEach((sprite) => sprite.setVisible(false));
+      });
+      this.time.delayedCall(1400, () => {
+        this.textBorder.setVisible(true);
+      });
     }
-    if (this.counter === 1 && hp > 0) {
-      this.time.delayedCall(2500, () => {
+    if (this.computerHearts === 0) {
+      // You win
+      this.time.delayedCall(1400, () => {
+        this.text.setVisible(true);
+      });
+    }
+    // if you lose and also lose your items
+    if (this.hp === 0 && this.items.every((item) => item.amount === 0)) {
+      this.time.delayedCall(1400, () => {
+        this.text.setText("You LOSE!").setVisible(true);
+      });
+    }
+
+    // You lost your items
+    if (this.items.every((item) => item.amount === 0)) {
+      this.time.delayedCall(1400, () => {
+        this.text
+          .setText("YOU LOST  \n\nYOUR ITEMS!\n\nGO FIND SOME!")
+          .setVisible(true);
+      });
+    }
+    // You lose
+    if (hp === 0) {
+      this.time.delayedCall(1400, () => {
+        this.text.setText("YOU LOSE!").setVisible(true);
+      });
+    }
+  }
+  playerHasNoItems() {
+    if (this.items.every((item) => item.amount === 0)) {
+      this.time.delayedCall(4000, () => {
         this.scene.switch("SinglePlayerMapScene");
         this.scene.start("QuestUi");
         this.battleMusic.stop();
@@ -156,12 +198,62 @@ export default class BattleScene extends Phaser.Scene {
         this.scene.stop("NpcHearts");
         this.music = this.scene.get("SinglePlayerMapScene");
         this.music.bgMusic.play();
-        this.counter = 0;
       });
     }
   }
   create() {
     this.scene.run("NpcHearts");
+
+    this.textBorder = this.add
+      .rectangle(400, 280, 400, 300, 0xe34234)
+      .setDepth(2)
+      .setStrokeStyle(4, 0xffffff)
+      .setVisible(false);
+    this.text = this.add
+      .bitmapText(
+        250,
+        230,
+        "carrier_command",
+        `You defeated\n\n\n ${this.npcName}!`,
+        20
+      )
+      .setVisible(false)
+      .setDepth(2);
+    // Particle effects
+    this.particles = this.add.particles("explosion").setDepth(2);
+
+    this.explode = this.sound.add("explode", { volume: 0.6 });
+    this.particles.createEmitter({
+      frame: ["smoke-puff", "cloud", "smoke-puff", "smoke0"],
+      angle: { min: 240, max: 300 },
+      speed: { min: 200, max: 300 },
+      quantity: 6,
+      lifespan: 2000,
+      alpha: { start: 1, end: 0 },
+      scale: { start: 1.5, end: 0.5 },
+      on: false,
+    });
+
+    this.particles.createEmitter({
+      frame: "stone",
+      angle: { min: 240, max: 300 },
+      speed: { min: 400, max: 600 },
+      quantity: { min: 2, max: 10 },
+      lifespan: 4000,
+      alpha: { start: 1, end: 0 },
+      scale: { min: 0.05, max: 0.4 },
+      rotate: { start: 0, end: 360, ease: "Back.easeOut" },
+      gravityY: 800,
+      on: false,
+    });
+
+    this.particles.createEmitter({
+      frame: "muzzleflash2",
+      lifespan: 200,
+      scale: { start: 2, end: 0 },
+      rotate: { start: 0, end: 180 },
+      on: false,
+    });
 
     // Bg Music
     this.battleMusic = this.sound.add("Battle", { volume: 0.15 }, true);
@@ -196,7 +288,6 @@ export default class BattleScene extends Phaser.Scene {
       sprite.setInteractive({ useHandCursor: true });
 
       sprite.on("pointerdown", () => {
-
         this.selectMove(sprite);
       });
     });
@@ -215,8 +306,7 @@ export default class BattleScene extends Phaser.Scene {
     ];
 
     this.add.bitmapText(50, 20, "carrier_command", "Player", 25);
-    this.add.bitmapText(540, 20, "carrier_command", this.npcComputer, 25);
-    this.add.bitmapText(375, 300, "carrier_command", "Vs");
+    this.add.bitmapText(530, 20, "carrier_command", this.npcComputer, 25);
 
     // button to select after you make your choice
     this.gameStateText = this.add.bitmapText(
@@ -254,65 +344,70 @@ export default class BattleScene extends Phaser.Scene {
     );
 
     if (this.winner == OUTCOME_PLAYER_WON) {
-      this.selectedSprite.x = 300;
-      this.selectedSprite.y = 300;
-      // this.physics.moveTo(this.selectedSprite, 300, 300, 160, 500);
-      computerSelectedSprite.x = 500;
-      computerSelectedSprite.y = 300;
-      this.gainItems(computerSelectedSprite.texture.key);
-      // this.gainHp();
-
-      this.winText = this.add.bitmapText(
-        280,
-        400,
-        "carrier_command",
-        "You Win!"
+      this.physics.moveTo(this.selectedSprite, 400, 300, 160, 1200);
+      this.physics.moveTo(computerSelectedSprite, 400, 300, 160, 1200);
+      this.physics.add.overlap(
+        this.selectedSprite,
+        computerSelectedSprite,
+        () => {
+          this.selectedSprite.body.stop();
+          computerSelectedSprite.body.stop();
+        }
       );
 
-      this.time.delayedCall(2000, () => {
-        this.winText.visible = false;
+      this.time.delayedCall(950, () => {
+        this.particles.emitParticleAt(400, 300);
+        this.explode.play();
+
+        // this.gainHp();
+      });
+      this.time.delayedCall(1500, () => {
+        this.gainItems(computerSelectedSprite.texture.key);
         this.reset();
       });
       this.computerHearts--;
     }
 
     if (this.winner == OUTCOME_COMPUTER_WON) {
-      this.selectedSprite.x = 300;
-      this.selectedSprite.y = 300;
-      // this.physics.moveTo(this.selectedSprite, 300, 300, 160, 500);
-      computerSelectedSprite.x = 500;
-      computerSelectedSprite.y = 300;
-
-      this.loseHp();
-      this.loseItems(this.selectedSprite.texture.key);
-      this.loseText = this.add.bitmapText(
-        280,
-        400,
-        "carrier_command",
-        "You Lose!"
+      this.physics.moveTo(this.selectedSprite, 400, 300, 160, 1200);
+      this.physics.moveTo(computerSelectedSprite, 400, 300, 160, 1200);
+      this.physics.add.overlap(
+        this.selectedSprite,
+        computerSelectedSprite,
+        () => {
+          this.selectedSprite.body.stop();
+          computerSelectedSprite.body.stop();
+        }
       );
-      this.time.delayedCall(2000, () => {
-        this.loseText.visible = false;
+
+      this.time.delayedCall(950, () => {
+        this.particles.emitParticleAt(400, 300);
+        this.explode.play();
+      });
+      this.time.delayedCall(1500, () => {
+        this.loseHp();
+        this.loseItems(this.selectedSprite.texture.key);
         this.reset();
       });
     }
 
     if (this.winner == OUTCOME_TIE) {
-      // this.physics.moveTo(this.selectedSprite, 300, 300, 160, 500);
-      this.selectedSprite.x = 300;
-      this.selectedSprite.y = 300;
-      computerSelectedSprite.x = 500;
-      computerSelectedSprite.y = 300;
-
-      this.tieText = this.add.bitmapText(
-        280,
-        400,
-        "carrier_command",
-        "Tie Game!"
+      this.physics.moveTo(this.selectedSprite, 400, 300, 160, 1200);
+      this.physics.moveTo(computerSelectedSprite, 400, 300, 160, 1200);
+      this.physics.add.overlap(
+        this.selectedSprite,
+        computerSelectedSprite,
+        () => {
+          this.selectedSprite.body.stop();
+          computerSelectedSprite.body.stop();
+        }
       );
 
-      this.time.delayedCall(2000, () => {
-        this.tieText.visible = false;
+      this.time.delayedCall(950, () => {
+        this.particles.emitParticleAt(400, 300);
+        this.explode.play();
+      });
+      this.time.delayedCall(1500, () => {
         this.reset();
       });
     }
@@ -366,6 +461,7 @@ export default class BattleScene extends Phaser.Scene {
     //     this.gameWin();
     //   }
     //   if (this.counter === 1 && this.hp > 0) {
+    this.dynamicText();
     this.gameLoss();
     this.playerHasNoItems();
     this.gameWin();

@@ -22,6 +22,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       this.scene.stop("QuestUi");
       this.scene.stop();
       this.scene.start("VictoryScene");
+      // "Congratulations!!!\n\nYou conquered FullStack!\n\nYou're ready to graduate",
     }
     storeNPCS.forEach((npc) => {
       if (npc.defeated) {
@@ -78,7 +79,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     // Layers
 
-    const waterLayer = map.createLayer("Water", tileset, 0, 0);
+    map.createLayer("Water", tileset, 0, 0);
     const groundLayer = map.createLayer("Ground", tileset, 0, 0);
     const interactiveLayer = map.createLayer("Interactive", tileset, 0, 0);
     const overheadLayer = map.createLayer("Overhead", tileset, 0, 0);
@@ -106,8 +107,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       this.npcsArr.push(newNPC);
 
       store.dispatch(addNPC({ name: npc.type, defeated: newNPC.isDefeated }));
-
-      const npcData = store.getState();
 
       this.dialogbox = this.add
         .graphics()
@@ -212,13 +211,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         null,
         this
       );
-      // this.physics.add.collider(
-      //   newNPC,
-      //   interactiveLayer,
-      //   newNPC.movementNpc(),
-      //   null,
-      //   this
-      // );
     });
 
     //Item randomized/overlaps
