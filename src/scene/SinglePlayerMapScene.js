@@ -227,7 +227,17 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     itemLayer.objects.forEach((item) => {
       const randomItem =
         itemArray[Math.floor(Math.random() * itemArray.length)];
-      if (randomItem) {
+      if(item.name === "bossroom" && item.properties[0].value) {
+        //console.log("Item: ", item);
+        const newItem = new Items(
+          this,
+          (item.x + 16),
+          (item.y - 8),
+          item.name
+      ).setScale(1);
+      this.physics.add.collider(this.player, newItem, () => {this.scene.switch("RoomOne")}, null, this);
+      if(item.name === "bossroom") {}
+      } else if (randomItem) {
         item.name = randomItem;
         const newItem = new Items(this, item.x, item.y, item.name).setScale(
           0.25

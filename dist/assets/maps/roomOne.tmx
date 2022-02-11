@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="4">
+ <editorsettings>
+  <export target="roomOne.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" name="tilemap" tilewidth="16" tileheight="16" spacing="1" tilecount="486" columns="27">
+  <image source="tilemap.png" width="458" height="305"/>
+  <tile id="81">
+   <properties>
+    <property name="collisions" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="82">
+   <properties>
+    <property name="collisions" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="83">
+   <properties>
+    <property name="collisions" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="108">
+   <properties>
+    <property name="collisions" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="110">
+   <properties>
+    <property name="collisions" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="135">
+   <properties>
+    <property name="collisions" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="136">
+   <properties>
+    <property name="collisions" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="137">
+   <properties>
+    <property name="collisions" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="412">
+   <properties>
+    <property name="collisions" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="413">
+   <properties>
+    <property name="collisions" type="bool" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="20" height="20">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,82,83,83,83,83,83,83,83,83,83,83,83,83,84,0,0,0,
+0,0,0,109,110,110,110,110,110,110,110,110,110,110,110,110,111,0,0,0,
+0,0,0,109,110,110,110,110,110,110,110,110,110,110,110,110,111,0,0,0,
+0,0,0,109,110,110,110,110,110,110,110,110,110,110,110,110,111,0,0,0,
+0,0,0,109,110,110,110,110,110,110,110,110,110,110,110,110,111,0,0,0,
+0,0,0,109,110,110,110,110,110,110,110,110,110,110,110,110,111,0,0,0,
+0,0,0,109,110,110,110,110,110,110,110,110,110,110,110,110,111,0,0,0,
+0,0,0,109,110,110,110,110,110,110,110,110,110,110,110,110,111,0,0,0,
+0,0,0,109,110,110,110,110,110,110,110,110,110,110,110,110,111,0,0,0,
+0,0,0,109,110,110,110,110,110,110,110,110,110,110,110,110,111,0,0,0,
+0,0,0,109,110,110,110,110,110,110,110,110,110,110,110,110,111,0,0,0,
+0,0,0,109,110,110,110,110,110,110,110,110,110,110,110,110,111,0,0,0,
+0,0,0,109,110,110,110,110,110,110,110,110,110,110,110,110,111,0,0,0,
+0,0,0,136,137,137,137,137,137,413,414,137,137,137,137,137,138,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="Objects">
+  <object id="1" name="mac" type="NPC" gid="187" x="144.426" y="160.426" width="16" height="16"/>
+  <object id="2" name="stairsUp" type="stairs" gid="327" x="239.927" y="79.9788" width="16" height="16"/>
+ </objectgroup>
+</map>
