@@ -45,15 +45,7 @@ export default class QuestUi extends Phaser.Scene {
           .setScale(0.02)
           .setVisible(false)
       );
-      if (this.npcNames[i].name === "mac") {
-        this.npcNames[i].name = "* mac *";
-      }
-      if (this.npcNames[i].name === "zach") {
-        this.npcNames[i].name = "* zach *";
-      }
-      if (this.npcNames[i].name === "omar") {
-        this.npcNames[i].name = "** omar **";
-      }
+
       this.textGroup.add(
         this.add.text(
           655,

@@ -69,11 +69,6 @@ export default class BattleScene extends Phaser.Scene {
     this.load.image(ROCK, "assets/sprites/rock.png");
     this.load.image(PAPER, "assets/sprites/paper.png");
     this.load.image(SCISSORS, "assets/sprites/scissors.png");
-    this.load.atlas(
-      "explosion",
-      "assets/sprites/explosion.png",
-      "assets/sprites/explosion.json"
-    );
   }
   // gainHp() {
   //   if (this.hp < 10) {
@@ -130,17 +125,59 @@ export default class BattleScene extends Phaser.Scene {
   }
 
   gameWin() {
-    if (this.computerHearts === 0) {
+    if (this.computerHearts < 6) {
+      const data = store.getState();
+
+      const scene = data.sceneReducer;
+
       store.dispatch(isDefeated(this.computer.npcBoardReducer.singleNPC));
-      this.time.delayedCall(4000, () => {
-        this.scene.switch("SinglePlayerMapScene");
-        this.scene.start("QuestUi");
-        this.scene.stop();
-        this.scene.stop("NpcHearts");
-        this.battleMusic.stop();
-        this.music = this.scene.get("SinglePlayerMapScene");
-        this.music.bgMusic.play();
-      });
+      if (scene === "SinglePlayerMapScene") {
+        this.time.delayedCall(4000, () => {
+          this.scene.switch("SinglePlayerMapScene");
+          this.scene.start("QuestUi");
+          this.scene.stop();
+          this.scene.stop("NpcHearts");
+          this.battleMusic.stop();
+          this.music = this.scene.get("SinglePlayerMapScene");
+          this.music.bgMusic.play();
+        });
+      } else if (scene === "RoomOne") {
+        {
+          this.time.delayedCall(4000, () => {
+            this.scene.switch("RoomOne");
+            this.scene.start("QuestUi");
+            this.scene.stop();
+            this.scene.stop("NpcHearts");
+            this.battleMusic.stop();
+            this.music = this.scene.get("SinglePlayerMapScene");
+            this.music.bgMusic.play();
+          });
+        }
+      } else if (scene === "RoomTwo") {
+        {
+          this.time.delayedCall(4000, () => {
+            this.scene.switch("RoomTwo");
+            this.scene.start("QuestUi");
+            this.scene.stop();
+            this.scene.stop("NpcHearts");
+            this.battleMusic.stop();
+            this.music = this.scene.get("SinglePlayerMapScene");
+            this.music.bgMusic.play();
+          });
+        }
+      } else if (scene === "RoomThree") {
+        {
+          this.time.delayedCall(4000, () => {
+            this.scene.switch("RoomThree");
+            this.scene.start("QuestUi");
+            this.scene.stop();
+            this.scene.stop("NpcHearts");
+            this.battleMusic.stop();
+            this.music = this.scene.get("SinglePlayerMapScene");
+            this.music.bgMusic.play();
+          });
+        }
+      }
     }
   }
   dynamicText() {
@@ -189,22 +226,63 @@ export default class BattleScene extends Phaser.Scene {
     }
   }
   playerHasNoItems() {
-    if (this.items.every((item) => item.amount === 0)) {
-      this.time.delayedCall(4000, () => {
-        this.scene.switch("SinglePlayerMapScene");
-        this.scene.start("QuestUi");
-        this.battleMusic.stop();
+    const data = store.getState();
+    const scene = data.sceneReducer;
 
-        this.scene.stop("NpcHearts");
-        this.music = this.scene.get("SinglePlayerMapScene");
-        this.music.bgMusic.play();
-      });
+    if (this.items.every((item) => item.amount === 0)) {
+      if (scene === "SinglePlayerMapScene") {
+        this.time.delayedCall(4000, () => {
+          this.scene.switch("SinglePlayerMapScene");
+          this.scene.start("QuestUi");
+          this.battleMusic.stop();
+
+          this.scene.stop("NpcHearts");
+          this.music = this.scene.get("SinglePlayerMapScene");
+          this.music.bgMusic.play();
+        });
+      } else if (scene === "RoomOne") {
+        {
+          this.time.delayedCall(4000, () => {
+            this.scene.switch("RoomOne");
+            this.scene.start("QuestUi");
+            this.scene.stop();
+            this.scene.stop("NpcHearts");
+            this.battleMusic.stop();
+            this.music = this.scene.get("SinglePlayerMapScene");
+            this.music.bgMusic.play();
+          });
+        }
+      } else if (scene === "RoomTwo") {
+        {
+          this.time.delayedCall(4000, () => {
+            this.scene.switch("RoomTwo");
+            this.scene.start("QuestUi");
+            this.scene.stop();
+            this.scene.stop("NpcHearts");
+            this.battleMusic.stop();
+            this.music = this.scene.get("SinglePlayerMapScene");
+            this.music.bgMusic.play();
+          });
+        }
+      } else {
+        {
+          this.time.delayedCall(4000, () => {
+            this.scene.switch("RoomThree");
+            this.scene.start("QuestUi");
+            this.scene.stop();
+            this.scene.stop("NpcHearts");
+            this.battleMusic.stop();
+            this.music = this.scene.get("SinglePlayerMapScene");
+            this.music.bgMusic.play();
+          });
+        }
+      }
     }
+
+    //
   }
   create() {
     this.scene.run("NpcHearts");
-
-    
 
     this.textBorder = this.add
       .rectangle(400, 280, 400, 300, 0xe34234)
@@ -258,7 +336,7 @@ export default class BattleScene extends Phaser.Scene {
     });
 
     // Bg Music
-    this.battleMusic = this.sound.add("Battle", { volume: 0.15 }, true);
+    this.battleMusic = this.sound.add("Battle", { volume: 0.1, loop: true });
     this.battleMusic.play();
 
     this.add.image(0, 0, "battleScene").setOrigin(0, 0).setScale(1);
@@ -360,14 +438,12 @@ export default class BattleScene extends Phaser.Scene {
       this.time.delayedCall(950, () => {
         this.particles.emitParticleAt(400, 300);
         this.explode.play();
-
-        // this.gainHp();
+        this.computerHearts--;
       });
       this.time.delayedCall(1500, () => {
         this.gainItems(computerSelectedSprite.texture.key);
         this.reset();
       });
-      this.computerHearts--;
     }
 
     if (this.winner == OUTCOME_COMPUTER_WON) {

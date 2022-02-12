@@ -1,13 +1,13 @@
 {
-  "omar" : "... does it really matter what you choose?",
-  "savion" : "99 and counting. Your gonna be 100 in a row.",
-  "zach" : "You can't escape...",
-  "mac" : "No hands, what animal do you replace them with?",
-  "amber" : "Don't you just love the sea? What a battle?",
-  "eric" : "\n\t hehehehe",
-  "sey" : "Just remember you challenged me.",
-  "margarita" : "This battle will take O(1) for me to win",
-  "devonne" : "hmm,those rocks can grind some spices",
-  "danny" : "I need more scissors... don't ask why",
-  "greg" : "Paper... need more... song I'm writing"
+  "omar" : ["... does it really matter what you choose?","defeated"],
+  "savion" : ["99 and counting. Your gonna be 100 in a row.","defeated"],
+  "zach" : ["You can't escape...","defeated"],
+  "mac" : ["No hands, what animal do you replace them with?","defeated"],
+  "amber" : ["Don't you just love the sea? What, a battle?","defeated"],
+  "eric" : ["\n\t hehehehe","defeated"],
+  "sey" : ["Just remember you challenged me.","defeated"],
+  "margarita" : ["This battle will take O(1) for me to win","defeated"],
+  "devonne" : ["hmm,those rocks can grind some spices","defeated"],
+  "danny" :[ "I need more scissors... don't ask why","defeated"],
+  "greg" : ["Paper... need more... song I'm writing","defeated"]
 }

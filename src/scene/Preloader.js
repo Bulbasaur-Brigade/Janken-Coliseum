@@ -51,8 +51,7 @@ export default class Preloader extends Phaser.Scene {
 
     this.load.image("stairsUp", "assets/sprites/stairsUp.png");
     this.load.image("stairsDown", "assets/sprites/stairsDown.png");
-    this.load.image("bossroom", "assets/sprites/blank.png");
-    
+    this.load.image("blank", "assets/sprites/blank.png");
 
     // this.load.image('diamond', 'assets/sprites/diamond.png');
     this.load.audio("loss", "assets/audio/lossMusic.mp3");
@@ -75,14 +74,24 @@ export default class Preloader extends Phaser.Scene {
     );
 
     this.load.image("battleScene", "assets/backgrounds/battleScene.jpg");
+    this.load.image("dialogBox", "assets/sprites/dialogBox.png");
 
     // Battle Music
     this.load.audio("Battle", "assets/audio/Battle.mp3");
+
+    //Dialog Data
+    this.load.json("speech", "assets/speech/npcSpeech.json");
+
+    // Explosion in battlescene
+    this.load.atlas(
+      "explosion",
+      "assets/sprites/explosion.png",
+      "assets/sprites/explosion.json"
+    );
   }
 
   create() {
-
-        this.scene.start("TitleScene");
-
+    // SinglePlayerMapScene
+    this.scene.start("SinglePlayerMapScene");
   }
 }

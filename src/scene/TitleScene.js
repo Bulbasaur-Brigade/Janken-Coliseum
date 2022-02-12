@@ -5,6 +5,7 @@ import store from "../redux/store";
 import { resetChar } from "../redux/charReducer";
 import { resetItem } from "../redux/inventoryReducer";
 import { resetNPC } from "../redux/npcBoard";
+import { resetScene } from "../redux/sceneReducer";
 
 export default class TitleScene extends Phaser.Scene {
   constructor() {
@@ -13,7 +14,7 @@ export default class TitleScene extends Phaser.Scene {
 
   create() {
     // Music
-    this.titleMusic = this.sound.add("music", { volume: 0.2 }, true);
+    this.titleMusic = this.sound.add("music", { volume: 0.2, loop: true });
     this.titleMusic.play();
 
     this.selectSound = this.sound.add("selectSound", { volume: 0.06 });
@@ -176,6 +177,7 @@ export default class TitleScene extends Phaser.Scene {
     this.aboutText.setDepth(4);
 
     this.singlePlayer.on("pointerdown", () => {
+      store.dispatch(resetScene());
       store.dispatch(resetHp());
       store.dispatch(resetChar());
       store.dispatch(resetItem());

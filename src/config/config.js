@@ -27,7 +27,7 @@ export default {
   physics: {
     default: "arcade",
     arcade: {
-      debug: false,
+      debug: true,
     },
   },
 
@@ -47,15 +47,15 @@ export default {
     CharPicker,
     // MultiPlayerMapScene,
     SinglePlayerMapScene,
-    QuestUi,
     BattleScene,
+    RoomOne,
+    RoomTwo,
+    RoomThree,
+    QuestUi,
 
     Inventory,
     Heart,
     NpcHearts,
-    RoomOne,
-    RoomTwo,
-    RoomThree,
     LossScene,
     VictoryScene,
   ],
