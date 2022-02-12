@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="120" height="120" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="82">
+<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="120" height="120" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="82">
  <editorsettings>
   <export target="overworldMap.json" format="json"/>
  </editorsettings>
@@ -2891,12 +2891,12 @@
   <properties>
    <property name="collide" type="bool" value="false"/>
   </properties>
-  <object id="16" name="Savion" type="savion" gid="267" x="912" y="368" width="16" height="16">
+  <object id="16" name="Savion" type="savion" gid="267" x="640" y="1392" width="16" height="16">
    <properties>
     <property name="defeated" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="19" name="Margarita" type="margarita" gid="459" x="432" y="288" width="16" height="16">
+  <object id="19" name="Margarita" type="margarita" gid="459" x="992" y="848" width="16" height="16">
    <properties>
     <property name="defeated" type="bool" value="false"/>
    </properties>
@@ -2911,22 +2911,22 @@
     <property name="defeated" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="22" name="Amber" type="amber" gid="430" x="736" y="1584" width="16" height="16">
+  <object id="22" name="Amber" type="amber" gid="430" x="544" y="448" width="16" height="16">
    <properties>
     <property name="defeated" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="23" name="Devonne" type="devonne" gid="297" x="800" y="1296" width="16" height="16">
+  <object id="23" name="Devonne" type="devonne" gid="297" x="336" y="960" width="16" height="16">
    <properties>
     <property name="defeated" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="24" name="Eric" type="eric" gid="403" x="304" y="592" width="16" height="16">
+  <object id="24" name="Eric" type="eric" gid="403" x="768" y="592" width="16" height="16">
    <properties>
     <property name="defeated" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="26" name="Danny" type="danny" gid="349" x="352" y="1200" width="16" height="16">
+  <object id="26" name="Danny" type="danny" gid="349" x="1488" y="1472" width="16" height="16">
    <properties>
     <property name="defeated" type="bool" value="false"/>
    </properties>
@@ -2980,7 +2980,7 @@
   <object id="76" type="item" gid="308" x="432" y="1200" width="16" height="16"/>
   <object id="81" name="bossroom" type="doors" gid="413" x="880.5" y="1056.25" width="16" height="16">
    <properties>
-    <property name="open" type="bool" value="false"/>
+    <property name="open" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>

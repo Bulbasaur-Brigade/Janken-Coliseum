@@ -64,8 +64,8 @@
                  "type":"savion",
                  "visible":true,
                  "width":16,
-                 "x":912,
-                 "y":368
+                 "x":640,
+                 "y":1392
                 }, 
                 {
                  "gid":459,
@@ -82,8 +82,8 @@
                  "type":"margarita",
                  "visible":true,
                  "width":16,
-                 "x":432,
-                 "y":288
+                 "x":992,
+                 "y":848
                 }, 
                 {
                  "gid":186,
@@ -136,8 +136,8 @@
                  "type":"amber",
                  "visible":true,
                  "width":16,
-                 "x":736,
-                 "y":1584
+                 "x":544,
+                 "y":448
                 }, 
                 {
                  "gid":297,
@@ -154,8 +154,8 @@
                  "type":"devonne",
                  "visible":true,
                  "width":16,
-                 "x":800,
-                 "y":1296
+                 "x":336,
+                 "y":960
                 }, 
                 {
                  "gid":403,
@@ -172,7 +172,7 @@
                  "type":"eric",
                  "visible":true,
                  "width":16,
-                 "x":304,
+                 "x":768,
                  "y":592
                 }, 
                 {
@@ -190,8 +190,8 @@
                  "type":"danny",
                  "visible":true,
                  "width":16,
-                 "x":352,
-                 "y":1200
+                 "x":1488,
+                 "y":1472
                 }],
          "opacity":1,
          "properties":[
@@ -759,7 +759,7 @@
                         {
                          "name":"open",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"doors",
@@ -790,7 +790,7 @@
  "nextobjectid":82,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.7.2",
+ "tiledversion":"1.8.0",
  "tileheight":16,
  "tilesets":[
         {
@@ -5483,6 +5483,6 @@
         }],
  "tilewidth":16,
  "type":"map",
- "version":"1.6",
+ "version":"1.8",
  "width":120
 }
