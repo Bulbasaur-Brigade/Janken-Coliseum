@@ -12,24 +12,6 @@ export default class RoomOne extends Phaser.Scene {
     super("RoomOne");
     this.mac = [];
   }
-  npcDefeatListener() {
-    const data = store.getState();
-    const storeNPCS = data.npcBoardReducer.npcs;
-
-    if (storeNPCS.every((npc) => npc.defeated)) {
-      this.scene.stop("Heart");
-      this.scene.stop("Inventory");
-      this.scene.stop("QuestUi");
-      this.scene.stop();
-      this.scene.start("VictoryScene");
-      // "Congratulations!!!\n\nYou conquered FullStack!\n\nYou're ready to graduate",
-    }
-    storeNPCS.forEach((npc) => {
-      if (npc.defeated) {
-        this.mac[0].destroy();
-      }
-    });
-  }
 
   preload() {
     this.load.image("roomOne", "assets/maps/tilemap.png");
@@ -90,6 +72,16 @@ export default class RoomOne extends Phaser.Scene {
           })
           .setDepth(20)
           .setResolution(10);
+
+        this.defeatedDialogText = this.add
+          .text(object.x, object.y - 40, this.speechData[object.name][1], {
+            font: "10px Arial",
+            fill: "#000000",
+            wordWrap: { width: 120 - 2 * 2 },
+          })
+          .setDepth(20)
+          .setResolution(10);
+
         this.dialogTextName = this.add
           .text(object.x + 20, object.y - 85, object.name.toUpperCase(), {
             font: "9px Arial",
@@ -133,8 +125,13 @@ export default class RoomOne extends Phaser.Scene {
           this.noButton,
           this.dialogbox,
           this.dialogText,
+          this.defeatedDialogText,
           this.dialogTextName,
         ];
+        dialogArr.forEach((item) => {
+          item.setVisible(false);
+        });
+
         this.yesButton.on("pointerdown", () => {
           dialogArr.forEach((item) => {
             item.setVisible(false);
@@ -146,9 +143,7 @@ export default class RoomOne extends Phaser.Scene {
           this.music = this.scene.get("SinglePlayerMapScene");
           this.music.bgMusic.stop();
         });
-        dialogArr.forEach((item) => {
-          item.setVisible(false);
-        });
+
         this.noButton.on("pointerdown", () => {
           dialogArr.forEach((item) => {
             this.selectSound.play();
@@ -164,12 +159,16 @@ export default class RoomOne extends Phaser.Scene {
           (player, currentNPC) => {
             store.dispatch(getNPC(currentNPC.texture.key));
 
-            console.log("currentNPC.texture.key", currentNPC.texture.key);
+            // SETTING DIALOG TEXT VISIBLE
+
+            for (let i = 0; i < dialogArr.length; i++) {
+              if (i === 6) {
+                dialogArr[i].setVisible(false);
+              } else dialogArr[i].setVisible(true);
+            }
 
             newNPC.disableBody();
-            dialogArr.forEach((item) => {
-              item.setVisible(true);
-            });
+
             let data = store.getState();
             const storeNPCS = data.npcBoardReducer.npcs;
             console.log("storeNPCS", storeNPCS);
@@ -184,11 +183,22 @@ export default class RoomOne extends Phaser.Scene {
 
                 storeNPCS.forEach((npc) => {
                   if (npc.name === npcName) {
-                    console.log("npc.name", npc.name);
-                    if (npc.defeated === false) {
-                      newNPC.enableBody();
+                    if (npc.defeated) {
+                      dialogArr[5].setVisible(false);
+                      dialogArr[6].setVisible(true);
+
+                      dialogArr[0].setVisible(false);
+                      dialogArr[1].setVisible(false);
+                      dialogArr[2].setVisible(false);
+                      dialogArr[3].setVisible(false);
                     }
                   }
+                });
+                this.time.delayedCall(5000, () => {
+                  dialogArr.forEach((item) => {
+                    item.setVisible(false);
+                    newNPC.enableBody();
+                  });
                 });
               });
             });
@@ -230,6 +240,5 @@ export default class RoomOne extends Phaser.Scene {
 
   update() {
     this.player.update(this.keys);
-    this.npcDefeatListener();
   }
 }

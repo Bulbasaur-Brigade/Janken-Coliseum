@@ -12,48 +12,22 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
   constructor() {
     super("SinglePlayerMapScene");
     this.npcsArr = [];
-    this.yesAndNoButtons = [];
   }
 
   npcDefeatListener() {
     const data = store.getState();
-    const storeNPCS = data.npcBoardReducer.npcs;
+    this.storeNPCS = data.npcBoardReducer.npcs;
     let tempNpcArr = [];
 
-    for (let i = 3; i < storeNPCS.length; i++) {
-      tempNpcArr.push(storeNPCS[i]);
+    for (let i = 3; i < this.storeNPCS.length; i++) {
+      tempNpcArr.push(this.storeNPCS[i]);
       if (tempNpcArr.every((npc) => npc.defeated === true)) {
         store.dispatch(doorOpen());
+        // ANNOUNCEMENT THAT OPENS BOSS BUILDING
         this.announce.setVisible(true);
       }
     }
-    if (storeNPCS.every((npc) => npc.defeated)) {
-      this.scene.stop("Heart");
-      this.scene.stop("Inventory");
-      this.scene.stop("QuestUi");
-      this.scene.stop();
-      this.scene.start("VictoryScene");
-      // "Congratulations!!!\n\nYou conquered FullStack!\n\nYou're ready to graduate",
-    }
 
-    // !!!!!!!ONLY SHOW BUTTONS FOR THOSE NPCS THAT ARENT DEFEATED!
-    storeNPCS.forEach((npc) => {
-      if (npc.defeated) {
-        // this.npcsArr.forEach((sprite) => {
-        //   if (npc.name === sprite.texture.key)
-        //  sprite.destroy();
-        this.yesAndNoButtons.forEach((button) => {
-          button.setVisible(false);
-          // });
-        });
-      } else {
-        this.yesAndNoButtons.forEach((button) => {
-          button.setVisible(true);
-          // });
-        });
-      }
-    });
-    // !!!!!!!ONLY SHOW BUTTONS FOR THOSE NPCS THAT ARENT DEFEATED!
   }
 
   preload() {
@@ -157,7 +131,19 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
           wordWrap: { width: 120 - 2 * 2 },
         })
         .setDepth(20)
-        .setResolution(10);
+        .setResolution(10)
+
+
+      this.defeatedDialogText = this.add
+        .text(npc.x, npc.y - 70, this.speechData[npc.type][1], {
+          font: "10px Arial",
+          fill: "#000000",
+          wordWrap: { width: 120 - 2 * 2 },
+        })
+        .setDepth(20)
+        .setResolution(10)
+
+
       this.dialogTextName = this.add
         .text(npc.x + 20, npc.y - 80, npc.type.toUpperCase(), {
           font: "9px Arial",
@@ -201,11 +187,12 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         this.noButton,
         this.dialogbox,
         this.dialogText,
+        this.defeatedDialogText,
         this.dialogTextName,
       ];
-      this.buttons = [this.yesRec, this.yesButton, this.noRec, this.noButton];
-      this.buttons.forEach((button) => {
-        this.yesAndNoButtons.push(button);
+
+      dialogArr.forEach((item) => {
+        item.setVisible(false);
       });
 
       this.yesButton.on("pointerdown", () => {
@@ -218,9 +205,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         this.scene.switch("BattleScene");
         this.bgMusic.stop();
       });
-      dialogArr.forEach((item) => {
-        item.setVisible(false);
-      });
+
       this.noButton.on("pointerdown", () => {
         dialogArr.forEach((item) => {
           this.selectSound.play();
@@ -233,27 +218,45 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         this.player,
         newNPC,
         (player, currentNPC) => {
+          //REDUX
           store.dispatch(getNPC(currentNPC.texture.key));
-          newNPC.disableBody();
-          dialogArr.forEach((item) => {
-            item.setVisible(true);
-          });
           let data = store.getState();
           const storeNPCS = data.npcBoardReducer.npcs;
           this.currentNPC = data.npcBoardReducer.singleNPC;
 
+          // SETTING DIALOG TEXT VISIBLE
+          for (let i = 0; i < dialogArr.length; i++) {
+            if (i === 6) {
+              dialogArr[i].setVisible(false);
+            } else dialogArr[i].setVisible(true);
+          }
+
+          newNPC.disableBody();
+
+          // TURNING THE BUTTONS OFF IF DEFEATED
+          // AND CHANGING DIALOG TEXT WHEN DEFEATED
+          storeNPCS.forEach((npc) => {
+            let npcName = currentNPC.texture.key;
+            if (npc.name === npcName) {
+              if (npc.defeated) {
+                dialogArr[5].setVisible(false);
+                dialogArr[6].setVisible(true);
+
+                dialogArr[1].setVisible(false);
+                dialogArr[0].setVisible(false);
+                dialogArr[3].setVisible(false);
+                dialogArr[2].setVisible(false);
+                // this.yesAndNoButtons.forEach((button) => {
+                //   button.setVisible(false);
+                // });
+              }
+            }
+          });
+
           this.time.delayedCall(5000, () => {
             dialogArr.forEach((item) => {
               item.setVisible(false);
-              let npcName = currentNPC.texture.key;
-
-              storeNPCS.forEach((npc) => {
-                if (npc.name === npcName) {
-                  if (npc.defeated === false) {
-                    newNPC.enableBody();
-                  }
-                }
-              });
+              newNPC.enableBody();
             });
           });
         },
