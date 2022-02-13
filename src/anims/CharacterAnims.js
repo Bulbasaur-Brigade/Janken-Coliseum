@@ -1,9 +1,9 @@
-import Phaser from "phaser";
+import Phaser from 'phaser';
 
 const createCharacterAnims = (anims = Phaser.Animations.AnimationManager) => {
   anims.create({
-    key: "runLeft",
-    frames: anims.generateFrameNumbers("character", {
+    key: 'runLeft',
+    frames: anims.generateFrameNumbers('character', {
       start: 0,
       end: 2,
     }),
@@ -11,8 +11,8 @@ const createCharacterAnims = (anims = Phaser.Animations.AnimationManager) => {
     repeat: -1,
   });
   anims.create({
-    key: "runRight",
-    frames: anims.generateFrameNumbers("character", {
+    key: 'runRight',
+    frames: anims.generateFrameNumbers('character', {
       start: 9,
       end: 11,
     }),
@@ -20,8 +20,8 @@ const createCharacterAnims = (anims = Phaser.Animations.AnimationManager) => {
     repeat: -1,
   });
   anims.create({
-    key: "runDown",
-    frames: anims.generateFrameNumbers("character", {
+    key: 'runDown',
+    frames: anims.generateFrameNumbers('character', {
       start: 3,
       end: 5,
     }),
@@ -29,8 +29,8 @@ const createCharacterAnims = (anims = Phaser.Animations.AnimationManager) => {
     repeat: -1,
   });
   anims.create({
-    key: "runUp",
-    frames: anims.generateFrameNumbers("character", {
+    key: 'runUp',
+    frames: anims.generateFrameNumbers('character', {
       start: 6,
       end: 8,
     }),
@@ -39,13 +39,14 @@ const createCharacterAnims = (anims = Phaser.Animations.AnimationManager) => {
   });
 
   anims.create({
-    key: "idle",
-    frames: [{ key: "character", frame: 3 }],
+    key: 'idle',
+    frames: [{ key: 'character', frame: 3 }],
     frameRate: 10,
   });
+
   anims.create({
-    key: "runLeftApril",
-    frames: anims.generateFrameNumbers("character", {
+    key: 'runLeftApril',
+    frames: anims.generateFrameNumbers('character', {
       start: 60,
       end: 62,
     }),
@@ -53,8 +54,8 @@ const createCharacterAnims = (anims = Phaser.Animations.AnimationManager) => {
     repeat: -1,
   });
   anims.create({
-    key: "runRightApril",
-    frames: anims.generateFrameNumbers("character", {
+    key: 'runRightApril',
+    frames: anims.generateFrameNumbers('character', {
       start: 69,
       end: 71,
     }),
@@ -62,8 +63,8 @@ const createCharacterAnims = (anims = Phaser.Animations.AnimationManager) => {
     repeat: -1,
   });
   anims.create({
-    key: "runDownApril",
-    frames: anims.generateFrameNumbers("character", {
+    key: 'runDownApril',
+    frames: anims.generateFrameNumbers('character', {
       start: 63,
       end: 65,
     }),
@@ -71,8 +72,8 @@ const createCharacterAnims = (anims = Phaser.Animations.AnimationManager) => {
     repeat: -1,
   });
   anims.create({
-    key: "runUpApril",
-    frames: anims.generateFrameNumbers("character", {
+    key: 'runUpApril',
+    frames: anims.generateFrameNumbers('character', {
       start: 66,
       end: 68,
     }),
@@ -81,29 +82,29 @@ const createCharacterAnims = (anims = Phaser.Animations.AnimationManager) => {
   });
 
   anims.create({
-    key: "idleApril",
-    frames: [{ key: "character", frame: 63 }],
+    key: 'idleApril',
+    frames: [{ key: 'character', frame: 63 }],
     frameRate: 10,
   });
   anims.create({
-    key: "blueBirdFly",
-    frames: anims.generateFrameNumbers("blueBird", {
+    key: 'blueBirdFly',
+    frames: anims.generateFrameNumbers('blueBird', {
       start: 0,
       end: 8,
     }),
     frameRate: 5,
     repeat: -1,
-    suffix: ".png",
+    suffix: '.png',
   });
   anims.create({
-    key: "greenBirdFly",
-    frames: anims.generateFrameNumbers("greenBird", {
+    key: 'greenBirdFly',
+    frames: anims.generateFrameNumbers('greenBird', {
       start: 0,
       end: 8,
     }),
     frameRate: 5,
     repeat: -1,
-    suffix: ".png",
+    suffix: '.png',
   });
 };
 

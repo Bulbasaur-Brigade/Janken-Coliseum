@@ -7,6 +7,8 @@ import { addHp, loseHp } from '../redux/hpReducer';
 import store from '../redux/store';
 import { addNPC, getNPC } from '../redux/npcBoard';
 import { createCharacterAnims } from '../anims/CharacterAnims';
+import { createNpcAnims } from '../anims/NpcAnims';
+
 export default class SinglePlayerMapScene extends Phaser.Scene {
   constructor() {
     super('SinglePlayerMapScene');
@@ -108,9 +110,17 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     store.dispatch(addNPC({ name: 'zach', defeated: false }));
     store.dispatch(addNPC({ name: 'mac', defeated: false }));
     npcLayer.objects.forEach((npc) => {
-      const newNPC = new NPC(this, npc.x, npc.y, npc.type).setScale(0.25);
+      const newNPC = new NPC(
+        this,
+        npc.x,
+        npc.y,
+        'npcSprites',
+        npc.type
+      ).setScale(0.25);
+      console.log(npc.type);
       this.npcsArr.push(newNPC);
-
+      // let direction = Phaser.Math.RND.integerInRange(1, 5);
+      createNpcAnims(this.anims, npc.type);
       store.dispatch(addNPC({ name: npc.type, defeated: newNPC.isDefeated }));
 
       this.dialogbox = this.add
@@ -312,6 +322,13 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
   update() {
     this.player.update(this.keys);
+
+    let direction = Phaser.Math.RND.integerInRange(0, 200);
+
+    this.npcsArr.forEach((elem) => {
+      elem.update(this.keys);
+    });
+
     this.destroyNPC();
 
     let randomEvent = Phaser.Math.RND.integerInRange(0, 2000);
