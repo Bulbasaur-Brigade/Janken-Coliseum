@@ -13,38 +13,40 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
   }
 
   //Movements
-  updateMovement(cursors) {
-    switch (cursors) {
-      case cursors.W.isDown: {
-        this.setVelocityY(-100);
-        this.play(`${this.npcName}Up`, true);
-        break;
-      }
-      case cursors.S.isDown: {
-        this.setVelocityY(100);
-        this.play(`${this.npcName}Down`, true);
-        break;
-      }
-      case cursors.A.isDown: {
-        this.setVelocityX(-100);
-        this.play(`${this.npcName}Left`, true);
-        break;
-      }
-      case cursors.D.isDown: {
-        this.setVelocityX(100);
-        this.play(`${this.npcName}Right`, true);
-        break;
-      }
-      default: {
-        this.setVelocityY(0);
-        this.setVelocityX(0);
-        this.play(`${this.npcName}idle`, true);
-      }
-    }
+  updateMovement() {
+    this.body.setVelocityX(25);
+    this.play(`${this.npcName}Right`, true);
+    // switch (cursors) {
+    //   case cursors.W.isDown: {
+    //     this.body.setVelocityY(-100);
+    //     this.play(`${this.npcName}Up`, true);
+    //     break;
+    //   }
+    //   case cursors.S.isDown: {
+    //     this.body.setVelocityY(100);
+    //     this.play(`${this.npcName}Down`, true);
+    //     break;
+    //   }
+    //   case cursors.A.isDown: {
+    //     this.body.setVelocityX(-100);
+    //     this.play(`${this.npcName}Left`, true);
+    //     break;
+    //   }
+    //   case cursors.D.isDown: {
+    //     this.body.setVelocityX(100);
+    //     this.play(`${this.npcName}Right`, true);
+    //     break;
+    //   }
+    //   default: {
+    //     this.body.setVelocityY(0);
+    //     this.body.setVelocityX(0);
+    //     this.play(`${this.npcName}idle`, true);
+    //   }
+    // }
   }
 
-  update(cursors) {
-    this.updateMovement(cursors);
+  update() {
+    this.updateMovement();
     this.body.velocity.normalize().scale(100);
   }
 }

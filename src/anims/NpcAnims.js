@@ -17,6 +17,7 @@ const createNpcAnims = (anims, npcName) => {
     sey: 120,
     zach: 132,
   };
+
   anims.create({
     key: `${npcName}Left`,
     frames: anims.generateFrameNumbers('npcSprites', {

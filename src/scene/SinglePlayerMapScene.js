@@ -15,38 +15,9 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.npcsArr = [];
   }
 
-  destroyNPC() {
-    const currentNPCS = store.getState();
-    const storeNPCS = currentNPCS.npcBoardReducer.npcs;
-    if (storeNPCS.every((npc) => npc.defeated)) {
-      this.scene.stop('Heart');
-      this.scene.stop('Inventory');
-      this.scene.stop('QuestUi');
-      this.scene.stop();
-      this.scene.start('VictoryScene');
-      // "Congratulations!!!\n\nYou conquered FullStack!\n\nYou're ready to graduate",
-    }
-    storeNPCS.forEach((npc) => {
-      if (npc.defeated) {
-        this.npcsArr.forEach((sprite) => {
-          if (npc.name === sprite.texture.key) sprite.destroy();
-        });
-      }
-    });
-  }
-
   preload() {
     this.load.image('tiles', 'assets/maps/tilemap.png');
     this.load.tilemapTiledJSON('tilemap', 'assets/maps/overworldMap.json');
-
-    // this.load.spritesheet(
-    //   "npc-character",
-    //   "assets/spriteSheets/characters.png",
-    //   {
-    //     frameWidth: 64,
-    //     frameHeight: 64,
-    //   }
-    // );
 
     //Dialog Data
     this.load.json('speech', 'assets/speech/npcSpeech.json');
@@ -75,6 +46,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     // Start animations
     createCharacterAnims(this.anims);
+
     // Creating Map using Tile Set
     const map = this.make.tilemap({ key: 'tilemap' });
     // "characters" comes from name in Tiled software
@@ -117,10 +89,10 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         'npcSprites',
         npc.type
       ).setScale(0.25);
-      console.log(npc.type);
       this.npcsArr.push(newNPC);
-      // let direction = Phaser.Math.RND.integerInRange(1, 5);
       createNpcAnims(this.anims, npc.type);
+      // let direction = Phaser.Math.RND.integerInRange(1, 5);
+
       store.dispatch(addNPC({ name: npc.type, defeated: newNPC.isDefeated }));
 
       this.dialogbox = this.add
@@ -328,8 +300,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.npcsArr.forEach((elem) => {
       elem.update(this.keys);
     });
-
-    this.destroyNPC();
 
     let randomEvent = Phaser.Math.RND.integerInRange(0, 2000);
 
