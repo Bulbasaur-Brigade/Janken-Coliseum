@@ -65,7 +65,7 @@ export default class RoomOne extends Phaser.Scene {
           .setScale(0.12, 0.16);
 
         this.dialogText = this.add
-          .text(object.x, object.y - 75, this.speechData[object.name], {
+          .text(object.x, object.y - 75, this.speechData[object.name][0], {
             font: "10px Arial",
             fill: "#000000",
             wordWrap: { width: 120 - 2 * 2 },
@@ -158,7 +158,9 @@ export default class RoomOne extends Phaser.Scene {
           newNPC,
           (player, currentNPC) => {
             store.dispatch(getNPC(currentNPC.texture.key));
-
+            let data = store.getState();
+            const storeNPCS = data.npcBoardReducer.npcs;
+            this.currentNPC = data.npcBoardReducer.singleNPC;
             // SETTING DIALOG TEXT VISIBLE
 
             for (let i = 0; i < dialogArr.length; i++) {
@@ -168,38 +170,25 @@ export default class RoomOne extends Phaser.Scene {
             }
 
             newNPC.disableBody();
+            // TURNING THE BUTTONS OFF IF DEFEATED
+            // AND CHANGING DIALOG TEXT WHEN DEFEATED
+            storeNPCS.forEach((npc) => {
+              if (npc.name === currentNPC.texture.key) {
+                if (npc.defeated) {
+                  dialogArr[5].setVisible(false);
+                  dialogArr[6].setVisible(true);
 
-            let data = store.getState();
-            const storeNPCS = data.npcBoardReducer.npcs;
-            console.log("storeNPCS", storeNPCS);
-            this.currentNPC = data.npcBoardReducer.singleNPC;
-
-            console.log("this.currentNPC", this.currentNPC);
-
+                  dialogArr[0].setVisible(false);
+                  dialogArr[1].setVisible(false);
+                  dialogArr[2].setVisible(false);
+                  dialogArr[3].setVisible(false);
+                }
+              }
+            });
             this.time.delayedCall(5000, () => {
               dialogArr.forEach((item) => {
                 item.setVisible(false);
-                let npcName = currentNPC.texture.key;
-
-                storeNPCS.forEach((npc) => {
-                  if (npc.name === npcName) {
-                    if (npc.defeated) {
-                      dialogArr[5].setVisible(false);
-                      dialogArr[6].setVisible(true);
-
-                      dialogArr[0].setVisible(false);
-                      dialogArr[1].setVisible(false);
-                      dialogArr[2].setVisible(false);
-                      dialogArr[3].setVisible(false);
-                    }
-                  }
-                });
-                this.time.delayedCall(5000, () => {
-                  dialogArr.forEach((item) => {
-                    item.setVisible(false);
-                    newNPC.enableBody();
-                  });
-                });
+                newNPC.enableBody();
               });
             });
           },

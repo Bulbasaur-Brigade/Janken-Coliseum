@@ -131,6 +131,7 @@ export default class BattleScene extends Phaser.Scene {
       const scene = data.sceneReducer;
 
       store.dispatch(isDefeated(this.computer.npcBoardReducer.singleNPC));
+
       if (scene === "SinglePlayerMapScene") {
         this.time.delayedCall(4000, () => {
           this.scene.switch("SinglePlayerMapScene");

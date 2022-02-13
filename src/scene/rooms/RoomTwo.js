@@ -12,24 +12,7 @@ export default class RoomTwo extends Phaser.Scene {
     super("RoomTwo");
     this.zach = [];
   }
-  npcDefeatListener() {
-    const data = store.getState();
-    const storeNPCS = data.npcBoardReducer.npcs;
 
-    if (storeNPCS.every((npc) => npc.defeated)) {
-      this.scene.stop("Heart");
-      this.scene.stop("Inventory");
-      this.scene.stop("QuestUi");
-      this.scene.stop();
-      this.scene.start("VictoryScene");
-      // "Congratulations!!!\n\nYou conquered FullStack!\n\nYou're ready to graduate",
-    }
-    storeNPCS.forEach((npc) => {
-      if (npc.defeated) {
-        this.zach[0].destroy();
-      }
-    });
-  }
   preload() {
     this.load.image("roomTwo", "assets/maps/tilemap.png");
     this.load.tilemapTiledJSON("roomTwoMap", "assets/maps/roomTwo.json");
@@ -61,7 +44,7 @@ export default class RoomTwo extends Phaser.Scene {
     ).setScale(0.25);
 
     const objectsLayer = map.getObjectLayer("Objects");
-    console.log(objectsLayer.objects);
+
     objectsLayer.objects.forEach((object) => {
       if (object.name === "zach") {
         const newNPC = new NPC(this, object.x, object.y, object.name).setScale(
@@ -221,6 +204,5 @@ export default class RoomTwo extends Phaser.Scene {
 
   update() {
     this.player.update(this.keys);
-    this.npcDefeatListener();
   }
 }
