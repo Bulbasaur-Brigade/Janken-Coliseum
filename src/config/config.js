@@ -1,20 +1,20 @@
-import Phaser from "phaser";
-import BattleScene from "../scene/BattleScene";
-import SinglePlayerMapScene from "../scene/SinglePlayerMapScene";
-import TitleScene from "../scene/TitleScene";
-import LossScene from "../scene/LossScene";
-import MultiPlayerMapScene from "../scene/MultiPlayerMapScene";
-import Heart from "../scene/Heart";
-import Inventory from "../scene/Inventory";
-import NpcHearts from "../scene/NpcHearts";
-import SceneTransition from "../scene/SceneTransition";
-import VictoryScene from "../scene/VictoryScene";
-import Preloader from "../scene/Preloader";
-import CharPicker from "../scene/CharPicker";
-import QuestUi from "../scene/QuestUI";
-import RoomOne from "../scene/rooms/RoomOne";
-import RoomTwo from "../scene/rooms/RoomTwo";
-import RoomThree from "../scene/rooms/RoomThree";
+import Phaser from 'phaser';
+import BattleScene from '../scene/BattleScene';
+import SinglePlayerMapScene from '../scene/SinglePlayerMapScene';
+import TitleScene from '../scene/TitleScene';
+import LossScene from '../scene/LossScene';
+import MultiPlayerMapScene from '../scene/MultiPlayerMapScene';
+import Heart from '../scene/Heart';
+import Inventory from '../scene/Inventory';
+import NpcHearts from '../scene/NpcHearts';
+import SceneTransition from '../scene/SceneTransition';
+import VictoryScene from '../scene/VictoryScene';
+import Preloader from '../scene/Preloader';
+import CharPicker from '../scene/CharPicker';
+import QuestUi from '../scene/QuestUI';
+import RoomOne from '../scene/rooms/RoomOne';
+import RoomTwo from '../scene/rooms/RoomTwo';
+import RoomThree from '../scene/rooms/RoomThree';
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
@@ -25,17 +25,17 @@ export default {
     pixelArt: true,
   },
   physics: {
-    default: "arcade",
+    default: 'arcade',
     arcade: {
       debug: false,
     },
   },
 
   scale: {
-    parent: "content",
+    parent: 'content',
     autoCenter: true,
   },
-  parent: "content",
+  parent: 'content',
 
   dom: {
     createContainer: true,

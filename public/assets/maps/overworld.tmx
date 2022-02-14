@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="120" height="120" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="82">
+<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="120" height="120" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="90">
  <editorsettings>
   <export target="overworldMap.json" format="json"/>
  </editorsettings>
@@ -2512,7 +2512,7 @@
    </properties>
   </tile>
  </tileset>
- <layer id="8" name="Water" width="120" height="120">
+ <layer id="8" name="Water" width="120" height="120" locked="1">
   <data encoding="csv">
 199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,
 199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,
@@ -2636,7 +2636,7 @@
 199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199,199
 </data>
  </layer>
- <layer id="1" name="Ground" width="120" height="120">
+ <layer id="1" name="Ground" width="120" height="120" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -2760,7 +2760,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="3" name="Interactive" width="120" height="120">
+ <layer id="3" name="Interactive" width="120" height="120" locked="1">
   <properties>
    <property name="collide" type="bool" value="false"/>
   </properties>
@@ -2891,12 +2891,12 @@
   <properties>
    <property name="collide" type="bool" value="false"/>
   </properties>
-  <object id="16" name="Savion" type="savion" gid="267" x="640" y="1392" width="16" height="16">
+  <object id="16" name="Savion" type="savion" gid="267" x="832" y="1296" width="16" height="16">
    <properties>
     <property name="defeated" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="19" name="Margarita" type="margarita" gid="459" x="992" y="848" width="16" height="16">
+  <object id="19" name="Margarita" type="margarita" gid="459" x="1056" y="944" width="16" height="16">
    <properties>
     <property name="defeated" type="bool" value="false"/>
    </properties>
@@ -2906,33 +2906,34 @@
     <property name="defeated" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="21" name="Sey" type="sey" gid="106" x="1376" y="400" width="16" height="16">
+  <object id="21" name="Sey" type="sey" gid="106" x="1424" y="464" width="16" height="16">
    <properties>
     <property name="defeated" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="22" name="Amber" type="amber" gid="430" x="544" y="448" width="16" height="16">
+  <object id="22" name="Amber" type="amber" gid="430" x="464" y="640" width="16" height="16">
    <properties>
     <property name="defeated" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="23" name="Devonne" type="devonne" gid="297" x="336" y="960" width="16" height="16">
+  <object id="23" name="Devonne" type="devonne" gid="297" x="432" y="992" width="16" height="16">
    <properties>
     <property name="defeated" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="24" name="Eric" type="eric" gid="403" x="768" y="592" width="16" height="16">
+  <object id="24" name="Eric" type="eric" gid="403" x="960" y="608" width="16" height="16">
    <properties>
     <property name="defeated" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="26" name="Danny" type="danny" gid="349" x="1488" y="1472" width="16" height="16">
+  <object id="26" name="Danny" type="danny" gid="349" x="1472" y="1488" width="16" height="16">
    <properties>
     <property name="defeated" type="bool" value="false"/>
    </properties>
   </object>
+  <object id="89" name="Andrea" type="andrea" gid="430" x="787" y="334" width="16" height="16"/>
  </objectgroup>
- <objectgroup id="11" name="ItemSpawns">
+ <objectgroup id="11" name="ItemSpawns" locked="1">
   <object id="29" type="item" gid="308" x="288" y="288" width="16" height="16"/>
   <object id="30" type="item" gid="308" x="592" y="320" width="16" height="16"/>
   <object id="31" type="item" gid="308" x="832" y="400" width="16" height="16"/>

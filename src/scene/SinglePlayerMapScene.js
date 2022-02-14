@@ -77,10 +77,11 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.speechData = this.cache.json.get('speech');
 
     const npcLayer = map.getObjectLayer('NPC');
-    // npcLayer.setCollisionByProperty({ collide: true });
+
     store.dispatch(addNPC({ name: 'omar', defeated: false }));
     store.dispatch(addNPC({ name: 'zach', defeated: false }));
     store.dispatch(addNPC({ name: 'mac', defeated: false }));
+
     npcLayer.objects.forEach((npc) => {
       const newNPC = new NPC(
         this,
@@ -89,11 +90,38 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         'npcSprites',
         npc.type
       ).setScale(0.25);
-      this.npcsArr.push(newNPC);
-      createNpcAnims(this.anims, npc.type);
-      // let direction = Phaser.Math.RND.integerInRange(1, 5);
 
-      store.dispatch(addNPC({ name: npc.type, defeated: newNPC.isDefeated }));
+      const areaBoxR = this.physics.add
+        .sprite(npc.x + 15, npc.y, 'blank')
+        .setVisible(false)
+        .setImmovable(true)
+        .setSize(0.01, 195);
+
+      const areaBoxL = this.physics.add
+        .sprite(npc.x - 190, npc.y, 'blank')
+        .setVisible(false)
+        .setImmovable(true)
+        .setSize(0.01, 195);
+
+      const areaBoxT = this.physics.add
+        .sprite(npc.x - 88, npc.y - 96, 'blank')
+        .setVisible(false)
+        .setImmovable(true)
+        .setSize(208, 0.01);
+
+      const areaBoxB = this.physics.add
+        .sprite(npc.x - 88, npc.y + 96, 'blank')
+        .setVisible(false)
+        .setImmovable(true)
+        .setSize(208, 0.01);
+
+      this.npcsArr.push(newNPC);
+      console.log(this.npcsArr);
+      createNpcAnims(this.anims, npc.type);
+
+      store.dispatch(
+        addNPC({ name: newNPC.npcName, defeated: newNPC.defeated })
+      );
 
       this.dialogbox = this.add
         .graphics()
@@ -110,7 +138,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         .setDepth(20)
         .setResolution(10);
       this.dialogTextName = this.add
-        .text(npc.x + 20, npc.y - 80, npc.type.toUpperCase(), {
+        .text(npc.x + 20, npc.y - 80, newNPC.npcName.toUpperCase(), {
           font: '9px Arial',
           fill: '#FF0000',
         })
@@ -188,6 +216,14 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         });
       });
 
+      this.physics.add.collider(newNPC, [
+        areaBoxL,
+        areaBoxR,
+        areaBoxT,
+        areaBoxB,
+      ]);
+      this.physics.add.collider(newNPC, groundLayer);
+      this.physics.add.collider(newNPC, interactiveLayer);
       this.physics.add.collider(
         this.player,
         newNPC,
@@ -198,8 +234,10 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
             item.setVisible(true);
           });
           this.time.delayedCall(5000, () => {
+            newNPC.enableBody();
             dialogArr.forEach((item) => {
               item.setVisible(false);
+
               let npcName = currentNPC.texture.key;
               let data = store.getState();
               const storeNPCS = data.npcBoardReducer.npcs;
@@ -294,12 +332,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
   update() {
     this.player.update(this.keys);
-
-    let direction = Phaser.Math.RND.integerInRange(0, 200);
-
-    this.npcsArr.forEach((elem) => {
-      elem.update(this.keys);
-    });
 
     let randomEvent = Phaser.Math.RND.integerInRange(0, 2000);
 

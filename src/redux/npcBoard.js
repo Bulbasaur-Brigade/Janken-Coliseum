@@ -1,7 +1,7 @@
-const DEFEATED = "DEFEATED";
-const ADD_NPC = "ADD_NPC";
-const CURRENT_NPC = "CURRENT_NPC";
-const RESET_NPC = "RESET_NPC";
+const DEFEATED = 'DEFEATED';
+const ADD_NPC = 'ADD_NPC';
+const CURRENT_NPC = 'CURRENT_NPC';
+const RESET_NPC = 'RESET_NPC';
 
 export const isDefeated = (name) => {
   return {
@@ -29,7 +29,7 @@ export const resetNPC = () => {
   };
 };
 
-const initialState = { npcs: [], singleNPC: "" };
+const initialState = { npcs: [], singleNPC: '' };
 
 export const npcBoardReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -45,7 +45,7 @@ export const npcBoardReducer = (state = initialState, action) => {
     case CURRENT_NPC:
       return { ...state, singleNPC: action.npc };
     case RESET_NPC:
-      return { npcs: [], singleNPC: "" };
+      return { npcs: [], singleNPC: '' };
     default:
       return state;
   }

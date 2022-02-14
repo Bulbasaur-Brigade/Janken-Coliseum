@@ -64,8 +64,8 @@
                  "type":"savion",
                  "visible":true,
                  "width":16,
-                 "x":640,
-                 "y":1392
+                 "x":832,
+                 "y":1296
                 }, 
                 {
                  "gid":459,
@@ -82,8 +82,8 @@
                  "type":"margarita",
                  "visible":true,
                  "width":16,
-                 "x":992,
-                 "y":848
+                 "x":1056,
+                 "y":944
                 }, 
                 {
                  "gid":186,
@@ -118,8 +118,8 @@
                  "type":"sey",
                  "visible":true,
                  "width":16,
-                 "x":1376,
-                 "y":400
+                 "x":1424,
+                 "y":464
                 }, 
                 {
                  "gid":430,
@@ -136,8 +136,8 @@
                  "type":"amber",
                  "visible":true,
                  "width":16,
-                 "x":544,
-                 "y":448
+                 "x":464,
+                 "y":640
                 }, 
                 {
                  "gid":297,
@@ -154,8 +154,8 @@
                  "type":"devonne",
                  "visible":true,
                  "width":16,
-                 "x":336,
-                 "y":960
+                 "x":432,
+                 "y":992
                 }, 
                 {
                  "gid":403,
@@ -172,8 +172,8 @@
                  "type":"eric",
                  "visible":true,
                  "width":16,
-                 "x":768,
-                 "y":592
+                 "x":960,
+                 "y":608
                 }, 
                 {
                  "gid":349,
@@ -190,8 +190,20 @@
                  "type":"danny",
                  "visible":true,
                  "width":16,
-                 "x":1488,
-                 "y":1472
+                 "x":1472,
+                 "y":1488
+                }, 
+                {
+                 "gid":430,
+                 "height":16,
+                 "id":89,
+                 "name":"Andrea",
+                 "rotation":0,
+                 "type":"andrea",
+                 "visible":true,
+                 "width":16,
+                 "x":787,
+                 "y":334
                 }],
          "opacity":1,
          "properties":[
@@ -786,8 +798,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":12,
- "nextobjectid":82,
+ "nextlayerid":14,
+ "nextobjectid":90,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.0",
