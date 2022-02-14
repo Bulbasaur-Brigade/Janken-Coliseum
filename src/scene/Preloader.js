@@ -1,31 +1,45 @@
-import Phaser from "phaser";
+import Phaser from 'phaser';
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
-    super("Preloader");
+    super('Preloader');
   }
   preload() {
-    this.load.spritesheet("character", "assets/spriteSheets/characters.png", {
+    //SpriteSheets
+    this.load.spritesheet('character', 'assets/spriteSheets/characters.png', {
       frameWidth: 64,
       frameHeight: 64,
     });
+
+
+    this.load.spritesheet('npcSprites', 'assets/spriteSheets/npcSprites.png', {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+
+
     this.load.spritesheet("mark", "assets/spriteSheets/mark.png", {
       frameWidth: 40,
       frameHeight: 40,
     });
+    
     this.load.spritesheet("blueBird", "assets/spriteSheets/blueBird.png", {
       frameWidth: 342,
       frameHeight: 290,
     });
-    this.load.spritesheet("greenBird", "assets/spriteSheets/greenBird.png", {
+
+    this.load.spritesheet('greenBird', 'assets/spriteSheets/greenBird.png', {
       frameWidth: 342,
       frameHeight: 290,
     });
-    //Player Character
-    this.load.image("dave", "assets/sprites/charPicker/dave.png");
-    this.load.image("april", "assets/sprites/charPicker/april.png");
 
-    this.load.image("background", "assets/backgrounds/background.png");
+    //Player Character
+    this.load.image('dave', 'assets/sprites/charPicker/dave.png');
+    this.load.image('april', 'assets/sprites/charPicker/april.png');
+
+    this.load.image('background', 'assets/backgrounds/background.png');
+    this.load.image('defeatBackground', 'assets/backgrounds/defeat.png');
+
 
     //NPC charcters
     this.load.image(
@@ -57,25 +71,16 @@ export default class Preloader extends Phaser.Scene {
 
     // FullScreen
     this.load.image("fullscreen", "assets/sprites/fullscreen.png");
-    // this.load.image("sey", "assets/sprites/npcs/sey.png");
-    // this.load.image("greg", "assets/sprites/npcs/greg.png");
-    // this.load.image("margarita", "assets/sprites/npcs/margarita.png");
-    // this.load.image("danny", "assets/sprites/npcs/danny.png");
-    // this.load.image("mac", "assets/sprites/npcs/mac.png");
-    // this.load.image("savion", "assets/sprites/npcs/savion.png");
-    // this.load.image("omar", "assets/sprites/npcs/omar.png");
-    // this.load.image("amber", "assets/sprites/npcs/amber.png");
-    // this.load.image("devonne", "assets/sprites/npcs/devonne.png");
-    // this.load.image("eric", "assets/sprites/npcs/eric.png");
-    // this.load.image("zach", "assets/sprites/npcs/zach.png");
+
     // Heart
-    this.load.image("heart", "assets/sprites/heart.png");
+    this.load.image('heart', 'assets/sprites/heart.png');
     //Inventory
-    this.load.image("inventory", "assets/sprites/inventory.png");
+    this.load.image('inventory', 'assets/sprites/inventory.png');
     //Items
-    this.load.image("cloud1", "assets/sprites/cloud1.png");
-    this.load.image("cloud2", "assets/sprites/cloud2.png");
-    this.load.image("cloud3", "assets/sprites/cloud3.png");
+    this.load.image('cloud1', 'assets/sprites/cloud1.png');
+    this.load.image('cloud2', 'assets/sprites/cloud2.png');
+    this.load.image('cloud3', 'assets/sprites/cloud3.png');
+
 
     this.load.image("rock", "assets/sprites/rock.png");
     this.load.image("paper", "assets/sprites/paper.png");
@@ -88,9 +93,11 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("stairsDown", "assets/sprites/stairsDown.png");
     this.load.image("blank", "assets/sprites/blank.png");
 
+
     // this.load.image('diamond', 'assets/sprites/diamond.png');
-    this.load.audio("loss", "assets/audio/lossMusic.mp3");
-    this.load.audio("win", "assets/audio/win.mp3");
+    this.load.audio('loss', 'assets/audio/lossMusic.mp3');
+    this.load.audio('win', 'assets/audio/win.mp3');
+
 
     this.load.audio("rockPickup", "assets/audio/rockPickup.mp3");
     this.load.audio("scissorsPickup", "assets/audio/scissorsPickup.mp3");
@@ -103,13 +110,14 @@ export default class Preloader extends Phaser.Scene {
     this.load.audio("mac", "assets/audio/macsTheme.mp3");
     this.load.audio("zach", "assets/audio/zachsTheme.mp3");
     this.load.audio("omar", "assets/audio/omarsTheme.mp3");
+
     //Font
     this.load.bitmapFont(
-      "carrier_command",
-      "assets/fonts/carrier_command.png",
-      "assets/fonts/carrier_command.xml"
+      'carrier_command',
+      'assets/fonts/carrier_command.png',
+      'assets/fonts/carrier_command.xml'
     );
-
+ 
     this.load.image("battleScene", "assets/backgrounds/battleScene.jpg");
     this.load.image("dialogBox", "assets/sprites/dialogBox.png");
 
@@ -131,5 +139,6 @@ export default class Preloader extends Phaser.Scene {
     // SinglePlayerMapScene
 
     this.scene.start("TitleScene");
+
   }
 }

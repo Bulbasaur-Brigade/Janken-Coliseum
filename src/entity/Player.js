@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import store from '../redux/store';
+
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, spriteKey) {
     super(scene, x, y, spriteKey);

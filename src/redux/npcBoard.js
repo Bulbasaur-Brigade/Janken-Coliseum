@@ -1,8 +1,10 @@
+
 const DEFEATED = "DEFEATED";
 const ADD_NPC = "ADD_NPC";
 const CURRENT_NPC = "CURRENT_NPC";
 const RESET_NPC = "RESET_NPC";
 const IS_OPEN = "IS_OPEN";
+
 
 export const isDefeated = (name) => {
   return {
@@ -35,7 +37,9 @@ export const doorOpen = () => {
   };
 };
 
+
 const initialState = { npcs: [], singleNPC: "", doorOpen: false };
+
 
 export const npcBoardReducer = (state = initialState, action) => {
   switch (action.type) {
