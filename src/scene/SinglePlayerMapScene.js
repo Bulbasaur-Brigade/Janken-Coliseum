@@ -392,7 +392,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const data = store.getState();
     const doorOpen = data.npcBoardReducer.doorOpen;
 
-    if (!doorOpen) {
+    if (doorOpen) {
       this.physics.add.collider(this.player, this.door, () => {
         this.announce.forEach((item) => item.destroy());
         this.scene.switch("RoomOne");
