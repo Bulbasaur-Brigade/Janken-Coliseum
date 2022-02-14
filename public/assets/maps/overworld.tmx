@@ -2978,11 +2978,7 @@
   <object id="74" type="item" gid="308" x="816" y="576" width="16" height="16"/>
   <object id="75" type="item" gid="308" x="496" y="1088" width="16" height="16"/>
   <object id="76" type="item" gid="308" x="432" y="1200" width="16" height="16"/>
-  <object id="81" name="bossroom" type="doors" gid="413" x="880.5" y="1056.25" width="16" height="16">
-   <properties>
-    <property name="open" type="bool" value="true"/>
-   </properties>
-  </object>
+
  </objectgroup>
  <layer id="4" name="Overhead" width="120" height="120">
   <data encoding="csv">

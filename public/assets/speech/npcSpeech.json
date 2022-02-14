@@ -1,5 +1,6 @@
 {
-  "omar" : ["... does it really matter what you choose?","Wow, you really did it. I'm proud of you."],
+<
+  {
   "savion" : ["99 and counting. Your gonna be 100 in a row.","Finally I lost, winning is exhausting"],
   "zach" : ["You can't escape...","Congrats, you found a way out."],
   "mac" : ["No hands, what animal do you replace them with?","YoYo!"],
@@ -11,4 +12,5 @@
   "danny" :[ "I need more scissors... don't ask why","how am I supposed to make those batarangs now..."],
   "greg" : ["Paper... need more... song I'm writing","🎼♪♫♬🎸"],
   "andrea" : ["Do you remember me?", "Well I'm off."]
+    "omar" : ["... does it really matter what you choose?","Wow, you really did it. I'm proud of you."],
 }
