@@ -12,7 +12,19 @@ export default class RoomOne extends Phaser.Scene {
     super("RoomOne");
     this.mac = [];
   }
+  npcDefeatListener() {
+    const data = store.getState();
+    const storeNPCS = data.npcBoardReducer.npcs;
 
+    if (storeNPCS.every((npc) => npc.defeated)) {
+      this.scene.stop("Heart");
+      this.scene.stop("Inventory");
+      this.scene.stop("QuestUi");
+      this.scene.stop();
+      this.scene.start("VictoryScene");
+      // "Congratulations!!!\n\nYou conquered FullStack!\n\nYou're ready to graduate",
+    }
+  }
   preload() {
     this.load.image("roomOne", "assets/maps/tilemap.png");
     this.load.tilemapTiledJSON("roomOneMap", "assets/maps/roomOne.json");
@@ -41,7 +53,9 @@ export default class RoomOne extends Phaser.Scene {
     const roomOneLayer = map.createLayer("Tile Layer 1", tileset, 0, 0);
     //NPC generation/collision
     this.speechData = this.cache.json.get("speech");
-    this.selectSound = this.sound.add("selectSound");
+
+    // SOUND
+    this.selectSound = this.sound.add("selectSound", { volume: 0.06 });
 
     this.player = new Player(
       this,
@@ -60,41 +74,62 @@ export default class RoomOne extends Phaser.Scene {
         this.mac.push(newNPC);
         // !!!!!!!!!!!!!!!!!!
         this.dialogbox = this.add
-          .image(object.x + 50, object.y - 54, "dialogBox")
+          .image(this.player.x + 265, this.player.y + 125, "dialogBox")
           .setDepth(20)
-          .setScale(0.12, 0.16);
+          .setScale(0.1, 0.1);
+        this.dialogbox.tint = 0xb2560d;
+
+        this.dialogSprite = this.add
+          .sprite(this.player.x + 215, this.player.y + 127, object.name)
+          .setScale(0.3)
+          .setDepth(20);
 
         this.dialogText = this.add
-          .text(object.x, object.y - 75, this.speechData[object.name][0], {
-            font: "10px Arial",
-            fill: "#000000",
-            wordWrap: { width: 120 - 2 * 2 },
-          })
+          .text(
+            this.player.x + 230,
+            this.player.y + 112,
+            this.speechData[object.name][0],
+            {
+              font: "7px Arial",
+              fill: "#000000",
+              wordWrap: { width: 120 - 2 * 2 },
+            }
+          )
           .setDepth(20)
           .setResolution(10);
 
         this.defeatedDialogText = this.add
-          .text(object.x, object.y - 40, this.speechData[object.name][1], {
-            font: "10px Arial",
-            fill: "#000000",
-            wordWrap: { width: 120 - 2 * 2 },
-          })
+          .text(
+            this.player.x + 230,
+            this.player.y + 112,
+            this.speechData[object.name][1],
+            {
+              font: "7px Arial",
+              fill: "#000000",
+              wordWrap: { width: 120 - 2 * 2 },
+            }
+          )
           .setDepth(20)
           .setResolution(10);
 
         this.dialogTextName = this.add
-          .text(object.x + 20, object.y - 85, object.name.toUpperCase(), {
-            font: "9px Arial",
-            fill: "#FF0000",
-          })
+          .text(
+            this.dialogSprite.x - 10,
+            this.dialogSprite.y - 20,
+            object.name.toUpperCase(),
+            {
+              font: "9px Arial",
+              fill: "#000000",
+            }
+          )
           .setDepth(20)
           .setResolution(10);
 
         this.yesRec = this.add
-          .rectangle(object.x + 30, object.y - 33, 20, 10, 0x000000)
+          .rectangle(this.player.x + 250, this.player.y + 136, 39, 10, 0x5e4040)
           .setDepth(20);
         this.yesButton = this.add
-          .text(object.x + 22, object.y - 39, "Yes", {
+          .text(this.yesRec.x - 15, this.yesRec.y - 6, "Battle", {
             font: "9px",
             fill: "#FFFAF0",
           })
@@ -102,11 +137,13 @@ export default class RoomOne extends Phaser.Scene {
           .setVisible(true)
           .setDepth(25)
           .setResolution(10);
+
         this.noRec = this.add
-          .rectangle(object.x + 75, object.y - 33, 20, 10, 0x000000)
+          .rectangle(this.player.x + 320, this.player.y + 136, 20, 10, 0x5e4040)
           .setDepth(20);
+
         this.noButton = this.add
-          .text(object.x + 70, object.y - 39, "No", {
+          .text(this.noRec.x - 5, this.noRec.y + -6, "No", {
             font: "9px",
             fill: "#FFFAF0",
           })
@@ -127,13 +164,18 @@ export default class RoomOne extends Phaser.Scene {
           this.dialogText,
           this.defeatedDialogText,
           this.dialogTextName,
+          this.dialogSprite,
         ];
         dialogArr.forEach((item) => {
+          item.setAlpha(0.8);
+          item.setScrollFactor(0, 0);
           item.setVisible(false);
         });
 
         this.yesButton.on("pointerdown", () => {
           dialogArr.forEach((item) => {
+            item.setAlpha(0.8);
+            item.setScrollFactor(0, 0);
             item.setVisible(false);
           });
           newNPC.enableBody();
@@ -206,6 +248,7 @@ export default class RoomOne extends Phaser.Scene {
           object.name
         ).setScale(1);
         this.physics.add.collider(this.player, newItem, () => {
+          store.dispatch(setScene("RoomTwo"));
           this.scene.switch("RoomTwo");
         });
       }
@@ -228,6 +271,12 @@ export default class RoomOne extends Phaser.Scene {
   }
 
   update() {
+    this.music = this.scene.get("SinglePlayerMapScene");
+    if (!this.music.bgMusic.isPlaying) {
+      this.music.bgMusic.play();
+    }
+
     this.player.update(this.keys);
+    this.npcDefeatListener();
   }
 }

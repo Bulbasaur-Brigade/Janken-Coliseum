@@ -24,10 +24,11 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       if (tempNpcArr.every((npc) => npc.defeated === true)) {
         store.dispatch(doorOpen());
         // ANNOUNCEMENT THAT OPENS BOSS BUILDING
-        this.announce.setVisible(true);
+        this.announce.forEach((item) => {
+          item.setVisible(true);
+        });
       }
     }
-
   }
 
   preload() {
@@ -36,8 +37,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
   }
 
   create() {
-    // Setting the scene in redux store
-    store.dispatch(setScene("SinglePlayerMapScene"));
     // Inventory
     // super.create();
     this.scene.run("QuestUi");
@@ -50,27 +49,25 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       .setVisible(false)
       .setImmovable(true);
 
-    this.sound.setVolume(0.08);
-
     this.inventory = this.scene.get("Inventory");
 
+    // SOUNDS
     this.rockPickup = this.sound.add("rockPickup");
     this.scissorsPickup = this.sound.add("scissorsPickup");
     this.paperPickup = this.sound.add("paperPickup");
     this.heartPickup = this.sound.add("heartPickup");
     this.selectSound = this.sound.add("selectSound");
+    this.audioSounds = [
+      this.rockPickup,
+      this.scissorsPickup,
+      this.paperPickup,
+      this.heartPickup,
+      this.selectSound,
+    ];
+    this.audioSounds.forEach((sound) => sound.setVolume(0.06));
 
-    this.announce = this.add
-      .bitmapText(
-        150,
-        300,
-        "carrier_command",
-        "GO TO THE SPECIAL BUILDING TO FIND THE BIG 3",
-        40
-      )
-      .setDepth(50)
-      .setScrollFactor(0, 0)
-      .setVisible(false);
+    this.bgMusic = this.sound.add("Pallet", { volume: 0.015, loop: true });
+    this.bgMusic.play();
 
     // Start animations
     createCharacterAnims(this.anims);
@@ -86,10 +83,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const interactiveLayer = map.createLayer("Interactive", tileset, 0, 0);
     const overheadLayer = map.createLayer("Overhead", tileset, 0, 0);
 
-    // Music
-    this.bgMusic = this.sound.add("Pallet", { volume: 0.1, loop: true });
-    this.bgMusic.play();
-
     //Player
     // this.time.delayedCall(3000,()=>{})
     this.player = new Player(
@@ -98,6 +91,54 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       this.data.get("playercordY") || 340,
       "character"
     ).setScale(0.25);
+
+    //ANNOUNCEMENT
+
+    this.announceBox = this.add
+      .image(this.player.x + 55, this.player.y + 40, "dialogBox")
+      .setAlpha(0.8)
+      .setScrollFactor(0, 0)
+      .setDepth(20)
+      .setScale(0.14, 0.14);
+    this.announceBox.tint = 0xb2560d;
+    this.announceText = this.add
+      .text(
+        this.announceBox.x - 25,
+        this.announceBox.y - 20,
+        "I am waiting for you at my HQ. Make your way to the big building in the center.",
+        {
+          font: "9px Arial",
+          fill: "#000000",
+          wordWrap: { width: 120 - 2 * 1.5 },
+        }
+      )
+      .setAlpha(0.8)
+      .setScrollFactor(0, 0)
+      .setDepth(20)
+      .setResolution(15);
+    this.announceSprite = this.add
+      .sprite(this.announceBox.x - 59, this.announceBox.y + 5, "omar")
+      .setScale(0.5)
+      .setDepth(20)
+      .setScrollFactor(0, 0);
+    this.announceName = this.add
+      .text(this.announceBox.x - 80, this.announceBox.y - 24, "OMAR", {
+        font: "12px Arial",
+        fill: "#000000",
+      })
+      .setAlpha(0.8)
+      .setScrollFactor(0, 0)
+      .setDepth(20)
+      .setResolution(10);
+
+    this.announce = [
+      this.announceBox,
+      this.announceName,
+      this.announceSprite,
+      this.announceText,
+    ];
+
+    this.announce.forEach((item) => item.setVisible(false));
 
     //NPC generation/collision
     this.speechData = this.cache.json.get("speech");
@@ -114,61 +155,76 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       store.dispatch(addNPC({ name: npc.type, defeated: newNPC.isDefeated }));
 
       this.dialogbox = this.add
-        .image(npc.x + 50, npc.y - 54, "dialogBox")
+        .image(this.player.x + 50, this.player.y + 40, "dialogBox")
         .setDepth(20)
-        .setScale(0.1, 0.14);
+        .setScale(0.14, 0.14);
+      this.dialogbox.tint = 0xb2560d;
 
-      // this.dialogbox = this.add
-      //   .graphics()
-      //   .fillStyle(0xfffaf0, 1)
-      //   .fillRoundedRect(npc.x - 8, npc.y - 80, 120, 60, 16)
-      //   .setDepth(20);
+      this.dialogSprite = this.add
+        .sprite(this.player.x - 10, this.player.y + 42, npc.type)
+        .setScale(0.5)
+        .setDepth(20);
 
       this.dialogText = this.add
-        .text(npc.x, npc.y - 70, this.speechData[npc.type][0], {
-          font: "10px Arial",
-          fill: "#000000",
-          wordWrap: { width: 120 - 2 * 2 },
-        })
+        .text(
+          this.player.x + 25,
+          this.player.y + 19,
+          this.speechData[npc.type][0],
+          {
+            font: "10px Arial",
+            fill: "#000000",
+            wordWrap: { width: 120 - 2 * 2 },
+          }
+        )
         .setDepth(20)
-        .setResolution(10)
-
+        .setResolution(10);
 
       this.defeatedDialogText = this.add
-        .text(npc.x, npc.y - 70, this.speechData[npc.type][1], {
-          font: "10px Arial",
-          fill: "#000000",
-          wordWrap: { width: 120 - 2 * 2 },
-        })
+        .text(
+          this.player.x + 25,
+          this.player.y + 19,
+          this.speechData[npc.type][1],
+          {
+            font: "10px Arial",
+            fill: "#000000",
+            wordWrap: { width: 120 - 2 * 2 },
+          }
+        )
         .setDepth(20)
-        .setResolution(10)
-
+        .setResolution(10);
 
       this.dialogTextName = this.add
-        .text(npc.x + 20, npc.y - 80, npc.type.toUpperCase(), {
-          font: "9px Arial",
-          fill: "#FF0000",
-        })
+        .text(
+          this.dialogSprite.x - 28,
+          this.dialogSprite.y - 25,
+          npc.type.toUpperCase(),
+          {
+            font: "10px Arial",
+            fill: "#000000",
+          }
+        )
         .setDepth(20)
         .setResolution(10);
 
       this.yesRec = this.add
-        .rectangle(npc.x + 30, npc.y - 36, 20, 10, 0x000000)
+        .rectangle(this.player.x + 50, this.player.y + 56, 39, 10, 0x5e4040)
         .setDepth(20);
       this.yesButton = this.add
-        .text(npc.x + 22, npc.y - 42, "Yes", {
-          font: "9px",
+        .text(this.player.x + 32, this.player.y + 50, "Battle", {
+          font: "10px",
           fill: "#FFFAF0",
         })
         .setInteractive({ useHandCursor: true })
         .setVisible(true)
         .setDepth(25)
         .setResolution(10);
+
       this.noRec = this.add
-        .rectangle(npc.x + 75, npc.y - 36, 20, 10, 0x000000)
+        .rectangle(this.player.x + 120, this.player.y + 56, 20, 10, 0x5e4040)
         .setDepth(20);
+
       this.noButton = this.add
-        .text(npc.x + 70, npc.y - 42, "No", {
+        .text(this.player.x + 115, this.player.y + 50, "No", {
           font: "9px",
           fill: "#FFFAF0",
         })
@@ -189,9 +245,12 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         this.dialogText,
         this.defeatedDialogText,
         this.dialogTextName,
+        this.dialogSprite,
       ];
 
       dialogArr.forEach((item) => {
+        item.setAlpha(0.8);
+        item.setScrollFactor(0, 0);
         item.setVisible(false);
       });
 
@@ -201,8 +260,15 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         });
         newNPC.enableBody();
         this.selectSound.play();
+        store.dispatch(setScene("SinglePlayerMapScene"));
+
         this.scene.stop("QuestUi");
         this.scene.switch("BattleScene");
+        // this.tweens.add({
+        //   targets: this.bgMusic,
+        //   volume: 0,
+        //   duration: 500,
+        // });
         this.bgMusic.stop();
       });
 
@@ -214,6 +280,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         });
       });
 
+      // Player and NPC COLLISIONS
       this.physics.add.collider(
         this.player,
         newNPC,
@@ -253,7 +320,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
             }
           });
 
-          this.time.delayedCall(5000, () => {
+          this.time.delayedCall(4000, () => {
             dialogArr.forEach((item) => {
               item.setVisible(false);
               newNPC.enableBody();
@@ -267,7 +334,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     //Item randomized/overlaps
     const itemLayer = map.getObjectLayer("ItemSpawns");
-    const itemArray = ["rock", "paper", "scissors", "heart", ""];
+    const itemArray = ["rock", "paper", "scissors", "heart", "heart", ""];
 
     itemLayer.objects.forEach((item) => {
       const randomItem =
@@ -278,7 +345,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         const newItem = new Items(this, item.x, item.y, item.name).setScale(
           0.25
         );
-
+        // Player and ITEM COLLISIONS
         this.physics.add.collider(
           this.player,
           newItem,
@@ -304,8 +371,6 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       }
     });
 
-    //Collisions
-
     groundLayer.setCollisionByProperty({ collide: true });
     this.physics.add.collider(this.player, groundLayer);
 
@@ -329,20 +394,24 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     if (!doorOpen) {
       this.physics.add.collider(this.player, this.door, () => {
+        this.announce.forEach((item) => item.destroy());
         this.scene.switch("RoomOne");
         this.player.y += 5;
       });
     }
   }
   update() {
-    // if (!this.bgMusic.isPlaying) {
-    //   this.bgMusic.play();
-    // }
+    // CHECK IF SOUND PLAYING
+    if (!this.bgMusic.isPlaying) {
+      this.bgMusic.play();
+    }
     this.player.update(this.keys);
     this.ifDoorIsOpen();
     this.npcDefeatListener();
 
+    // RANDOMIZED EVENTS FOR CLOUDS AND BIRDS FOR ENVIRONMENT
     let randomEvent = Phaser.Math.RND.integerInRange(0, 2000);
+    let randomEvent1 = Phaser.Math.RND.integerInRange(0, 10000);
 
     if (randomEvent == 1) {
       this.cloud1 = this.physics.add
@@ -434,12 +503,67 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         .setDepth(30);
       this.cloud6.setVelocity(-30, 0);
     }
+    if (randomEvent1 == 11) {
+      this.pinkBoat = this.physics.add
+        .image(1600, 200, "pinkBoat")
+        // .setAlpha(0.7)
+        .setScale(0.8)
+        .setDepth(30);
+      this.pinkBoat.setVelocity(-50, 0);
+    }
+    if (randomEvent1 == 12) {
+      this.pinkBoat1 = this.physics.add
+        .image(-100, 1650, "pinkBoat")
+        // .setAlpha(0.7)
+        .setScale(0.8)
+        .setDepth(30);
+      this.pinkBoat1.flipX = true;
+      this.pinkBoat1.setVelocity(25, 0);
+    }
+    if (randomEvent1 == 13) {
+      this.blueBoat = this.physics.add
+        .image(190, 1600, "blueBoat")
+        // .setAlpha(0.7)
+        .setScale(0.8)
+        .setDepth(30);
+
+      this.blueBoat.setVelocity(0, -25);
+    }
+    if (randomEvent1 == 14) {
+      this.blueBoat1 = this.physics.add
+        .image(1650, 190, "blueBoat")
+        // .setAlpha(0.7)
+        .setScale(0.8)
+        .setDepth(30);
+      this.blueBoat1.flipY = true;
+      this.blueBoat1.flipX = true;
+      this.blueBoat1.setVelocity(0, 25);
+    }
+    let topToBottom = [this.blueBoat1];
+    let bottomToTop = [this.blueBoat];
+
+    topToBottom.forEach((sprite) => {
+      if (sprite) {
+        if (sprite.y === 1600) {
+          sprite.destroy();
+        }
+      }
+    });
+    bottomToTop.forEach((sprite) => {
+      if (sprite) {
+        if (sprite.y === -1600) {
+          sprite.destroy;
+        }
+      }
+    });
+
     let leftToRight = [
       this.cloud1,
       this.cloud2,
       this.cloud3,
       this.blueBird,
       this.greenBird,
+      this.pinkBoat1,
     ];
     leftToRight.forEach((sprite) => {
       if (sprite) {
@@ -454,6 +578,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       this.cloud6,
       this.blueBird1,
       this.greenBird1,
+      this.pinkBoat,
     ];
     rightToLeft.forEach((sprite) => {
       if (sprite) {

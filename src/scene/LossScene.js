@@ -15,7 +15,7 @@ export default class LossScene extends SceneTransition {
   }
   create() {
     super.create();
-    this.lossMusic = this.sound.add("loss", { volume: 0.15 }, true);
+    this.lossMusic = this.sound.add("loss", { volume: 0.08 }, true);
     this.lossMusic.play();
 
     this.add.image(0, 0, "defeatBackground").setOrigin(0, 0).setScale(1.9);

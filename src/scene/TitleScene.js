@@ -14,7 +14,8 @@ export default class TitleScene extends Phaser.Scene {
 
   create() {
     // Music
-    this.titleMusic = this.sound.add("music", { volume: 0.2, loop: true });
+    this.scene.run("FullScreen");
+    this.titleMusic = this.sound.add("music", { volume: 0.15, loop: true });
     this.titleMusic.play();
 
     this.selectSound = this.sound.add("selectSound", { volume: 0.06 });

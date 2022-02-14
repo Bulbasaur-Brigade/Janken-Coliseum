@@ -49,11 +49,9 @@ export default class BattleScene extends Phaser.Scene {
     this.selectedSprite = null;
     // Computer Hearts
 
-    if (
-      this.npcName === "mac" ||
-      this.npcName === "zach" ||
-      this.npcName === "omar"
-    ) {
+    if (this.npcName === "mac" || this.npcName === "zach") {
+      this.computerHearts = 3;
+    } else if (this.npcName === "omar") {
       this.computerHearts = 5;
     } else {
       this.computerHearts = 2;
@@ -117,15 +115,14 @@ export default class BattleScene extends Phaser.Scene {
         this.scene.stop("Inventory");
         this.scene.stop("QuestUi");
         this.scene.stop("SinglePlayerMapScene");
-        this.music = this.scene.get("SinglePlayerMapScene");
-        this.music.bgMusic.stop();
-        this.battleMusic.stop();
+        this.sound.stopAll();
+        // this.battleMusic.stop();
       });
     }
   }
 
   gameWin() {
-    if (this.computerHearts < 6) {
+    if (this.computerHearts === 0) {
       const data = store.getState();
 
       const scene = data.sceneReducer;
@@ -138,9 +135,8 @@ export default class BattleScene extends Phaser.Scene {
           this.scene.start("QuestUi");
           this.scene.stop();
           this.scene.stop("NpcHearts");
-          this.battleMusic.stop();
-          this.music = this.scene.get("SinglePlayerMapScene");
-          this.music.bgMusic.play();
+          // this.battleMusic.stop();
+          this.sound.stopAll();
         });
       } else if (scene === "RoomOne") {
         {
@@ -149,9 +145,8 @@ export default class BattleScene extends Phaser.Scene {
             this.scene.start("QuestUi");
             this.scene.stop();
             this.scene.stop("NpcHearts");
-            this.battleMusic.stop();
-            this.music = this.scene.get("SinglePlayerMapScene");
-            this.music.bgMusic.play();
+            // this.battleMusic.stop();
+            this.sound.stopAll();
           });
         }
       } else if (scene === "RoomTwo") {
@@ -161,9 +156,8 @@ export default class BattleScene extends Phaser.Scene {
             this.scene.start("QuestUi");
             this.scene.stop();
             this.scene.stop("NpcHearts");
-            this.battleMusic.stop();
-            this.music = this.scene.get("SinglePlayerMapScene");
-            this.music.bgMusic.play();
+            // this.battleMusic.stop();
+            this.sound.stopAll();
           });
         }
       } else if (scene === "RoomThree") {
@@ -173,9 +167,8 @@ export default class BattleScene extends Phaser.Scene {
             this.scene.start("QuestUi");
             this.scene.stop();
             this.scene.stop("NpcHearts");
-            this.battleMusic.stop();
-            this.music = this.scene.get("SinglePlayerMapScene");
-            this.music.bgMusic.play();
+            // this.battleMusic.stop();
+            this.sound.stopAll();
           });
         }
       }
@@ -191,15 +184,15 @@ export default class BattleScene extends Phaser.Scene {
       this.items.every((item) => item.amount === 0) ||
       hp === 0
     ) {
-      this.time.delayedCall(1300, () => {
-        this.sprites.forEach((sprite) => sprite.setVisible(false));
-      });
+      this.sprites.forEach((sprite) => sprite.setVisible(false));
+      this.gameStateText.setVisible(false);
       this.time.delayedCall(1400, () => {
         this.textBorder.setVisible(true);
       });
     }
     if (this.computerHearts === 0) {
       // You win
+
       this.time.delayedCall(1400, () => {
         this.text.setVisible(true);
       });
@@ -235,11 +228,10 @@ export default class BattleScene extends Phaser.Scene {
         this.time.delayedCall(4000, () => {
           this.scene.switch("SinglePlayerMapScene");
           this.scene.start("QuestUi");
-          this.battleMusic.stop();
+          // this.battleMusic.stop();
+          this.sound.stopAll();
 
           this.scene.stop("NpcHearts");
-          this.music = this.scene.get("SinglePlayerMapScene");
-          this.music.bgMusic.play();
         });
       } else if (scene === "RoomOne") {
         {
@@ -248,9 +240,7 @@ export default class BattleScene extends Phaser.Scene {
             this.scene.start("QuestUi");
             this.scene.stop();
             this.scene.stop("NpcHearts");
-            this.battleMusic.stop();
-            this.music = this.scene.get("SinglePlayerMapScene");
-            this.music.bgMusic.play();
+            this.sound.stopAll();
           });
         }
       } else if (scene === "RoomTwo") {
@@ -260,9 +250,8 @@ export default class BattleScene extends Phaser.Scene {
             this.scene.start("QuestUi");
             this.scene.stop();
             this.scene.stop("NpcHearts");
-            this.battleMusic.stop();
-            this.music = this.scene.get("SinglePlayerMapScene");
-            this.music.bgMusic.play();
+            // this.battleMusic.stop();
+            this.sound.stopAll();
           });
         }
       } else {
@@ -272,9 +261,8 @@ export default class BattleScene extends Phaser.Scene {
             this.scene.start("QuestUi");
             this.scene.stop();
             this.scene.stop("NpcHearts");
-            this.battleMusic.stop();
-            this.music = this.scene.get("SinglePlayerMapScene");
-            this.music.bgMusic.play();
+            // this.battleMusic.stop();
+            this.sound.stopAll();
           });
         }
       }
@@ -286,9 +274,9 @@ export default class BattleScene extends Phaser.Scene {
     this.scene.run("NpcHearts");
 
     this.textBorder = this.add
-      .rectangle(400, 280, 400, 300, 0xe34234)
+      .rectangle(400, 280, 400, 300, 0x6699cc)
       .setDepth(2)
-      .setStrokeStyle(4, 0xffffff)
+      .setStrokeStyle(4, 0x808080)
       .setVisible(false);
     this.text = this.add
       .bitmapText(
@@ -303,7 +291,8 @@ export default class BattleScene extends Phaser.Scene {
     // Particle effects
     this.particles = this.add.particles("explosion").setDepth(2);
 
-    this.explode = this.sound.add("explode", { volume: 0.3 });
+    this.explode = this.sound.add("explode", { volume: 0.03 });
+
     this.particles.createEmitter({
       frame: ["smoke-puff", "cloud", "smoke-puff", "smoke0"],
       angle: { min: 240, max: 300 },
@@ -336,9 +325,20 @@ export default class BattleScene extends Phaser.Scene {
       on: false,
     });
 
-    // Bg Music
-    this.battleMusic = this.sound.add("Battle", { volume: 0.1, loop: true });
-    this.battleMusic.play();
+    //Music
+    this.battleMusic = this.sound.add("Battle", { volume: 0.05, loop: true });
+    this.macsMusic = this.sound.add("mac", { volume: 0.05, loop: true });
+    this.zachsMusic = this.sound.add("zach", { volume: 0.05, loop: true });
+    this.omarsMusic = this.sound.add("omar", { volume: 0.05, loop: true });
+    if (this.npcName === "mac") {
+      this.macsMusic.play();
+    } else if (this.npcName === "zach") {
+      this.zachsMusic.play();
+    } else if (this.npcName === "omar") {
+      this.omarsMusic.play();
+    } else {
+      this.battleMusic.play();
+    }
 
     this.add.image(0, 0, "battleScene").setOrigin(0, 0).setScale(1);
 

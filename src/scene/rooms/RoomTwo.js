@@ -12,7 +12,19 @@ export default class RoomTwo extends Phaser.Scene {
     super("RoomTwo");
     this.zach = [];
   }
+  npcDefeatListener() {
+    const data = store.getState();
+    const storeNPCS = data.npcBoardReducer.npcs;
 
+    if (storeNPCS.every((npc) => npc.defeated)) {
+      this.scene.stop("Heart");
+      this.scene.stop("Inventory");
+      this.scene.stop("QuestUi");
+      this.scene.stop();
+      this.scene.start("VictoryScene");
+      // "Congratulations!!!\n\nYou conquered FullStack!\n\nYou're ready to graduate",
+    }
+  }
   preload() {
     this.load.image("roomTwo", "assets/maps/tilemap.png");
     this.load.tilemapTiledJSON("roomTwoMap", "assets/maps/roomTwo.json");
@@ -26,7 +38,7 @@ export default class RoomTwo extends Phaser.Scene {
     store.dispatch(setScene("RoomTwo"));
 
     this.speechData = this.cache.json.get("speech");
-    this.selectSound = this.sound.add("selectSound");
+    this.selectSound = this.sound.add("selectSound", { volume: 0.06 });
     createCharacterAnims(this.anims);
 
     // Creating Map using Tile Set
@@ -54,31 +66,68 @@ export default class RoomTwo extends Phaser.Scene {
         //
         // !!!!!!!!!!!!!!!!!!
         this.dialogbox = this.add
-          .image(object.x + 50, object.y - 54, "dialogBox")
+          .image(this.player.x + 190, this.player.y + 290, "dialogBox")
           .setDepth(20)
-          .setScale(0.12, 0.16);
+          .setScale(0.1, 0.1);
+        this.dialogbox.tint = 0xb2560d;
+
+        this.dialogSprite = this.add
+          .sprite(this.dialogbox.x - 50, this.dialogbox.y, object.name)
+          .setScale(0.3)
+          .setDepth(20);
 
         this.dialogText = this.add
-          .text(object.x, object.y - 75, this.speechData[object.name], {
-            font: "10px Arial",
-            fill: "#000000",
-            wordWrap: { width: 120 - 2 * 2 },
-          })
+          .text(
+            this.dialogbox.x - 30,
+            this.dialogbox.y - 15,
+            this.speechData[object.name][0],
+            {
+              font: "7px Arial",
+              fill: "#000000",
+              wordWrap: { width: 120 - 2 * 2 },
+            }
+          )
           .setDepth(20)
           .setResolution(10);
+
+        this.defeatedDialogText = this.add
+          .text(
+            this.dialogbox.x - 30,
+            this.dialogbox.y - 15,
+            this.speechData[object.name][1],
+            {
+              font: "7px Arial",
+              fill: "#000000",
+              wordWrap: { width: 120 - 2 * 2 },
+            }
+          )
+          .setDepth(20)
+          .setResolution(10);
+
         this.dialogTextName = this.add
-          .text(object.x + 20, object.y - 85, object.name.toUpperCase(), {
-            font: "9px Arial",
-            fill: "#FF0000",
-          })
+          .text(
+            this.dialogSprite.x - 13,
+            this.dialogSprite.y - 20,
+            object.name.toUpperCase(),
+            {
+              font: "9px Arial",
+              fill: "#000000",
+            }
+          )
           .setDepth(20)
           .setResolution(10);
 
         this.yesRec = this.add
-          .rectangle(object.x + 30, object.y - 33, 20, 10, 0x000000)
+          .rectangle(
+            this.dialogbox.x - 8,
+            this.dialogbox.y + 10,
+            39,
+            10,
+            0x5e4040
+          )
           .setDepth(20);
         this.yesButton = this.add
-          .text(object.x + 22, object.y - 39, "Yes", {
+          .text(this.dialogbox.x - 23, this.dialogbox.y + 4, "Battle", {
             font: "9px",
             fill: "#FFFAF0",
           })
@@ -86,11 +135,19 @@ export default class RoomTwo extends Phaser.Scene {
           .setVisible(true)
           .setDepth(25)
           .setResolution(10);
+
         this.noRec = this.add
-          .rectangle(object.x + 75, object.y - 33, 20, 10, 0x000000)
+          .rectangle(
+            this.dialogbox.x + 55,
+            this.dialogbox.y + 10,
+            20,
+            10,
+            0x5e4040
+          )
           .setDepth(20);
+
         this.noButton = this.add
-          .text(object.x + 70, object.y - 39, "No", {
+          .text(this.dialogbox.x + 50, this.dialogbox.y + 4, "No", {
             font: "9px",
             fill: "#FFFAF0",
           })
@@ -109,10 +166,20 @@ export default class RoomTwo extends Phaser.Scene {
           this.noButton,
           this.dialogbox,
           this.dialogText,
+          this.defeatedDialogText,
           this.dialogTextName,
+          this.dialogSprite,
         ];
+
+        dialogArr.forEach((item) => {
+          item.setAlpha(0.8);
+          item.setScrollFactor(0, 0);
+          item.setVisible(false);
+        });
         this.yesButton.on("pointerdown", () => {
           dialogArr.forEach((item) => {
+            item.setAlpha(0.8);
+            item.setScrollFactor(0, 0);
             item.setVisible(false);
           });
           newNPC.enableBody();
@@ -122,9 +189,7 @@ export default class RoomTwo extends Phaser.Scene {
           this.music = this.scene.get("SinglePlayerMapScene");
           this.music.bgMusic.stop();
         });
-        dialogArr.forEach((item) => {
-          item.setVisible(false);
-        });
+
         this.noButton.on("pointerdown", () => {
           dialogArr.forEach((item) => {
             this.selectSound.play();
@@ -139,26 +204,37 @@ export default class RoomTwo extends Phaser.Scene {
           newNPC,
           (player, currentNPC) => {
             store.dispatch(getNPC(currentNPC.texture.key));
-            newNPC.disableBody();
-            dialogArr.forEach((item) => {
-              item.setVisible(true);
-            });
             let data = store.getState();
             const storeNPCS = data.npcBoardReducer.npcs;
             this.currentNPC = data.npcBoardReducer.singleNPC;
+            // SETTING DIALOG TEXT VISIBLE
 
+            for (let i = 0; i < dialogArr.length; i++) {
+              if (i === 6) {
+                dialogArr[i].setVisible(false);
+              } else dialogArr[i].setVisible(true);
+            }
+
+            newNPC.disableBody();
+            // TURNING THE BUTTONS OFF IF DEFEATED
+            // AND CHANGING DIALOG TEXT WHEN DEFEATED
+            storeNPCS.forEach((npc) => {
+              if (npc.name === currentNPC.texture.key) {
+                if (npc.defeated) {
+                  dialogArr[5].setVisible(false);
+                  dialogArr[6].setVisible(true);
+
+                  dialogArr[0].setVisible(false);
+                  dialogArr[1].setVisible(false);
+                  dialogArr[2].setVisible(false);
+                  dialogArr[3].setVisible(false);
+                }
+              }
+            });
             this.time.delayedCall(5000, () => {
               dialogArr.forEach((item) => {
                 item.setVisible(false);
-                let npcName = currentNPC.texture.key;
-
-                storeNPCS.forEach((npc) => {
-                  if (npc.name === npcName) {
-                    if (npc.defeated === false) {
-                      newNPC.enableBody();
-                    }
-                  }
-                });
+                newNPC.enableBody();
               });
             });
           },
@@ -176,6 +252,7 @@ export default class RoomTwo extends Phaser.Scene {
           object.name
         ).setScale(1);
         this.physics.add.collider(this.player, newItem, () => {
+          store.dispatch(setScene("RoomThree"));
           this.scene.switch("RoomThree");
         });
       }
@@ -187,6 +264,7 @@ export default class RoomTwo extends Phaser.Scene {
           object.name
         ).setScale(1);
         this.physics.add.collider(this.player, newItem, () => {
+          store.dispatch(setScene("RoomOne"));
           this.scene.switch("RoomOne");
         });
       }
@@ -203,6 +281,11 @@ export default class RoomTwo extends Phaser.Scene {
   }
 
   update() {
+    this.music = this.scene.get("SinglePlayerMapScene");
+    if (!this.music.bgMusic.isPlaying) {
+      this.music.bgMusic.play();
+    }
     this.player.update(this.keys);
+    this.npcDefeatListener();
   }
 }

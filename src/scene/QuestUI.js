@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { createCharacterAnims } from "../anims/CharacterAnims";
 import store from "../redux/store";
 
 export default class QuestUi extends Phaser.Scene {
@@ -26,6 +27,10 @@ export default class QuestUi extends Phaser.Scene {
     }
   }
   create() {
+    createCharacterAnims(this.anims);
+
+    this.selectSound = this.sound.add("selectSound", { volume: 0.06 });
+
     this.tracker = this.add
       .image(685, 185, "tracker")
       .setInteractive({ useHandCursor: true })
@@ -33,11 +38,12 @@ export default class QuestUi extends Phaser.Scene {
       .setVisible(false)
       .setAlpha(0.8);
     this.questMark = this.add
-      .image(790, 20, "quest")
-      .setInteractive({ useHandCursor: true });
+      .sprite(780, 25, "mark")
+      .setInteractive({ useHandCursor: true })
+      .setScale(1.2);
     this.checkMarkGroup = this.add.group();
     this.textGroup = this.add.group();
-
+    this.questMark.play("mark");
     for (let i = 0; i < this.npcNames.length; i++) {
       this.checkMarkGroup.add(
         this.add
@@ -60,11 +66,13 @@ export default class QuestUi extends Phaser.Scene {
     this.textGroup.setVisible(false);
 
     this.questMark.on("pointerdown", () => {
+      this.selectSound.play();
       this.questMark.setVisible(false);
       this.textGroup.setVisible(true);
       this.tracker.setVisible(true);
     });
     this.tracker.on("pointerdown", () => {
+      this.selectSound.play();
       this.tracker.setVisible(false);
       this.questMark.setVisible(true);
       this.textGroup.setVisible(false);
