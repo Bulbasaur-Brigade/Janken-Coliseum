@@ -91,6 +91,10 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         npc.type
       ).setScale(0.25);
 
+      store.dispatch(
+        addNPC({ name: newNPC.npcName, defeated: newNPC.defeated })
+      );
+
       const areaBoxR = this.physics.add
         .sprite(npc.x + 15, npc.y, 'blank')
         .setVisible(false)
@@ -116,12 +120,8 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         .setSize(208, 0.01);
 
       this.npcsArr.push(newNPC);
-      console.log(this.npcsArr);
-      createNpcAnims(this.anims, npc.type);
 
-      store.dispatch(
-        addNPC({ name: newNPC.npcName, defeated: newNPC.defeated })
-      );
+      createNpcAnims(this.anims, npc.type);
 
       this.dialogbox = this.add
         .graphics()
@@ -228,7 +228,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         this.player,
         newNPC,
         (player, currentNPC) => {
-          store.dispatch(getNPC(currentNPC.texture.key));
+          store.dispatch(getNPC(currentNPC.npcName));
           newNPC.disableBody();
           dialogArr.forEach((item) => {
             item.setVisible(true);
@@ -238,7 +238,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
             dialogArr.forEach((item) => {
               item.setVisible(false);
 
-              let npcName = currentNPC.texture.key;
+              let npcName = currentNPC.npcName;
               let data = store.getState();
               const storeNPCS = data.npcBoardReducer.npcs;
               storeNPCS.forEach((npc) => {
