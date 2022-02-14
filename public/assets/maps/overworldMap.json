@@ -749,24 +749,6 @@
                  "width":16,
                  "x":432,
                  "y":1200
-                }, 
-                {
-                 "gid":413,
-                 "height":16,
-                 "id":81,
-                 "name":"bossroom",
-                 "properties":[
-                        {
-                         "name":"open",
-                         "type":"bool",
-                         "value":false
-                        }],
-                 "rotation":0,
-                 "type":"doors",
-                 "visible":true,
-                 "width":16,
-                 "x":880.5,
-                 "y":1056.25
                 }],
          "opacity":1,
          "type":"objectgroup",

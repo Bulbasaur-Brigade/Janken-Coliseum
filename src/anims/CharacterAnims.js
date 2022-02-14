@@ -105,6 +105,16 @@ const createCharacterAnims = (anims = Phaser.Animations.AnimationManager) => {
     repeat: -1,
     suffix: ".png",
   });
+  anims.create({
+    key: "mark",
+    frames: anims.generateFrameNumbers("mark", {
+      start: 0,
+      end: 1,
+    }),
+    frameRate: 5,
+    repeat: -1,
+    suffix: ".png",
+  });
 };
 
 export { createCharacterAnims };

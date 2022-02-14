@@ -15,11 +15,10 @@ import QuestUi from "../scene/QuestUI";
 import RoomOne from "../scene/rooms/RoomOne";
 import RoomTwo from "../scene/rooms/RoomTwo";
 import RoomThree from "../scene/rooms/RoomThree";
+import FullScreen from "../scene/FullScreen";
 
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
-  width: 800, // Game width in pixels
-  height: 600, // Game height in pixels
 
   render: {
     pixelArt: true,
@@ -32,8 +31,12 @@ export default {
   },
 
   scale: {
+    width: 800, // Game width in pixels
+    height: 600, // Game height in pixels
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
     parent: "content",
-    autoCenter: true,
+    // autoCenter: true,
   },
   parent: "content",
 
@@ -44,19 +47,21 @@ export default {
     Preloader,
     SceneTransition,
     TitleScene,
+
     CharPicker,
     // MultiPlayerMapScene,
     SinglePlayerMapScene,
-    QuestUi,
     BattleScene,
+    RoomOne,
+    RoomTwo,
+    RoomThree,
+    QuestUi,
 
     Inventory,
     Heart,
     NpcHearts,
-    RoomOne,
-    RoomTwo,
-    RoomThree,
     LossScene,
     VictoryScene,
+    FullScreen,
   ],
 };
