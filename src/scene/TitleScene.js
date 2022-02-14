@@ -219,19 +219,19 @@ export default class TitleScene extends Phaser.Scene {
       this.aboutText.y = 1247;
     });
 
-    this.input.keyboard.on("keydown-L", () => {
-      this.scene.transition({
-        duration: 2500,
-        target: "LossScene",
-      });
-    });
+    // this.input.keyboard.on("keydown-L", () => {
+    //   this.scene.transition({
+    //     duration: 2500,
+    //     target: "LossScene",
+    //   });
+    // });
 
-    this.input.keyboard.on("keydown-V", () => {
-      this.scene.transition({
-        duration: 2500,
-        target: "VictoryScene",
-      });
-    });
+    // this.input.keyboard.on("keydown-V", () => {
+    //   this.scene.transition({
+    //     duration: 2500,
+    //     target: "VictoryScene",
+    //   });
+    // });
 
     // .on("pointerover", () => this.gameStateText)
     // .on("pointerout", () => this.gameStateText.setStyle({ fill: "#111" }));
