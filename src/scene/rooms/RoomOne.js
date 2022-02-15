@@ -46,6 +46,7 @@ export default class RoomOne extends Phaser.Scene {
 
     createCharacterAnims(this.anims);
     createNpcAnims(this.anims, 'mac');
+
     // Creating Map using Tile Set
     const map = this.make.tilemap({ key: 'roomOneMap' });
     // "characters" comes from name in Tiled software
@@ -65,6 +66,9 @@ export default class RoomOne extends Phaser.Scene {
       'character'
     ).setScale(0.25);
 
+    roomOneLayer.setCollisionByProperty({ collisions: true });
+    this.physics.add.collider(this.player, roomOneLayer);
+
     const objectsLayer = map.getObjectLayer('Objects');
 
     objectsLayer.objects.forEach((object) => {
@@ -77,7 +81,9 @@ export default class RoomOne extends Phaser.Scene {
           object.name
         ).setScale(0.25);
         this.mac.push(newNPC);
-        // !!!!!!!!!!!!!!!!!!
+        // !!!!!!!!!!!!!!!!!
+        this.physics.add.collider(newNPC, roomOneLayer);
+
         this.dialogbox = this.add
           .image(this.player.x + 265, this.player.y + 125, 'dialogBox')
           .setDepth(20)
@@ -204,7 +210,7 @@ export default class RoomOne extends Phaser.Scene {
           this.player,
           newNPC,
           (player, currentNPC) => {
-            store.dispatch(getNPC(currentNPC.texture.key));
+            store.dispatch(getNPC(currentNPC.npcName));
             let data = store.getState();
             const storeNPCS = data.npcBoardReducer.npcs;
             this.currentNPC = data.npcBoardReducer.singleNPC;
@@ -220,7 +226,7 @@ export default class RoomOne extends Phaser.Scene {
             // TURNING THE BUTTONS OFF IF DEFEATED
             // AND CHANGING DIALOG TEXT WHEN DEFEATED
             storeNPCS.forEach((npc) => {
-              if (npc.name === currentNPC.texture.key) {
+              if (npc.name === currentNPC.npcName) {
                 if (npc.defeated) {
                   dialogArr[5].setVisible(false);
                   dialogArr[6].setVisible(true);
@@ -265,9 +271,6 @@ export default class RoomOne extends Phaser.Scene {
       this.player.y -= 5;
     });
 
-    roomOneLayer.setCollisionByProperty({ collisions: true });
-    this.physics.add.collider(this.player, roomOneLayer);
-
     const camera = this.cameras.main;
     camera.setZoom(3);
     camera.startFollow(this.player, true);
@@ -277,9 +280,9 @@ export default class RoomOne extends Phaser.Scene {
 
   update() {
     this.music = this.scene.get('SinglePlayerMapScene');
-    // if (!this.music.bgMusic.isPlaying) {
-    //   this.music.bgMusic.play();
-    // }
+    if (!this.music.bgMusic.isPlaying) {
+      this.music.bgMusic.play();
+    }
 
     this.player.update(this.keys);
     this.npcDefeatListener();
