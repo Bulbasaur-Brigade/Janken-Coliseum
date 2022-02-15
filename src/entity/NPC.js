@@ -1,6 +1,6 @@
-import Phaser from 'phaser';
+import Phaser from "phaser";
 
-const Direction = ['Up', 'Down', 'Left', 'Right'];
+const Direction = ["Up", "Down", "Left", "Right"];
 
 const randomDirection = (exclude) => {
   let newDirection = Phaser.Math.Between(0, 3);
@@ -30,10 +30,6 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  destroy() {
-    this.moveEvent.destroy();
-    super.destroy();
-  }
 
   preUpdate(t, dt) {
     super.preUpdate(t, dt);
@@ -63,8 +59,8 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
         break;
       }
       default: {
-        this.body.setVelocityY(0, 0);
-        this.play(`${this.npcName}idle`, true);
+        this.body.setVelocity(0, 0);
+        this.anims.stop();
       }
     }
   }

@@ -12,13 +12,13 @@ import { setScene } from '../redux/sceneReducer';
 
 export default class SinglePlayerMapScene extends Phaser.Scene {
   constructor() {
-    super('SinglePlayerMapScene');
+    super("SinglePlayerMapScene");
     this.npcsArr = [];
   }
 
   preload() {
-    this.load.image('tiles', 'assets/maps/tilemap.png');
-    this.load.tilemapTiledJSON('tilemap', 'assets/maps/overworldMap.json');
+    this.load.image("tiles", "assets/maps/tilemap.png");
+    this.load.tilemapTiledJSON("tilemap", "assets/maps/overworldMap.json");
   }
   npcDefeatListener() {
     const data = store.getState();
@@ -40,9 +40,9 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
   create() {
     // Inventory
     // super.create();
-    this.scene.run('QuestUi');
-    this.scene.run('Inventory');
-    this.scene.run('Heart');
+    this.scene.run("QuestUi");
+    this.scene.run("Inventory");
+    this.scene.run("Heart");
     // this.scene.run("AnimationLayer");
     this.door = this.physics.add
       .sprite(895, 1050, 'blank')
@@ -74,24 +74,24 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     createCharacterAnims(this.anims);
 
     // Creating Map using Tile Set
-    const map = this.make.tilemap({ key: 'tilemap' });
+    const map = this.make.tilemap({ key: "tilemap" });
     // "characters" comes from name in Tiled software
-    const tileset = map.addTilesetImage('characters', 'tiles', 16, 16);
+    const tileset = map.addTilesetImage("characters", "tiles", 16, 16);
 
     // Layers
 
-    map.createLayer('Water', tileset, 0, 0);
-    const groundLayer = map.createLayer('Ground', tileset, 0, 0);
-    const interactiveLayer = map.createLayer('Interactive', tileset, 0, 0);
-    const overheadLayer = map.createLayer('Overhead', tileset, 0, 0);
+    map.createLayer("Water", tileset, 0, 0);
+    const groundLayer = map.createLayer("Ground", tileset, 0, 0);
+    const interactiveLayer = map.createLayer("Interactive", tileset, 0, 0);
+    const overheadLayer = map.createLayer("Overhead", tileset, 0, 0);
 
     //Player
     // this.time.delayedCall(3000,()=>{})
     this.player = new Player(
       this,
-      this.data.get('playercordX') || 370,
-      this.data.get('playercordY') || 340,
-      'character'
+      this.data.get("playercordX") || 370,
+      this.data.get("playercordY") || 340,
+      "character"
     ).setScale(0.25);
 
     //ANNOUNCEMENT
@@ -142,20 +142,20 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     this.announce.forEach((item) => item.setVisible(false));
 
     //NPC generation/collision
-    this.speechData = this.cache.json.get('speech');
+    this.speechData = this.cache.json.get("speech");
 
-    const npcLayer = map.getObjectLayer('NPC');
+    const npcLayer = map.getObjectLayer("NPC");
 
-    store.dispatch(addNPC({ name: 'omar', defeated: false }));
-    store.dispatch(addNPC({ name: 'zach', defeated: false }));
-    store.dispatch(addNPC({ name: 'mac', defeated: false }));
+    store.dispatch(addNPC({ name: "omar", defeated: false }));
+    store.dispatch(addNPC({ name: "zach", defeated: false }));
+    store.dispatch(addNPC({ name: "mac", defeated: false }));
 
     npcLayer.objects.forEach((npc) => {
       const newNPC = new NPC(
         this,
         npc.x,
         npc.y,
-        'npcSprites',
+        "npcSprites",
         npc.type
       ).setScale(0.25);
 
@@ -164,25 +164,25 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
       );
 
       const areaBoxR = this.physics.add
-        .sprite(npc.x + 15, npc.y, 'blank')
+        .sprite(npc.x + 15, npc.y, "blank")
         .setVisible(false)
         .setImmovable(true)
         .setSize(0.01, 195);
 
       const areaBoxL = this.physics.add
-        .sprite(npc.x - 190, npc.y, 'blank')
+        .sprite(npc.x - 190, npc.y, "blank")
         .setVisible(false)
         .setImmovable(true)
         .setSize(0.01, 195);
 
       const areaBoxT = this.physics.add
-        .sprite(npc.x - 88, npc.y - 96, 'blank')
+        .sprite(npc.x - 88, npc.y - 96, "blank")
         .setVisible(false)
         .setImmovable(true)
         .setSize(208, 0.01);
 
       const areaBoxB = this.physics.add
-        .sprite(npc.x - 88, npc.y + 96, 'blank')
+        .sprite(npc.x - 88, npc.y + 96, "blank")
         .setVisible(false)
         .setImmovable(true)
         .setSize(208, 0.01);
@@ -393,8 +393,8 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     //Item randomized/overlaps
 
-    const itemLayer = map.getObjectLayer('ItemSpawns');
-    const itemArray = ['rock', 'paper', 'scissors', 'heart', 'heart', ''];
+    const itemLayer = map.getObjectLayer("ItemSpawns");
+    const itemArray = ["rock", "paper", "scissors", "heart", ""];
 
     itemLayer.objects.forEach((item) => {
       const randomItem =
@@ -411,15 +411,15 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
           newItem,
           (player, item) => {
             this.inventory.addItem(item.texture.key);
-            if (item.texture.key === 'rock') {
+            if (item.texture.key === "rock") {
               this.rockPickup.play();
-            } else if (item.texture.key === 'scissors') {
+            } else if (item.texture.key === "scissors") {
               this.scissorsPickup.play();
-            } else if (item.texture.key === 'paper') {
+            } else if (item.texture.key === "paper") {
               this.paperPickup.play();
             }
 
-            if (item.texture.key === 'heart') {
+            if (item.texture.key === "heart") {
               this.heartPickup.play();
               store.dispatch(addHp(1));
             }
@@ -445,7 +445,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     camera.startFollow(this.player, true);
 
     // WASD KEYS FOR MOVEMENT
-    this.keys = this.input.keyboard.addKeys('W,S,A,D');
+    this.keys = this.input.keyboard.addKeys("W,S,A,D");
   }
 
   ifDoorIsOpen() {
@@ -519,7 +519,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     }
     if (randomEvent == 6) {
       this.greenBird1 = this.physics.add
-        .sprite(1700, Phaser.Math.RND.integerInRange(1700, 100), 'greenBird')
+        .sprite(1700, Phaser.Math.RND.integerInRange(1700, 100), "greenBird")
 
         .setScale(0.07)
         .setAlpha(0.8)
