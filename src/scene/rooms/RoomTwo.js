@@ -28,6 +28,7 @@ export default class RoomTwo extends Phaser.Scene {
   }
   preload() {
     this.load.image('roomTwo', 'assets/maps/tilemap.png');
+    this.load.image('roomTwoDecor', 'assets/maps/Tileset.png');
     this.load.tilemapTiledJSON('roomTwoMap', 'assets/maps/roomTwo.json');
 
     // Music
@@ -48,8 +49,10 @@ export default class RoomTwo extends Phaser.Scene {
     const map = this.make.tilemap({ key: 'roomTwoMap' });
     // "characters" comes from name in Tiled software
     const tileset = map.addTilesetImage('tilemap', 'roomTwo', 16, 16);
+    const decor = map.addTilesetImage('interior', 'roomTwoDecor', 16, 16);
 
-    const roomTwoLayer = map.createLayer('Tile Layer 1', tileset, 0, 0);
+    const roomTwoLayer = map.createLayer('Ground', decor, 0, 0);
+    const roomDecorLayer = map.createLayer('Decoration', decor, 0, 0);
 
     this.player = new Player(
       this,
@@ -59,7 +62,8 @@ export default class RoomTwo extends Phaser.Scene {
     ).setScale(0.25);
 
     roomTwoLayer.setCollisionByProperty({ collisions: true });
-    this.physics.add.collider(this.player, roomTwoLayer);
+    roomDecorLayer.setCollisionByProperty({ collides: true });
+    this.physics.add.collider(this.player, [roomTwoLayer, roomDecorLayer]);
 
     const objectsLayer = map.getObjectLayer('Objects');
 
@@ -74,7 +78,7 @@ export default class RoomTwo extends Phaser.Scene {
         ).setScale(0.25);
         this.zach.push(newNPC);
         //
-        this.physics.add.collider(newNPC, roomTwoLayer);
+        this.physics.add.collider(newNPC, [roomTwoLayer, roomDecorLayer]);
         // !!!!!!!!!!!!!!!!!!
         this.dialogbox = this.add
           .image(this.player.x + 190, this.player.y + 290, 'dialogBox')

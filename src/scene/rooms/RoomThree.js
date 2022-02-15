@@ -28,6 +28,7 @@ export default class RoomThree extends Phaser.Scene {
   }
   preload() {
     this.load.image('roomThree', 'assets/maps/tilemap.png');
+    this.load.image('roomThreeDecor', 'assets/maps/Tileset.png');
     this.load.tilemapTiledJSON('roomThreeMap', 'assets/maps/roomThree.json');
 
     // Music
@@ -41,10 +42,13 @@ export default class RoomThree extends Phaser.Scene {
     store.dispatch(setScene('RoomThree'));
     // Creating Map using Tile Set
     const map = this.make.tilemap({ key: 'roomThreeMap' });
+    const decor = map.addTilesetImage('interior', 'roomOneDecor', 16, 16);
     // "characters" comes from name in Tiled software
     const tileset = map.addTilesetImage('tilemap', 'roomThree', 16, 16);
 
-    const roomThreeLayer = map.createLayer('Tile Layer 1', tileset, 0, 0);
+    const roomThreeLayer = map.createLayer('Ground', decor, 0, 0);
+    const roomDecorLayer = map.createLayer('Decoration', decor, 0, 0);
+    const roomStairLayer = map.createLayer('stairs', tileset, 0, 0);
 
     this.speechData = this.cache.json.get('speech');
     this.selectSound = this.sound.add('selectSound', { volume: 0.06 });
@@ -59,7 +63,8 @@ export default class RoomThree extends Phaser.Scene {
     const objectsLayer = map.getObjectLayer('Objects');
 
     roomThreeLayer.setCollisionByProperty({ collisions: true });
-    this.physics.add.collider(this.player, roomThreeLayer);
+    roomDecorLayer.setCollisionByProperty({ collides: true });
+    this.physics.add.collider(this.player, [roomThreeLayer, roomDecorLayer]);
 
     objectsLayer.objects.forEach((object) => {
       if (object.name === 'omar') {
@@ -72,7 +77,7 @@ export default class RoomThree extends Phaser.Scene {
         ).setScale(0.25);
         this.omar.push(newNPC);
         // !!!!!!!!!!!!!!!!!!
-        this.physics.add.collider(newNPC, roomThreeLayer);
+        this.physics.add.collider(newNPC, [roomThreeLayer, roomDecorLayer]);
 
         // !!!!!!!!!!!!!!!!!!
         this.dialogbox = this.add
@@ -267,7 +272,8 @@ export default class RoomThree extends Phaser.Scene {
     });
 
     roomThreeLayer.setCollisionByProperty({ collisions: true });
-    this.physics.add.collider(this.player, roomThreeLayer);
+    roomDecorLayer.setCollisionByProperty({ collides: true });
+    this.physics.add.collider(this.player, [roomThreeLayer, roomDecorLayer]);
 
     const camera = this.cameras.main;
     camera.setZoom(3);
