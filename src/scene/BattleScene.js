@@ -326,21 +326,38 @@ export default class BattleScene extends Phaser.Scene {
     });
 
     //Music
-    this.battleMusic = this.sound.add("Battle", { volume: 0.05, loop: true });
+    this.battleMusic = this.sound.add("Battle", { volume: 0.04, loop: true });
+    this.battleMusic1 = this.sound.add("Battle1", { volume: 0.04, loop: true });
+    this.battleMusic2 = this.sound.add("Battle2", { volume: 0.04, loop: true });
+
     this.macsMusic = this.sound.add("mac", { volume: 0.05, loop: true });
     this.zachsMusic = this.sound.add("zach", { volume: 0.05, loop: true });
     this.omarsMusic = this.sound.add("omar", { volume: 0.05, loop: true });
+
+    let randomMusic = Math.floor(Math.random() * 3);
+
     if (this.npcName === "mac") {
       this.macsMusic.play();
     } else if (this.npcName === "zach") {
       this.zachsMusic.play();
     } else if (this.npcName === "omar") {
       this.omarsMusic.play();
-    } else {
+    } else if (randomMusic === 0) {
       this.battleMusic.play();
+    } else if (randomMusic === 1) {
+      this.battleMusic1.play();
+    } else {
+      this.battleMusic2.play();
     }
 
-    this.add.image(0, 0, "battleScene").setOrigin(0, 0).setScale(1);
+    // let randomBg = Math.floor(Math.random() * 3);
+    // if (randomBg === 0) {
+    //   this.add.image(0, 0, "battleScene").setOrigin(0, 0).setScale(1);
+    // } else if (randomBg === 1) {
+    this.add.image(0, 0, "battleScene1").setOrigin(0, 0).setScale(1.5, 2);
+    // } else {
+    //   this.add.image(0, 0, "battleScene2").setOrigin(0, 0).setScale(1);
+    // }
 
     // Player Sprites
     const rock = this.physics.add.sprite(100, 150, ROCK).setScale(1.5);

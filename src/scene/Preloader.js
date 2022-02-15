@@ -1,45 +1,42 @@
-import Phaser from 'phaser';
+import Phaser from "phaser";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
-    super('Preloader');
+    super("Preloader");
   }
   preload() {
     //SpriteSheets
-    this.load.spritesheet('character', 'assets/spriteSheets/characters.png', {
+    this.load.spritesheet("character", "assets/spriteSheets/characters.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
 
-
-    this.load.spritesheet('npcSprites', 'assets/spriteSheets/npcSprites.png', {
+    this.load.spritesheet("npcSprites", "assets/spriteSheets/npcSprites.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
-
 
     this.load.spritesheet("mark", "assets/spriteSheets/mark.png", {
       frameWidth: 40,
       frameHeight: 40,
     });
-    
+
     this.load.spritesheet("blueBird", "assets/spriteSheets/blueBird.png", {
       frameWidth: 342,
       frameHeight: 290,
     });
 
-    this.load.spritesheet('greenBird', 'assets/spriteSheets/greenBird.png', {
+    this.load.spritesheet("greenBird", "assets/spriteSheets/greenBird.png", {
       frameWidth: 342,
       frameHeight: 290,
     });
 
     //Player Character
-    this.load.image('dave', 'assets/sprites/charPicker/dave.png');
-    this.load.image('april', 'assets/sprites/charPicker/april.png');
+    this.load.image("dave", "assets/sprites/charPicker/dave.png");
+    this.load.image("april", "assets/sprites/charPicker/april.png");
 
-    this.load.image('background', 'assets/backgrounds/background.png');
-    this.load.image('defeatBackground', 'assets/backgrounds/defeat.png');
-
+    this.load.image("background", "assets/backgrounds/background.png");
+    this.load.image("defeatBackground", "assets/backgrounds/defeat.png");
 
     //NPC charcters
     this.load.image(
@@ -73,14 +70,13 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("fullscreen", "assets/sprites/fullscreen.png");
 
     // Heart
-    this.load.image('heart', 'assets/sprites/heart.png');
+    this.load.image("heart", "assets/sprites/heart.png");
     //Inventory
-    this.load.image('inventory', 'assets/sprites/inventory.png');
+    this.load.image("inventory", "assets/sprites/inventory.png");
     //Items
-    this.load.image('cloud1', 'assets/sprites/cloud1.png');
-    this.load.image('cloud2', 'assets/sprites/cloud2.png');
-    this.load.image('cloud3', 'assets/sprites/cloud3.png');
-
+    this.load.image("cloud1", "assets/sprites/cloud1.png");
+    this.load.image("cloud2", "assets/sprites/cloud2.png");
+    this.load.image("cloud3", "assets/sprites/cloud3.png");
 
     this.load.image("rock", "assets/sprites/rock.png");
     this.load.image("paper", "assets/sprites/paper.png");
@@ -93,11 +89,9 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("stairsDown", "assets/sprites/stairsDown.png");
     this.load.image("blank", "assets/sprites/blank.png");
 
-
     // this.load.image('diamond', 'assets/sprites/diamond.png');
-    this.load.audio('loss', 'assets/audio/lossMusic.mp3');
-    this.load.audio('win', 'assets/audio/win.mp3');
-
+    this.load.audio("loss", "assets/audio/lossMusic.mp3");
+    this.load.audio("win", "assets/audio/win.mp3");
 
     this.load.audio("rockPickup", "assets/audio/rockPickup.mp3");
     this.load.audio("scissorsPickup", "assets/audio/scissorsPickup.mp3");
@@ -113,16 +107,20 @@ export default class Preloader extends Phaser.Scene {
 
     //Font
     this.load.bitmapFont(
-      'carrier_command',
-      'assets/fonts/carrier_command.png',
-      'assets/fonts/carrier_command.xml'
+      "carrier_command",
+      "assets/fonts/carrier_command.png",
+      "assets/fonts/carrier_command.xml"
     );
- 
+
     this.load.image("battleScene", "assets/backgrounds/battleScene.jpg");
+    this.load.image("battleScene1", "assets/backgrounds/battleScene1.png");
+    this.load.image("battleScene2", "assets/backgrounds/battleScene2.jpg");
     this.load.image("dialogBox", "assets/sprites/dialogBox.png");
 
     // Battle Music
     this.load.audio("Battle", "assets/audio/Battle.mp3");
+    this.load.audio("Battle1", "assets/audio/Battle1.mp3");
+    this.load.audio("Battle2", "assets/audio/Battle2.mp3");
 
     //Dialog Data
     this.load.json("speech", "assets/speech/npcSpeech.json");
@@ -139,6 +137,5 @@ export default class Preloader extends Phaser.Scene {
     // SinglePlayerMapScene
 
     this.scene.start("TitleScene");
-
   }
 }

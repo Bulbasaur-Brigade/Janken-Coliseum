@@ -1,6 +1,6 @@
-import Phaser from 'phaser';
+import Phaser from "phaser";
 
-const Direction = ['Up', 'Down', 'Left', 'Right'];
+const Direction = ["Up", "Down", "Left", "Right"];
 
 const randomDirection = (exclude) => {
   let newDirection = Phaser.Math.Between(0, 3);
@@ -21,13 +21,14 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.enable(this);
     this.npcName = frame;
     this.defeated = false;
-    scene.physics.world.on(
-      Phaser.Physics.Arcade.Events.TILE_COLLIDE,
-      this.#handleCollision,
-      this
-    );
+
+    // scene.physics.world.on(
+    //   Phaser.Physics.Arcade.Events.TILE_COLLIDE,
+    //   this.#handleCollision,
+    //   this
+    // );
     this.moveEvent = scene.time.addEvent({
-      delay: 3500,
+      delay: 2500,
       callback: () => {
         this.#direction = randomDirection(this.#direction);
       },
@@ -35,25 +36,17 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  destroy() {
-    this.moveEvent.destroy();
-
-    super.destroy(fromScene);
-  }
-
-  #handleCollision(
-    go = Phaser.GameObjects.GameObject,
-    tile = Phaser.Tilemaps.Tile
-  ) {
-    if (go !== this) {
-      return;
-    }
-    this.#direction = randomDirection(this.#direction);
-  }
+  // #handleCollision(go = Phaser.GameObjects.GameObject) {
+  //   if (go !== this) {
+  //     return;
+  //   } else {
+  //     this.#direction = randomDirection(this.#direction);
+  //   }
+  // }
 
   preUpdate(t, dt) {
     super.preUpdate(t, dt);
-    const speed = 25;
+    const speed = 35;
     switch (this.#direction) {
       case Direction[0]: {
         this.body.setVelocity(0, -speed);
@@ -76,8 +69,8 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
         break;
       }
       default: {
-        this.body.setVelocityY(0, 0);
-        this.play(`${this.npcName}idle`, true);
+        this.body.setVelocity(0, 0);
+        this.anims.stop();
       }
     }
   }
