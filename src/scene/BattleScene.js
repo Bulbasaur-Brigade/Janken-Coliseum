@@ -352,14 +352,14 @@ export default class BattleScene extends Phaser.Scene {
       this.battleMusic2.play();
     }
 
-    // let randomBg = Math.floor(Math.random() * 3);
-    // if (randomBg === 0) {
-    //   this.add.image(0, 0, "battleScene").setOrigin(0, 0).setScale(1);
-    // } else if (randomBg === 1) {
-    this.add.image(0, 0, "battleScene1").setOrigin(0, 0).setScale(1.5, 2);
-    // } else {
-    //   this.add.image(0, 0, "battleScene2").setOrigin(0, 0).setScale(1);
-    // }
+    let randomBg = Math.floor(Math.random() * 3);
+    if (randomBg === 0) {
+      this.add.image(0, 0, "battleScene").setOrigin(0, 0).setScale(1);
+    } else if (randomBg === 1) {
+      this.add.image(0, 0, "battleScene1").setOrigin(0, 0).setScale(1.5, 2);
+    } else {
+      this.add.image(0, 0, "battleScene2").setOrigin(0, 0).setScale(1);
+    }
 
     // Player Sprites
     const rock = this.physics.add.sprite(100, 150, ROCK).setScale(1.5);
@@ -443,10 +443,6 @@ export default class BattleScene extends Phaser.Scene {
       computerSelectedSprite.texture.key
     );
 
-    console.log(
-      "this.selectedSprite.texture.key",
-      this.selectedSprite.texture.key
-    );
     if (this.winner == OUTCOME_PLAYER_WON) {
       this.physics.moveTo(this.selectedSprite, 400, 300, 160, 1200);
       this.physics.moveTo(computerSelectedSprite, 400, 300, 160, 1200);
