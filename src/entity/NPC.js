@@ -21,13 +21,7 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.enable(this);
     this.npcName = frame;
     this.defeated = false;
-
-    // scene.physics.world.on(
-    //   Phaser.Physics.Arcade.Events.TILE_COLLIDE,
-    //   this.#handleCollision,
-    //   this
-    // );
-    this.moveEvent = scene.time.addEvent({
+    this.moveEvent = this.scene.time.addEvent({
       delay: 2500,
       callback: () => {
         this.#direction = randomDirection(this.#direction);
@@ -36,16 +30,12 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  // #handleCollision(go = Phaser.GameObjects.GameObject) {
-  //   if (go !== this) {
-  //     return;
-  //   } else {
-  //     this.#direction = randomDirection(this.#direction);
-  //   }
-  // }
 
   preUpdate(t, dt) {
     super.preUpdate(t, dt);
+    if (!this.body.enable) {
+      this.play(`${this.npcName}idle`, true);
+    }
     const speed = 35;
     switch (this.#direction) {
       case Direction[0]: {
