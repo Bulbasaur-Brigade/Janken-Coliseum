@@ -289,11 +289,13 @@ export default class BattleScene extends Phaser.Scene {
       .setVisible(false)
       .setDepth(2);
     // Particle effects
-    this.particles = this.add.particles("explosion").setDepth(2);
+    this.rockParticles = this.add.particles("explosion").setDepth(2);
+    this.paperParticles = this.add.particles("explosion").setDepth(2);
+    this.scissorsParticles = this.add.particles("explosion").setDepth(2);
 
     this.explode = this.sound.add("explode", { volume: 0.03 });
 
-    this.particles.createEmitter({
+    this.paperParticles.createEmitter({
       frame: ["smoke-puff", "cloud", "smoke-puff", "smoke0"],
       angle: { min: 240, max: 300 },
       speed: { min: 200, max: 300 },
@@ -304,7 +306,7 @@ export default class BattleScene extends Phaser.Scene {
       on: false,
     });
 
-    this.particles.createEmitter({
+    this.rockParticles.createEmitter({
       frame: "stone",
       angle: { min: 240, max: 300 },
       speed: { min: 400, max: 600 },
@@ -317,7 +319,7 @@ export default class BattleScene extends Phaser.Scene {
       on: false,
     });
 
-    this.particles.createEmitter({
+    this.scissorsParticles.createEmitter({
       frame: "muzzleflash2",
       lifespan: 200,
       scale: { start: 2, end: 0 },
@@ -441,6 +443,10 @@ export default class BattleScene extends Phaser.Scene {
       computerSelectedSprite.texture.key
     );
 
+    console.log(
+      "this.selectedSprite.texture.key",
+      this.selectedSprite.texture.key
+    );
     if (this.winner == OUTCOME_PLAYER_WON) {
       this.physics.moveTo(this.selectedSprite, 400, 300, 160, 1200);
       this.physics.moveTo(computerSelectedSprite, 400, 300, 160, 1200);
@@ -454,7 +460,13 @@ export default class BattleScene extends Phaser.Scene {
       );
 
       this.time.delayedCall(950, () => {
-        this.particles.emitParticleAt(400, 300);
+        if (this.selectedSprite.texture.key === "rock") {
+          this.rockParticles.emitParticleAt(400, 300);
+        } else if (this.selectedSprite.texture.key === "paper") {
+          this.paperParticles.emitParticleAt(400, 300);
+        } else {
+          this.scissorsParticles.emitParticleAt(400, 300);
+        }
         this.explode.play();
         this.computerHearts--;
       });
@@ -477,7 +489,13 @@ export default class BattleScene extends Phaser.Scene {
       );
 
       this.time.delayedCall(950, () => {
-        this.particles.emitParticleAt(400, 300);
+        if (this.selectedSprite.texture.key === "rock") {
+          this.rockParticles.emitParticleAt(400, 300);
+        } else if (this.selectedSprite.texture.key === "paper") {
+          this.paperParticles.emitParticleAt(400, 300);
+        } else {
+          this.scissorsParticles.emitParticleAt(400, 300);
+        }
         this.explode.play();
       });
       this.time.delayedCall(1500, () => {
@@ -500,7 +518,13 @@ export default class BattleScene extends Phaser.Scene {
       );
 
       this.time.delayedCall(950, () => {
-        this.particles.emitParticleAt(400, 300);
+        if (this.selectedSprite.texture.key === "rock") {
+          this.rockParticles.emitParticleAt(400, 300);
+        } else if (this.selectedSprite.texture.key === "paper") {
+          this.paperParticles.emitParticleAt(400, 300);
+        } else {
+          this.scissorsParticles.emitParticleAt(400, 300);
+        }
         this.explode.play();
       });
       this.time.delayedCall(1500, () => {
