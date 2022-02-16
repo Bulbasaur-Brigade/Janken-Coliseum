@@ -138,7 +138,8 @@ export default class BattleScene extends Phaser.Scene {
           // this.battleMusic.stop();
           this.sound.stopAll();
         });
-      } else if (scene === "RoomOne") {
+      }
+      if (scene === "RoomOne") {
         {
           this.time.delayedCall(4000, () => {
             this.scene.switch("RoomOne");
@@ -149,7 +150,8 @@ export default class BattleScene extends Phaser.Scene {
             this.sound.stopAll();
           });
         }
-      } else if (scene === "RoomTwo") {
+      }
+      if (scene === "RoomTwo") {
         {
           this.time.delayedCall(4000, () => {
             this.scene.switch("RoomTwo");
@@ -160,7 +162,8 @@ export default class BattleScene extends Phaser.Scene {
             this.sound.stopAll();
           });
         }
-      } else if (scene === "RoomThree") {
+      }
+      if (scene === "RoomThree") {
         {
           this.time.delayedCall(4000, () => {
             this.scene.switch("RoomThree");
@@ -233,7 +236,8 @@ export default class BattleScene extends Phaser.Scene {
 
           this.scene.stop("NpcHearts");
         });
-      } else if (scene === "RoomOne") {
+      }
+      if (scene === "RoomOne") {
         {
           this.time.delayedCall(4000, () => {
             this.scene.switch("RoomOne");
@@ -243,7 +247,8 @@ export default class BattleScene extends Phaser.Scene {
             this.sound.stopAll();
           });
         }
-      } else if (scene === "RoomTwo") {
+      }
+      if (scene === "RoomTwo") {
         {
           this.time.delayedCall(4000, () => {
             this.scene.switch("RoomTwo");
@@ -254,7 +259,8 @@ export default class BattleScene extends Phaser.Scene {
             this.sound.stopAll();
           });
         }
-      } else {
+      }
+      if (scene === "RoomThree") {
         {
           this.time.delayedCall(4000, () => {
             this.scene.switch("RoomThree");
