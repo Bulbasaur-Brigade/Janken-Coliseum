@@ -63,6 +63,7 @@ export default class RoomTwo extends Phaser.Scene {
 
     roomTwoLayer.setCollisionByProperty({ collisions: true });
     roomDecorLayer.setCollisionByProperty({ collides: true });
+    
     this.physics.add.collider(this.player, [roomTwoLayer, roomDecorLayer]);
 
     const objectsLayer = map.getObjectLayer("Objects");
@@ -78,7 +79,13 @@ export default class RoomTwo extends Phaser.Scene {
         ).setScale(0.25);
         this.zach.push(newNPC);
         //
-        this.physics.add.collider(newNPC, [roomTwoLayer, roomDecorLayer]);
+        this.physics.add.collider(
+          newNPC,
+          [roomTwoLayer, roomDecorLayer],
+          () => {
+            newNPC.anims.stop();
+          }
+        );
         // !!!!!!!!!!!!!!!!!!
         this.dialogbox = this.add
           .image(this.player.x + 190, this.player.y + 290, "dialogBox")

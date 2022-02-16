@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { createCharacterAnims } from "../anims/CharacterAnims";
+
 import store from "../redux/store";
 
 export default class QuestUi extends Phaser.Scene {
@@ -41,6 +42,7 @@ export default class QuestUi extends Phaser.Scene {
       .sprite(780, 25, "mark")
       .setInteractive({ useHandCursor: true })
       .setScale(1.2);
+
     this.checkMarkGroup = this.add.group();
     this.textGroup = this.add.group();
     this.questMark.play("mark");

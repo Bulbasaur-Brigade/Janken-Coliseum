@@ -38,7 +38,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
   }
 
   create() {
-    // Inventory
+    store.dispatch(setScene("SinglePlayerMapScene"));
     // super.create();
     this.scene.run("QuestUi");
     this.scene.run("Inventory");
@@ -297,11 +297,11 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         });
         newNPC.enableBody();
         this.selectSound.play();
-        store.dispatch(setScene("SinglePlayerMapScene"));
-
-        this.scene.stop("QuestUi");
+        // store.dispatch(setScene("SinglePlayerMapScene"));
+        // this.scene.switch("SinglePlayerMapScene");
         this.scene.switch("BattleScene");
         this.bgMusic.stop();
+        this.sound.stopAll();
       });
 
       this.noButton.on("pointerdown", () => {
@@ -452,7 +452,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const data = store.getState();
     const doorOpen = data.npcBoardReducer.doorOpen;
 
-    if (!doorOpen) {
+    if (doorOpen) {
       this.physics.add.collider(this.player, this.door, () => {
         this.announce.forEach((item) => item.destroy());
         store.dispatch(setScene("RoomOne"));
@@ -472,7 +472,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
 
     // RANDOMIZED EVENTS FOR CLOUDS AND BIRDS FOR ENVIRONMENT
     let randomEvent = Phaser.Math.RND.integerInRange(0, 2000);
-    let randomEvent1 = Phaser.Math.RND.integerInRange(0, 10000);
+    let randomEvent1 = Phaser.Math.RND.integerInRange(0, 15000);
 
     if (randomEvent == 1) {
       this.cloud1 = this.physics.add

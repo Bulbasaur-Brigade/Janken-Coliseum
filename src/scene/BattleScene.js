@@ -4,6 +4,7 @@ import store from "../redux/store";
 import { addHp, loseHp } from "../redux/hpReducer";
 import { addItem, loseItem } from "../redux/inventoryReducer";
 import { isDefeated } from "../redux/npcBoard";
+
 // MODES
 // Means the player doesn't have anything
 const NOTHING_SELECTION_MODE = "NOTHING_SELECTED";
@@ -132,10 +133,10 @@ export default class BattleScene extends Phaser.Scene {
       if (scene === "SinglePlayerMapScene") {
         this.time.delayedCall(4000, () => {
           this.scene.switch("SinglePlayerMapScene");
-          this.scene.start("QuestUi");
+
           this.scene.stop();
           this.scene.stop("NpcHearts");
-          // this.battleMusic.stop();
+
           this.sound.stopAll();
         });
       }
@@ -143,10 +144,10 @@ export default class BattleScene extends Phaser.Scene {
         {
           this.time.delayedCall(4000, () => {
             this.scene.switch("RoomOne");
-            this.scene.start("QuestUi");
+
             this.scene.stop();
             this.scene.stop("NpcHearts");
-            // this.battleMusic.stop();
+
             this.sound.stopAll();
           });
         }
@@ -155,10 +156,10 @@ export default class BattleScene extends Phaser.Scene {
         {
           this.time.delayedCall(4000, () => {
             this.scene.switch("RoomTwo");
-            this.scene.start("QuestUi");
+
             this.scene.stop();
             this.scene.stop("NpcHearts");
-            // this.battleMusic.stop();
+
             this.sound.stopAll();
           });
         }
@@ -167,10 +168,10 @@ export default class BattleScene extends Phaser.Scene {
         {
           this.time.delayedCall(4000, () => {
             this.scene.switch("RoomThree");
-            this.scene.start("QuestUi");
+
             this.scene.stop();
             this.scene.stop("NpcHearts");
-            // this.battleMusic.stop();
+
             this.sound.stopAll();
           });
         }
@@ -229,9 +230,9 @@ export default class BattleScene extends Phaser.Scene {
     if (this.items.every((item) => item.amount === 0)) {
       if (scene === "SinglePlayerMapScene") {
         this.time.delayedCall(4000, () => {
+
           this.scene.switch("SinglePlayerMapScene");
-          this.scene.start("QuestUi");
-          // this.battleMusic.stop();
+          this.scene.stop();
           this.sound.stopAll();
 
           this.scene.stop("NpcHearts");
@@ -241,7 +242,7 @@ export default class BattleScene extends Phaser.Scene {
         {
           this.time.delayedCall(4000, () => {
             this.scene.switch("RoomOne");
-            this.scene.start("QuestUi");
+
             this.scene.stop();
             this.scene.stop("NpcHearts");
             this.sound.stopAll();
@@ -252,7 +253,7 @@ export default class BattleScene extends Phaser.Scene {
         {
           this.time.delayedCall(4000, () => {
             this.scene.switch("RoomTwo");
-            this.scene.start("QuestUi");
+
             this.scene.stop();
             this.scene.stop("NpcHearts");
             // this.battleMusic.stop();
@@ -263,8 +264,8 @@ export default class BattleScene extends Phaser.Scene {
       if (scene === "RoomThree") {
         {
           this.time.delayedCall(4000, () => {
+         
             this.scene.switch("RoomThree");
-            this.scene.start("QuestUi");
             this.scene.stop();
             this.scene.stop("NpcHearts");
             // this.battleMusic.stop();
@@ -277,6 +278,7 @@ export default class BattleScene extends Phaser.Scene {
     //
   }
   create() {
+
     this.scene.run("NpcHearts");
 
     this.textBorder = this.add

@@ -77,7 +77,13 @@ export default class RoomThree extends Phaser.Scene {
         ).setScale(0.25);
         this.omar.push(newNPC);
         // !!!!!!!!!!!!!!!!!!
-        this.physics.add.collider(newNPC, [roomThreeLayer, roomDecorLayer]);
+        this.physics.add.collider(
+          newNPC,
+          [roomThreeLayer, roomDecorLayer],
+          () => {
+            newNPC.anims.stop();
+          }
+        );
 
         // !!!!!!!!!!!!!!!!!!
         this.dialogbox = this.add

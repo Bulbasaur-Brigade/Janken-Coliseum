@@ -19,14 +19,14 @@ export const resetHp = () => {
   };
 };
 
-export const hpReducer = (state = 3, action) => {
+export const hpReducer = (state = 5, action) => {
   switch (action.type) {
     case ADD_HP:
       return state + action.amount;
     case LOSE_HP:
       return state - action.amount;
     case RESET_HP:
-      return 3;
+      return 5;
     default:
       return state;
   }
