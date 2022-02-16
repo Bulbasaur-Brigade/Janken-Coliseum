@@ -1,4 +1,3 @@
-
 import BattleScene from "../scene/BattleScene";
 import SinglePlayerMapScene from "../scene/SinglePlayerMapScene";
 import TitleScene from "../scene/TitleScene";
@@ -17,7 +16,6 @@ import RoomTwo from "../scene/rooms/RoomTwo";
 import RoomThree from "../scene/rooms/RoomThree";
 import FullScreen from "../scene/FullScreen";
 
-
 export default {
   type: Phaser.AUTO, // Specify the underlying browser rendering engine
 
@@ -25,22 +23,21 @@ export default {
     pixelArt: true,
   },
   physics: {
-    default: 'arcade',
+    default: "arcade",
     arcade: {
       debug: false,
     },
   },
 
   scale: {
-    parent: 'content',
+    parent: "content",
     autoCenter: true,
     width: 800, // Game width in pixels
     height: 600, // Game height in pixels
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
-
   },
-  parent: 'content',
+  parent: "content",
 
   dom: {
     createContainer: true,
@@ -53,11 +50,11 @@ export default {
     CharPicker,
     // MultiPlayerMapScene,
     SinglePlayerMapScene,
-    BattleScene,
     RoomOne,
     RoomTwo,
     RoomThree,
     QuestUi,
+    BattleScene,
 
     Inventory,
     Heart,
