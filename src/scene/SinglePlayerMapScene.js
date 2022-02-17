@@ -297,10 +297,10 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
         });
         newNPC.enableBody();
         this.selectSound.play();
-        // store.dispatch(setScene("SinglePlayerMapScene"));
+        store.dispatch(setScene("SinglePlayerMapScene"));
         // this.scene.switch("SinglePlayerMapScene");
         this.scene.switch("BattleScene");
-        this.bgMusic.stop();
+        // this.bgMusic.stop();
         this.sound.stopAll();
       });
 
@@ -452,7 +452,7 @@ export default class SinglePlayerMapScene extends Phaser.Scene {
     const data = store.getState();
     const doorOpen = data.npcBoardReducer.doorOpen;
 
-    if (!doorOpen) {
+    if (doorOpen) {
       this.physics.add.collider(this.player, this.door, () => {
         this.announce.forEach((item) => item.destroy());
         store.dispatch(setScene("RoomOne"));

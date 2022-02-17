@@ -208,10 +208,9 @@ export default class RoomOne extends Phaser.Scene {
           });
           newNPC.enableBody();
           this.selectSound.play();
-          this.scene.stop("QuestUi");
+          // this.scene.stop("QuestUi");
           this.scene.switch("BattleScene");
-          this.music = this.scene.get("SinglePlayerMapScene");
-          this.music.bgMusic.stop();
+          this.sound.stopAll();
         });
 
         this.noButton.on("pointerdown", () => {
