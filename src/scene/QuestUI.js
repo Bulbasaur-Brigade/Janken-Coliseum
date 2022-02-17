@@ -46,6 +46,68 @@ export default class QuestUi extends Phaser.Scene {
     this.checkMarkGroup = this.add.group();
     this.textGroup = this.add.group();
     this.questMark.play("mark");
+
+    this.text0 = this.add.text(635, 20, "OMAR");
+    this.text1 = this.add.text(635, 51, "ZACH");
+    this.text2 = this.add.text(635, 82, "MAC");
+    this.text3 = this.add.text(635, 113, "SAVION");
+    this.text4 = this.add.text(635, 144, "MARGARITA");
+    this.text5 = this.add.text(635, 175, "GREG");
+    this.text6 = this.add.text(635, 206, "SEY");
+    this.text7 = this.add.text(635, 237, "AMBER");
+    this.text8 = this.add.text(635, 268, "DEVONNE");
+    this.text9 = this.add.text(635, 299, "ERIC");
+    this.text10 = this.add.text(635, 330, "DANNY");
+
+    this.loc0 = this.add.text(725, 20, "***");
+    this.loc1 = this.add.text(725, 51, "***");
+    this.loc2 = this.add.text(725, 82, "***");
+    this.loc3 = this.add.text(725, 113, "↓");
+    this.loc4 = this.add.text(725, 144, "↓");
+    this.loc5 = this.add.text(725, 175, "→");
+    this.loc6 = this.add.text(725, 206, "↗");
+    this.loc7 = this.add.text(725, 237, "↙ ");
+    this.loc8 = this.add.text(725, 268, "←");
+    this.loc9 = this.add.text(725, 299, "↑");
+    this.loc10 = this.add.text(725, 330, "↘");
+
+    this.textGroup = [
+      this.text0,
+      this.text1,
+      this.text2,
+      this.text3,
+      this.text4,
+      this.text5,
+      this.text6,
+      this.text7,
+      this.text8,
+      this.text9,
+      this.text10,
+    ];
+    this.locGroup = [
+      this.loc0,
+      this.loc1,
+      this.loc2,
+      this.loc3,
+      this.loc4,
+      this.loc5,
+      this.loc6,
+      this.loc7,
+      this.loc8,
+      this.loc9,
+      this.loc10,
+    ];
+
+    this.textGroup.forEach((item) => {
+      item.setVisible(false);
+      // item.setResolution(20);
+    });
+
+    this.locGroup.forEach((item) => {
+      item.setVisible(false);
+      // item.setResolution(20);
+    });
+
     for (let i = 0; i < this.npcNames.length; i++) {
       this.checkMarkGroup.add(
         this.add
@@ -53,31 +115,48 @@ export default class QuestUi extends Phaser.Scene {
           .setScale(0.02)
           .setVisible(false)
       );
-
-      this.textGroup.add(
-        this.add.text(
-          655,
-          20 + i * 31,
-          `${this.npcNames[i].name.toUpperCase()}`,
-          {
-            font: "17px Arial",
-          }
-        )
-      );
     }
-    this.textGroup.setVisible(false);
+    //   this.textGroup.add(
+    //     this.add.text(
+    //       635,
+    //       20 + i * 31,
+    //       `${this.npcNames[i].name.toUpperCase()}`,
+    //       {
+    //         font: "17px Arial",
+    //       }
+    //     )
+    //   );
+    // }
+
+    // this.textGroup.setVisible(false);
 
     this.questMark.on("pointerdown", () => {
       this.selectSound.play();
       this.questMark.setVisible(false);
-      this.textGroup.setVisible(true);
+      // this.textGroup.setVisible(true);
       this.tracker.setVisible(true);
+      this.textGroup.forEach((item) => {
+        item.setVisible(true);
+        // item.setResolution(10);
+      });
+      this.locGroup.forEach((item) => {
+        item.setVisible(true);
+        // item.setResolution(10);
+      });
     });
     this.tracker.on("pointerdown", () => {
       this.selectSound.play();
-      this.tracker.setVisible(false);
       this.questMark.setVisible(true);
-      this.textGroup.setVisible(false);
+      this.tracker.setVisible(false);
+      this.textGroup.forEach((item) => {
+        item.setVisible(false);
+        // item.setResolution(10);
+      });
+      this.locGroup.forEach((item) => {
+        item.setVisible(false);
+        // item.setResolution(10);
+      });
+      // this.textGroup.setVisible(false);
     });
   }
   update() {

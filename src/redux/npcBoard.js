@@ -42,9 +42,8 @@ export const npcBoardReducer = (state = initialState, action) => {
     case DEFEATED: {
       const defeatedNPC = state.npcs.filter((npc) => npc.name === action.name);
 
-
       const deleted = state.npcs.filter((npc) => npc.name !== action.name);
-    
+
       defeatedNPC[0].defeated = true;
       return { ...state, npcs: [...deleted, defeatedNPC[0]] };
     }

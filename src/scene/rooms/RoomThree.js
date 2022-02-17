@@ -18,13 +18,18 @@ export default class RoomThree extends Phaser.Scene {
     const storeNPCS = data.npcBoardReducer.npcs;
 
     if (storeNPCS.every((npc) => npc.defeated)) {
-      this.scene.stop("Heart");
-      this.scene.stop("Inventory");
-      this.scene.stop("QuestUi");
-      this.scene.stop();
-      this.sound.stopAll();
       this.scene.start("VictoryScene");
-      // "Congratulations!!!\n\nYou conquered FullStack!\n\nYou're ready to graduate",
+      this.scene.stop("Heart");
+      this.scene.stop("NpcHearts");
+      this.scene.stop("Inventory");
+      this.scene.stop('FullScreen')
+      this.scene.stop("QuestUi");
+      this.scene.stop("SinglePlayerMapScene");
+      this.scene.stop("BattleScene");
+      this.scene.stop("RoomOne");
+      this.scene.stop("RoomTwo");
+      this.scene.stop("RoomThree");
+      this.sound.stopAll();
     }
   }
   preload() {
