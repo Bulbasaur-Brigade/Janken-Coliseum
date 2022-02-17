@@ -22,7 +22,7 @@ export default class RoomThree extends Phaser.Scene {
       this.scene.stop("Heart");
       this.scene.stop("NpcHearts");
       this.scene.stop("Inventory");
-      this.scene.stop('FullScreen')
+      this.scene.stop("FullScreen");
       this.scene.stop("QuestUi");
       this.scene.stop("SinglePlayerMapScene");
       this.scene.stop("BattleScene");
@@ -211,10 +211,9 @@ export default class RoomThree extends Phaser.Scene {
           });
           newNPC.enableBody();
           this.selectSound.play();
-          this.scene.stop("QuestUi");
+          // this.scene.stop("QuestUi");
           this.scene.switch("BattleScene");
-          this.music = this.scene.get("SinglePlayerMapScene");
-          this.music.bgMusic.stop();
+          this.sound.stopAll();
         });
 
         this.noButton.on("pointerdown", () => {
