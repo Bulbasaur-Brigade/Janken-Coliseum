@@ -114,10 +114,14 @@ export default class BattleScene extends Phaser.Scene {
         this.scene.stop("Heart");
         this.scene.stop("NpcHearts");
         this.scene.stop("Inventory");
+        this.scene.stop("FullScreen");
         this.scene.stop("QuestUi");
         this.scene.stop("SinglePlayerMapScene");
+        this.scene.stop("BattleScene");
+        this.scene.stop("RoomOne");
+        this.scene.stop("RoomTwo");
+        this.scene.stop("RoomThree");
         this.sound.stopAll();
-        // this.battleMusic.stop();
       });
     }
   }
@@ -230,7 +234,6 @@ export default class BattleScene extends Phaser.Scene {
     if (this.items.every((item) => item.amount === 0)) {
       if (scene === "SinglePlayerMapScene") {
         this.time.delayedCall(4000, () => {
-
           this.scene.switch("SinglePlayerMapScene");
           this.scene.stop();
           this.sound.stopAll();
@@ -264,7 +267,6 @@ export default class BattleScene extends Phaser.Scene {
       if (scene === "RoomThree") {
         {
           this.time.delayedCall(4000, () => {
-         
             this.scene.switch("RoomThree");
             this.scene.stop();
             this.scene.stop("NpcHearts");
@@ -278,7 +280,6 @@ export default class BattleScene extends Phaser.Scene {
     //
   }
   create() {
-
     this.scene.run("NpcHearts");
 
     this.textBorder = this.add

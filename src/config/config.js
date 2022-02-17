@@ -50,6 +50,7 @@ export default {
     CharPicker,
     // MultiPlayerMapScene,
     SinglePlayerMapScene,
+
     RoomOne,
     RoomTwo,
     RoomThree,
